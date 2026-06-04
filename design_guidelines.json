@@ -1,0 +1,139 @@
+{
+  "theme": "light",
+  "archetype": "1 (Organic & Earthy)",
+  "fonts": {
+    "heading": "Cormorant Garamond",
+    "body": "Figtree"
+  },
+  "colors": {
+    "background_primary": "#F7F5F0",
+    "background_secondary": "#EFEBE1",
+    "primary_accent": "#2B4C3B",
+    "secondary_accent": "#C49775",
+    "text_primary": "#1A1A1A",
+    "text_secondary": "#4A4A4A",
+    "border": "#DCD7C9",
+    "surface": "#FFFFFF"
+  },
+  "spacing_and_layout": {
+    "general": "Generous spacing. p-12 to p-24 for sections. Use Mode A: Tetris Grid for asymmetric layouts.",
+    "container_padding": "px-6 md:px-12 lg:px-24",
+    "border_radius": "rounded-3xl",
+    "shadows": "shadow-[0_8px_32px_rgba(43,76,59,0.08)]"
+  },
+  "component_instructions": {
+    "navigation": "Crystal Glass sticky nav (backdrop-blur-xl bg-white/70 border-b border-[#DCD7C9]/40). Must have brand name, 4 links, and a primary CTA.",
+    "buttons": "Rounded-full. Primary: bg-[#2B4C3B] text-white hover:bg-[#1E3629] transition-all. Secondary: bg-transparent border border-[#2B4C3B] text-[#2B4C3B] hover:bg-[#EFEBE1].",
+    "cards": "Solid backgrounds (bg-[#F7F5F0]) with 1px border-[#DCD7C9], soft shadow on hover.",
+    "marquee": "The 'Editorial Ribbon' - very slow, organic, pale background (#EFEBE1) with deep forest green text (#2B4C3B). Use Cormorant Garamond, wide tracking."
+  },
+  "sections_blueprint": [
+    {
+      "name": "Navigation",
+      "type": "Header",
+      "description": "Sticky top nav with glassy effect. Left: 'Aura OS', Center: 'Platform, Use Cases, Manifesto, Pricing', Right: 'Request Access'"
+    },
+    {
+      "name": "Hero",
+      "type": "HeroSection",
+      "description": "Massive serif headline left-aligned: 'The first operating system for human emotion.' Body: 'Sensing affect, providing coaching, and mediating communication in the AI era.' Uses Tetris grid. Right side: Large organic abstract image (soft 3D shapes). Massive spacing py-32."
+    },
+    {
+      "name": "Partners/Social Proof",
+      "type": "Marquee",
+      "description": "Subtle editorial ribbon of company logos or text like 'TRUSTED BY PIONEERS — INTEGRATES WITH YOUR TEAMS — MEDIATES CONFLICTS'. Very slow moving."
+    },
+    {
+      "name": "The Problem",
+      "type": "ContentSection",
+      "description": "Asymmetrical layout. Large quote/stat about the lack of EQ in AI. Calm portrait of a person in thought. Background: bg_secondary."
+    },
+    {
+      "name": "Product Modules",
+      "type": "BentoGrid",
+      "description": "3-4 bento grid cards explaining: 'Affect Sensing', 'Conflict Mediation', 'Growth Coaching'. Cards have soft rounded corners, earthy tones, subtle hover lifts."
+    },
+    {
+      "name": "Interactive Emotion Visual (Demo)",
+      "type": "FeatureShowcase",
+      "description": "A central section demonstrating the 'Sensing' capability. Left: UI mockup of emotion sensing. Right: Explanatory text. Use glassmorphism delicately."
+    },
+    {
+      "name": "Use Cases",
+      "type": "Tabs or Grid",
+      "description": "Personal, Teams, AI Agents. Switching between them changes the accompanying image and text."
+    },
+    {
+      "name": "Testimonials",
+      "type": "Carousel or Grid",
+      "description": "Quotes from early adopters. Clean typography, large serif quotes."
+    },
+    {
+      "name": "Manifesto",
+      "type": "TextHeavy",
+      "description": "Founder's note. Centered, max-w-2xl, beautifully typeset in Cormorant Garamond. Focus on 'Why EQ matters now'."
+    },
+    {
+      "name": "Pricing",
+      "type": "PricingCards",
+      "description": "3 tiers: Personal, Team, Enterprise. High contrast on the middle tier using primary_accent background."
+    },
+    {
+      "name": "FAQ",
+      "type": "Accordion",
+      "description": "Shadcn accordion customized with earthy borders and colors."
+    },
+    {
+      "name": "Waitlist/CTA",
+      "type": "CTASection",
+      "description": "Massive CTA. Dark background (#2B4C3B), light text. 'Join the evolution of intelligence.' Input field + Button."
+    },
+    {
+      "name": "Footer",
+      "type": "Footer",
+      "description": "Large footer, massive space py-24. Large brand logo text at the bottom. Grid of links."
+    }
+  ],
+  "image_urls": [
+    {
+      "category": "hero_abstract",
+      "url": "https://images.pexels.com/photos/29390707/pexels-photo-29390707.jpeg",
+      "description": "Soft flowing abstract 3D shapes with warm neutral tone"
+    },
+    {
+      "category": "texture_sand",
+      "url": "https://images.pexels.com/photos/36256696/pexels-photo-36256696.jpeg",
+      "description": "Textured sand patterns"
+    },
+    {
+      "category": "portrait_thoughtful_male",
+      "url": "https://images.pexels.com/photos/31776177/pexels-photo-31776177.jpeg",
+      "description": "Contemplative adult male in soft natural light"
+    },
+    {
+      "category": "portrait_thoughtful_female",
+      "url": "https://images.pexels.com/photos/8100072/pexels-photo-8100072.jpeg",
+      "description": "Close-up portrait of a woman in deep thought wearing headphones"
+    },
+    {
+      "category": "logo_partner_1",
+      "url": "https://images.unsplash.com/photo-1773291933751-1fcff40c6133?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHw0fHxjb21wYW55JTIwbG9nbyUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzgwNTc4NDE5fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Muji logo (placeholder partner)"
+    },
+    {
+      "category": "logo_partner_2",
+      "url": "https://images.pexels.com/photos/21898300/pexels-photo-21898300.jpeg",
+      "description": "Pexels logo (placeholder partner)"
+    }
+  ],
+  "motion_and_interactions": {
+    "scrolling": "Lenis smooth scrolling is MANDATORY for a premium feel.",
+    "hover_states": "All buttons should have a slight scale (0.98) on click, and color transition on hover.",
+    "entrance_animations": "Staggered fade-up for bento grid cards using framer-motion. Keep it subtle, duration 0.6s, ease out."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text meets APCA guidelines. White text on primary_accent (#2B4C3B) is safe. text_primary (#1A1A1A) on backgrounds is safe.",
+    "testing": "All interactive elements MUST have data-testid attributes."
+  },
+  "instructions_to_main_agent": "Use Pure HTML/Tailwind for structural marketing sections to ensure asymmetry. Use customized Shadcn for interactive pieces (Accordion for FAQ, Input/Buttons for CTA, Tabs for Use cases). DO NOT use standard SaaS blue/purple gradients. Stick strictly to the Organic & Earthy palette. Use the provided images from image_urls, NO placeholders. Apply liberal padding (py-24, py-32) to sections. Set fonts globally in Tailwind config."
+}
