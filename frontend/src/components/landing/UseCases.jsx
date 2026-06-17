@@ -1,6 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Stethoscope, Scale, GraduationCap, Briefcase } from "lucide-react";
 import { setAudience } from "./audienceStore";
+import { useNavigate } from "react-router-dom";
 
 const CASES = [
     {
@@ -70,6 +71,7 @@ const CASES = [
 const dotColor = { blue: "#5E8BFF", violet: "#8A4DFF", pink: "#FF6FD3", orange: "#FF8A5C" };
 
 export default function UseCases() {
+    const navigate = useNavigate();
     return (
         <section
             data-testid="usecases-section"
@@ -173,11 +175,16 @@ export default function UseCases() {
                                         {c.professions.map((p, i) => {
                                             const Icon = p.icon;
                                             const slug = p.name.toLowerCase();
+                                            const isDoctors = slug === "doctors";
                                             return (
                                                 <button
                                                     type="button"
                                                     key={p.name}
                                                     onClick={() => {
+                                                        if (isDoctors) {
+                                                            navigate("/doctors");
+                                                            return;
+                                                        }
                                                         setAudience(slug);
                                                         const el = document.getElementById("cta");
                                                         if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -195,7 +202,7 @@ export default function UseCases() {
                                                         {p.desc}
                                                     </p>
                                                     <p className="mt-4 text-[10px] uppercase tracking-[0.25em] gradient-text">
-                                                        Join {p.name.toLowerCase()} beta →
+                                                        {isDoctors ? "Open doctors page →" : `Join ${p.name.toLowerCase()} beta →`}
                                                     </p>
                                                 </button>
                                             );

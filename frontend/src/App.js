@@ -2,6 +2,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Landing from "@/pages/Landing";
+import DoctorsLanding from "@/pages/DoctorsLanding";
 
 function App() {
     return (
@@ -9,6 +10,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Landing />} />
+                    <Route path="/doctors" element={<DoctorsLanding />} />
                 </Routes>
             </BrowserRouter>
             <Toaster
