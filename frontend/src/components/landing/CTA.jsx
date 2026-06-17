@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, X, Apple, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
-import { useAudience, listAudiences, getAudienceMeta, setAudience } from "./audienceStore";
+import { useAudience, listAudiences, getAudienceMeta, setAudience, setPlatform } from "./audienceStore";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const PRIMARY = ["kids", "individual", "team", "professional", "watch"];
@@ -10,7 +10,7 @@ const PRIMARY = ["kids", "individual", "team", "professional", "watch"];
 export default function CTA() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
-    const [audience] = useAudience();
+    const [audience, , platform] = useAudience();
     const meta = audience ? getAudienceMeta(audience) : null;
     const all = listAudiences();
     const isSubAudience = audience && !PRIMARY.includes(audience);
@@ -35,10 +35,14 @@ export default function CTA() {
             const { data } = await axios.post(`${API}/waitlist`, {
                 email,
                 audience: audience || null,
+                platform: audience === "watch" ? platform || null : null,
                 source: "cta",
             });
+            const platformLabel =
+                audience === "watch" && platform === "apple" ? " (Apple Watch)" :
+                audience === "watch" && platform === "android" ? " (Wear OS)" : "";
             toast.success(
-                meta ? `You're on the ${meta.label} list.` : "You're on the list. We'll write quietly.",
+                meta ? `You're on the ${meta.label}${platformLabel} list.` : "You're on the list. We'll write quietly.",
                 {
                     description: data.email_sent
                         ? "A quiet confirmation just landed in your inbox."
@@ -131,6 +135,52 @@ export default function CTA() {
                                 Specialist mode selected — your confirmation will be tailored to{" "}
                                 <span className="text-ink">{meta.label.replace(" beta", "")}</span>.
                             </p>
+                        )}
+
+                        {/* Watch platform sub-picker */}
+                        {audience === "watch" && (
+                            <div className="mt-4" data-testid="cta-platform-picker">
+                                <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft mb-2">
+                                    Your watch
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        { key: "apple", label: "Apple Watch", Icon: Apple },
+                                        { key: "android", label: "Wear OS", Icon: Smartphone },
+                                    ].map(({ key, label, Icon }) => {
+                                        const sel = platform === key;
+                                        return (
+                                            <button
+                                                type="button"
+                                                key={key}
+                                                onClick={() => setPlatform(sel ? null : key)}
+                                                data-testid={`cta-platform-${key}`}
+                                                className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] transition-all ${
+                                                    sel
+                                                        ? "bg-white/10 text-ink border border-white/30"
+                                                        : "bg-white/[0.03] text-ink-soft border border-white/10 hover:text-ink hover:border-white/20"
+                                                }`}
+                                            >
+                                                <Icon size={12} />
+                                                {label}
+                                                {sel && <X size={11} className="opacity-70" />}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {platform && (
+                                    <p
+                                        data-testid="cta-platform-detail"
+                                        className="mt-2 text-xs text-ink-soft"
+                                    >
+                                        Tailored for{" "}
+                                        <span className="text-ink">
+                                            {platform === "apple" ? "Apple Watch · watchOS" : "Wear OS · Galaxy / Pixel"}
+                                        </span>
+                                        .
+                                    </p>
+                                )}
+                            </div>
                         )}
                     </div>
 

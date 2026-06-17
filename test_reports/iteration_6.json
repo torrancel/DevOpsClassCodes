@@ -1,0 +1,67 @@
+{
+  "summary": "Iteration 6 (per-platform conversion tracking for Apple Watch vs Wear OS) fully verified — backend 22/22 pytest cases pass (9 new platform-focused tests added), frontend Playwright flow validates all 13 review-request items end-to-end at 1440x900 and 375x812. POST /api/waitlist accepts platform, coerces unknown values (windows) to null without 422, forces platform=null when audience!=watch, idempotency is now keyed on (email, audience, platform) so watch+apple and watch+android produce two distinct records. GET /api/waitlist/count returns expanded shape {count, watch_apple, watch_android} with non-negative ints and watch_apple+watch_android<=count. Tailored email subjects 'Welcome to the Wrist beta — Apple Watch edition' and '— Wear OS edition' verified via direct render. Frontend: wearable-platform-apple/android chips are clickable buttons that set audience='watch' + platform + smooth-scroll to #cta. CTA cta-platform-picker is visible only when audience=='watch', supports single-select toggle with deselect via re-click, helper line cta-platform-detail reads exactly 'Tailored for Apple Watch · watchOS.' or 'Tailored for Wear OS · Galaxy / Pixel.'. Switching audience to 'kids' hides the picker AND resets platform to null (verified: returning to watch shows neither chip selected). Toast labels confirmed mid-flight via polling: 'You're on the Wrist beta (Apple Watch) list.', '(Wear OS) list.', and generic 'Wrist beta list.' when no platform. wearable-cta still works without platform. Regression: nav (Pillars/Experience/Wearable/Pricing) intact, modules=4, usecases tabs=4 (testid usecases-tab-*), pricing tiers=4, FAQ=6. 0 console errors, 0 page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results_detail": {
+    "backend_pytest": "22/22 passed in 4.75s — /app/test_reports/pytest/waitlist_results.xml",
+    "new_iteration6_backend_tests": {
+      "test_create_watch_with_platform_apple": "POST {audience:'watch', platform:'apple'} → 200, response.platform='apple'",
+      "test_create_watch_with_platform_android": "POST {audience:'watch', platform:'android'} → 200, response.platform='android'",
+      "test_invalid_platform_coerced_to_null": "POST {platform:'windows'} → 200 (NOT 422), response.platform=null",
+      "test_platform_forced_null_when_audience_not_watch": "POST {audience:'individual', platform:'apple'} → 200, response.platform=null",
+      "test_idempotency_same_email_audience_platform": "Same (email, watch, apple) twice → identical id",
+      "test_same_email_watch_different_platform_creates_new_record": "watch+apple then watch+android → distinct ids, distinct platforms",
+      "test_render_email_apple_platform": "Subject='Welcome to the Wrist beta — Apple Watch edition', body contains 'Apple Watch edition'",
+      "test_render_email_android_platform": "Subject='Welcome to the Wrist beta — Wear OS edition', body contains 'Wear OS edition'",
+      "test_count_returns_platform_breakdown": "GET /api/waitlist/count returns {count, watch_apple, watch_android} all int>=0, watch_apple+watch_android<=count"
+    },
+    "frontend_flows_verified": {
+      "wearable_platform_apple_click": "Sets watch+apple, smooth-scrolls to #cta, watch chip + cta-platform-apple chip in selected state, cta-platform-detail reads 'Tailored for Apple Watch · watchOS.'",
+      "wearable_platform_android_click": "Sets watch+android, only android chip selected (apple deselected), detail='Tailored for Wear OS · Galaxy / Pixel.'",
+      "single_select_toggle_deselect": "Re-clicking same platform chip clears selection and removes cta-platform-detail",
+      "audience_switch_resets_platform": "After watch+apple, clicking kids chip → cta-platform-picker count=0; clicking back to watch → no platform selected, no detail line (platform was nulled)",
+      "post_payload_watch_apple": "{email, audience:'watch', platform:'apple', source:'cta'} captured via page.on('request')",
+      "post_payload_watch_android": "{email, audience:'watch', platform:'android', source:'cta'}",
+      "post_payload_watch_no_platform": "{email, audience:'watch', platform:null, source:'cta'}",
+      "toast_apple": "\"You're on the Wrist beta (Apple Watch) list. A quiet confirmation just landed in your inbox.\"",
+      "toast_android": "\"You're on the Wrist beta (Wear OS) list. A quiet confirmation just landed in your inbox.\"",
+      "toast_no_platform": "\"You're on the Wrist beta list. A quiet confirmation just landed in your inbox.\" (no (Apple Watch)/(Wear OS) suffix)",
+      "mobile_375x812": "cta-platform-picker and cta-platform-apple visible after wearable-platform-apple click"
+    },
+    "regression": {
+      "nav_links": ["nav-link-pillars", "nav-link-experience", "nav-link-wearable", "nav-link-pricing"],
+      "modules_count": 4,
+      "usecases_tabs": ["usecases-tab-kids", "usecases-tab-individual", "usecases-tab-team", "usecases-tab-professional"],
+      "pricing_tiers_count": 4,
+      "faq_items_count": 6,
+      "console_errors": 0,
+      "page_errors": 0
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_waitlist.py",
+    "/app/test_reports/pytest/waitlist_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "audienceStore.js: clean encapsulation — useSyncExternalStore with combined snapshot 'audience|platform' correctly drives re-renders on either change. setAudience() clears _platform when audience!='watch' — this is the single source of truth that backs the FE-side reset behaviour observed in tests.",
+    "CTA.jsx L141: cta-platform-picker is correctly mounted only when audience==='watch', and the platform sub-picker uses single-select toggle (sel ? null : key). Good UX.",
+    "CTA.jsx L37-38: outgoing POST payload defensively forces platform=null when audience!=='watch'. Belt-and-suspenders since backend also enforces this — safe.",
+    "CTA.jsx L42-43: toast label construction is correct — only labels (Apple Watch)/(Wear OS) when audience==='watch' AND platform is set. The 'no platform' watch case correctly falls back to plain 'Wrist beta' label.",
+    "server.py L196-218: idempotency now keyed on (email, audience, platform) which is the desired iteration-6 behaviour. Backfill of legacy records via existing.setdefault('platform', None) is a thoughtful touch for records that pre-date this iteration.",
+    "server.py L203-206: platform whitelisted to {'apple','android'}, then force-nulled when audience!='watch'. Invalid values are coerced (not 422'd) — matches spec.",
+    "server.py L246-251: count endpoint shape expanded with two cheap count_documents queries. Could be slow at scale but is correct and matches spec.",
+    "Wearable.jsx: redundant scroll calls when platform chip is clicked (Wearable does an explicit scrollIntoView and CTA.jsx's useEffect would also scroll on audience change). Harmless but worth noting.",
+    "Pre-existing (unchanged): server.py defines logger AFTER _send_confirmation_email which references it. Works because logger is module-level by the time the function is called at runtime, but stylistically should move logging setup above its first usage. Not a blocker."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_waitlist.py (added TestWatchPlatform with 6 tests, TestPlatformEmailRendering with 2 tests, TestCountShape with 1 test — 9 new test cases for iteration 6)"
+  ],
+  "success_rate": {"backend": "100% (22/22 pytest)", "frontend": "100% — all 13 iteration-6 spec items verified end-to-end, 0 console errors"},
+  "test_credentials": "Resend verified owner: torrancel42@gmail.com — used for all 3 frontend submit assertions (apple/android/no-platform). Returned 200 with email_sent confirmation in toast.",
+  "seed_data_creation": "Pytest run inserts ~14 TEST_/APPLE_/ANDROID_/BADPLAT_/NONWATCH_/IDEMP_/MULTIPLAT_/WATCH_/COUNT_ prefixed waitlist records. Idempotent on (email lower, audience, platform).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 6 adds per-platform tracking on top of iteration 5. Store now returns 4-tuple [audience, setAudience, platform, setPlatform]. cta-platform-picker only renders when audience==='watch'. Backend POST /api/waitlist now accepts optional platform; idempotency is keyed on (email, audience, platform). GET /api/waitlist/count shape changed from {count} → {count, watch_apple, watch_android}. Email templates have a platform-specific branch (apple/android) layered above the audience-specific one. Sonner toasts auto-dismiss in ~4s — to capture toast text in Playwright, poll within ~8s of the submit click (see test 2 in the test report for the polling pattern). Run: `pytest /app/backend/tests/test_waitlist.py -v`.",
+  "rca_of_the_issue": "N/A — no defects found. All 13 review-request items verified end-to-end against the deployed preview URL."
+}

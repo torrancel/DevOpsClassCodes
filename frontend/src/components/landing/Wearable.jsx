@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Vibrate, HeartPulse, Moon, Watch } from "lucide-react";
-import { setAudience } from "./audienceStore";
+import { setAudience, setPlatform } from "./audienceStore";
 
 const FEATURES = [
     { icon: HeartPulse, title: "Continuous HRV", text: "Heart-rate variability + breath cadence read in the background. No active session needed." },
@@ -45,22 +45,36 @@ export default function Wearable() {
                         with a single, kind tap.
                     </p>
 
-                    {/* Platform chips */}
+                    {/* Platform chips — now clickable to capture platform preference */}
                     <div className="mt-8 flex flex-wrap gap-3" data-testid="wearable-platforms">
-                        <span
+                        <button
+                            type="button"
                             data-testid="wearable-platform-apple"
-                            className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-ink"
+                            onClick={() => {
+                                setAudience("watch");
+                                setPlatform("apple");
+                                const el = document.getElementById("cta");
+                                if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="group inline-flex items-center gap-2 rounded-full bg-white/[0.04] border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-ink hover:bg-white/[0.08] hover:border-white/25 transition-all active:scale-[0.98]"
                         >
                             <span className="w-1.5 h-1.5 rounded-full bg-blue"></span>
                             Apple Watch · watchOS 10+
-                        </span>
-                        <span
+                        </button>
+                        <button
+                            type="button"
                             data-testid="wearable-platform-android"
-                            className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-ink"
+                            onClick={() => {
+                                setAudience("watch");
+                                setPlatform("android");
+                                const el = document.getElementById("cta");
+                                if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="group inline-flex items-center gap-2 rounded-full bg-white/[0.04] border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.18em] text-ink hover:bg-white/[0.08] hover:border-white/25 transition-all active:scale-[0.98]"
                         >
                             <span className="w-1.5 h-1.5 rounded-full bg-pink"></span>
                             Wear OS · Galaxy / Pixel
-                        </span>
+                        </button>
                     </div>
 
                     <div className="mt-10">

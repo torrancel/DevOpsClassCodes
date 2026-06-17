@@ -169,3 +169,83 @@ class TestWatchEmailRendering:
             "watch audience email body should mention 'Apple Watch' and 'Wear OS'"
         assert "Wrist beta" in html
 
+
+# -------- Iteration 6: per-platform watch tracking --------
+class TestWatchPlatform:
+    def test_create_watch_with_platform_apple(self, session):
+        email = _rand_email("APPLE")
+        r = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "apple", "source": "cta"}, timeout=30)
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert "platform" in data, f"response should include platform field: {data}"
+        assert data["platform"] == "apple"
+        assert data["audience"] == "watch"
+
+    def test_create_watch_with_platform_android(self, session):
+        email = _rand_email("ANDROID")
+        r = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "android", "source": "cta"}, timeout=30)
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["platform"] == "android"
+        assert data["audience"] == "watch"
+
+    def test_invalid_platform_coerced_to_null(self, session):
+        email = _rand_email("BADPLAT")
+        r = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "windows"}, timeout=30)
+        assert r.status_code == 200, f"should NOT be 422, got {r.status_code}: {r.text}"
+        assert r.json()["platform"] is None
+
+    def test_platform_forced_null_when_audience_not_watch(self, session):
+        email = _rand_email("NONWATCH")
+        r = session.post(WAITLIST, json={"email": email, "audience": "individual", "platform": "apple"}, timeout=30)
+        assert r.status_code == 200
+        data = r.json()
+        assert data["audience"] == "individual"
+        assert data["platform"] is None, f"platform must be null when audience!=watch, got {data['platform']}"
+
+    def test_idempotency_same_email_audience_platform(self, session):
+        email = _rand_email("IDEMP")
+        r1 = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "apple"}, timeout=30)
+        r2 = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "apple"}, timeout=30)
+        assert r1.status_code == 200 and r2.status_code == 200
+        assert r1.json()["id"] == r2.json()["id"]
+
+    def test_same_email_watch_different_platform_creates_new_record(self, session):
+        email = _rand_email("MULTIPLAT")
+        r1 = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "apple"}, timeout=30)
+        r2 = session.post(WAITLIST, json={"email": email, "audience": "watch", "platform": "android"}, timeout=30)
+        assert r1.status_code == 200 and r2.status_code == 200
+        assert r1.json()["id"] != r2.json()["id"], "watch+apple and watch+android must be distinct records"
+        assert r1.json()["platform"] == "apple"
+        assert r2.json()["platform"] == "android"
+
+
+class TestPlatformEmailRendering:
+    def test_render_email_apple_platform(self):
+        import sys
+        sys.path.insert(0, "/app/backend")
+        from server import _render_email_html  # type: ignore
+        subject, html = _render_email_html("watch", "apple")
+        assert subject == "Welcome to the Wrist beta — Apple Watch edition", subject
+        assert "Apple Watch edition" in html
+
+    def test_render_email_android_platform(self):
+        import sys
+        sys.path.insert(0, "/app/backend")
+        from server import _render_email_html  # type: ignore
+        subject, html = _render_email_html("watch", "android")
+        assert subject == "Welcome to the Wrist beta — Wear OS edition", subject
+        assert "Wear OS edition" in html
+
+
+class TestCountShape:
+    def test_count_returns_platform_breakdown(self, session):
+        r = session.get(COUNT, timeout=15)
+        assert r.status_code == 200
+        data = r.json()
+        for k in ("count", "watch_apple", "watch_android"):
+            assert k in data, f"missing key {k}: {data}"
+            assert isinstance(data[k], int)
+            assert data[k] >= 0
+        assert data["watch_apple"] + data["watch_android"] <= data["count"]
+

@@ -13,6 +13,7 @@ const AUDIENCES = {
 };
 
 let _audience = null;
+let _platform = null;
 const _listeners = new Set();
 
 function _emit() {
@@ -21,6 +22,12 @@ function _emit() {
 
 export function setAudience(value) {
     _audience = value && AUDIENCES[value] ? value : null;
+    if (_audience !== "watch") _platform = null;
+    _emit();
+}
+
+export function setPlatform(value) {
+    _platform = value === "apple" || value === "android" ? value : null;
     _emit();
 }
 
@@ -38,10 +45,11 @@ function subscribe(cb) {
 }
 
 function getSnapshot() {
-    return _audience;
+    // Encode both pieces in a single stable string so React detects changes.
+    return `${_audience || ""}|${_platform || ""}`;
 }
 
 export function useAudience() {
-    const value = useSyncExternalStore(subscribe, getSnapshot, () => null);
-    return [value, setAudience];
+    useSyncExternalStore(subscribe, getSnapshot, () => "");
+    return [_audience, setAudience, _platform, setPlatform];
 }

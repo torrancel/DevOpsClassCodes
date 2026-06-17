@@ -85,6 +85,7 @@ AUDIENCE_COPY = {
 class WaitlistCreate(BaseModel):
     email: EmailStr
     audience: Optional[str] = None
+    platform: Optional[str] = None  # 'apple' | 'android' (only meaningful when audience='watch')
     source: Optional[str] = None  # e.g. "hero", "pricing", "cta"
 
 
@@ -93,15 +94,31 @@ class WaitlistEntry(BaseModel):
     id: str
     email: EmailStr
     audience: Optional[str] = None
+    platform: Optional[str] = None
     source: Optional[str] = None
     created_at: datetime
     email_sent: bool = False
 
 
-def _render_email_html(audience: Optional[str]) -> tuple[str, str]:
-    """Return (subject, html_body) tailored to audience."""
+def _render_email_html(audience: Optional[str], platform: Optional[str] = None) -> tuple[str, str]:
+    """Return (subject, html_body) tailored to audience + platform."""
     info = AUDIENCE_COPY.get(audience or "", None)
-    if info:
+
+    # Watch-specific platform openers override the generic one
+    if audience == "watch" and platform in ("apple", "android"):
+        if platform == "apple":
+            subject = "Welcome to the Wrist beta — Apple Watch edition"
+            opener = (
+                "You're on the list — <em>Wrist beta, Apple Watch edition</em>. "
+                "A whisper-soft companion for watchOS is being built, and your seat is saved."
+            )
+        else:
+            subject = "Welcome to the Wrist beta — Wear OS edition"
+            opener = (
+                "You're on the list — <em>Wrist beta, Wear OS edition</em>. "
+                "A whisper-soft companion for Galaxy / Pixel is being built, and your seat is saved."
+            )
+    elif info:
         subject = f"Welcome to the {info['label']} — Let It Go AI"
         opener = (
             f"You're on the list — <em>{info['label']}</em>. "
@@ -156,11 +173,11 @@ def _render_email_html(audience: Optional[str]) -> tuple[str, str]:
     return subject, html
 
 
-async def _send_confirmation_email(to_email: str, audience: Optional[str]) -> bool:
+async def _send_confirmation_email(to_email: str, audience: Optional[str], platform: Optional[str] = None) -> bool:
     if not resend.api_key:
         logger.warning("RESEND_API_KEY missing — skipping email send.")
         return False
-    subject, html = _render_email_html(audience)
+    subject, html = _render_email_html(audience, platform)
     params = {
         "from": f"{SENDER_NAME} <{SENDER_EMAIL}>",
         "to": [to_email],
@@ -169,7 +186,7 @@ async def _send_confirmation_email(to_email: str, audience: Optional[str]) -> bo
     }
     try:
         result = await asyncio.to_thread(resend.Emails.send, params)
-        logger.info(f"Sent waitlist email to {to_email} (audience={audience}) id={result.get('id')}")
+        logger.info(f"Sent waitlist email to {to_email} (audience={audience}, platform={platform}) id={result.get('id')}")
         return True
     except Exception as e:
         logger.error(f"Resend send failed for {to_email}: {e}")
@@ -180,24 +197,31 @@ async def _send_confirmation_email(to_email: str, audience: Optional[str]) -> bo
 async def create_waitlist_entry(payload: WaitlistCreate):
     audience = (payload.audience or "").strip().lower() or None
     if audience and audience not in AUDIENCE_COPY:
-        # accept unknown audience but keep nullable so it doesn't break analytics
         audience = None
+
+    platform = (payload.platform or "").strip().lower() or None
+    if platform not in ("apple", "android"):
+        platform = None
+    if audience != "watch":
+        platform = None  # platform only meaningful for watch audience
 
     now = datetime.now(timezone.utc)
 
-    # Idempotent upsert on (email, audience)
+    # Idempotent on (email, audience, platform)
     existing = await db.waitlist.find_one(
-        {"email": payload.email.lower(), "audience": audience},
+        {"email": payload.email.lower(), "audience": audience, "platform": platform},
         {"_id": 0},
     )
     if existing:
-        # Don't re-send email; just return the saved record
+        # Backfill platform field on legacy records that lack it
+        existing.setdefault("platform", None)
         return WaitlistEntry(**existing)
 
     entry = WaitlistEntry(
         id=str(uuid.uuid4()),
         email=payload.email.lower(),
         audience=audience,
+        platform=platform,
         source=payload.source,
         created_at=now,
         email_sent=False,
@@ -208,8 +232,7 @@ async def create_waitlist_entry(payload: WaitlistCreate):
 
     await db.waitlist.insert_one(doc)
 
-    # Fire confirmation email (best-effort, non-blocking)
-    sent = await _send_confirmation_email(entry.email, entry.audience)
+    sent = await _send_confirmation_email(entry.email, entry.audience, entry.platform)
     if sent:
         await db.waitlist.update_one(
             {"id": entry.id},
@@ -223,7 +246,9 @@ async def create_waitlist_entry(payload: WaitlistCreate):
 @api_router.get("/waitlist/count")
 async def waitlist_count():
     n = await db.waitlist.count_documents({})
-    return {"count": n}
+    apple = await db.waitlist.count_documents({"audience": "watch", "platform": "apple"})
+    android = await db.waitlist.count_documents({"audience": "watch", "platform": "android"})
+    return {"count": n, "watch_apple": apple, "watch_android": android}
 
 
 # Include the router in the main app
