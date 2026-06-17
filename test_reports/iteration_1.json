@@ -1,0 +1,59 @@
+{
+  "summary": "Frontend-only smoke and integration testing for Aura.OS landing page on REACT_APP_BACKEND_URL. Verified all 11 stated features (rendering, sticky nav anchors, hero CTAs, mobile menu toggle/links/close, Use Cases tabs, FAQ single-collapse accordion, Pricing tiers with Team highlighted, waitlist toast flow, section order, footer 3 cols + brand, console errors). Page loads cleanly with 0 console errors. All sections render in the expected order (Nav, Hero, Marquee, Problem, Modules x4, Demo, UseCases, Testimonials, Manifesto, Pricing, FAQ, CTA, Footer). One minor functional issue found: invalid email submission is blocked by browser native HTML5 validation (input type='email') before the JS handler can fire the sonner error toast. Empty submit and valid submit work as designed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "CTA.jsx (waitlist form)",
+        "issue": "Invalid email like 'invalid-email' triggers browser-native HTML5 validation popup instead of the in-app sonner error toast 'Please enter a valid email.' because the input uses type='email'. The form's onSubmit (and toast.error) never fires for malformed emails. Empty submission correctly shows the toast since native validation lets empty pass (no required attribute) and the JS branch handles it.",
+        "selector": "[data-testid=\"cta-email-input\"], [data-testid=\"cta-form\"]",
+        "priority": "MEDIUM",
+        "suggested_fix": "Either (a) add noValidate to the <form>, (b) change input type to 'text' and rely solely on the existing regex, or (c) document that native HTML5 validation is the intended UX for malformed addresses."
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results_detail": {
+    "hero_headline_visible": true,
+    "hero_primary_cta_present_and_links_to_#cta": true,
+    "hero_secondary_cta_present": true,
+    "nav_brand_text": "Aura.OS",
+    "sticky_nav_anchor_scrolls": {"platform->#modules": true, "use-cases->#use-cases": true, "manifesto->#manifesto": true, "pricing->#pricing": true},
+    "mobile_375x812": {"toggle_visible": true, "menu_opens": true, "link_count": 5, "closes_after_click": true},
+    "usecases_tabs_switch_content": {"personal": true, "teams": true, "agents": true},
+    "faq_accordion_single_collapsible": {"item0_opens": "open", "item0_closes_when_item1_opens": "closed", "item1_open_state": "open"},
+    "pricing_tiers_visible": {"personal": true, "team": true, "enterprise": true},
+    "pricing_team_highlighted": "Yes — bg-forest text-bg md:scale-[1.03] shadow accent vs neutral for Personal/Enterprise",
+    "waitlist_invalid_email_toast": "BROKEN — native HTML5 validation intercepts; sonner toast does not appear",
+    "waitlist_empty_submission_toast": "Works — shows 'Please enter a valid email.'",
+    "waitlist_valid_email_toast": "Works — shows 'You\\'re on the list. We\\'ll write quietly.'",
+    "waitlist_input_cleared_after_success": true,
+    "sections_render_in_order": true,
+    "modules_card_count": 4,
+    "footer_columns_present": {"Platform": true, "Company": true, "Legal": true, "large_brand_aura.os": true},
+    "console_errors_during_load_and_interactions": 0
+  },
+  "test_report_links": [],
+  "action_items": [
+    "[Optional/Minor] Decide intended UX for malformed waitlist emails in CTA.jsx: either suppress browser native validation (noValidate or type='text') so the in-app sonner toast is the single source of error feedback, or update spec to accept native browser bubble. Currently both validators co-exist but native one wins, making the test-stated 'invalid email shows error toast' unreachable via UI."
+  ],
+  "critical_code_review_comments": [
+    "CTA.jsx line 58: <input type='email'> combined with regex validation in JS creates a UX conflict — native validation blocks JS submit for malformed inputs. Pick one source of truth.",
+    "All landing components use data-testid consistently (excellent). Files are small and focused (Landing.jsx composition pattern is clean).",
+    "Pricing.jsx highlights 'team' tier via inline conditional class string; acceptable but consider a featured prop for clarity.",
+    "Navigation.jsx mobile menu correctly closes on link click via onClick handler — good.",
+    "FAQ.jsx uses Radix Accordion type='single' collapsible correctly; verified data-state transitions."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only)", "frontend": "~95% (11/11 stated checks; 1 sub-check on invalid-email toast UX has known native-validation conflict)"},
+  "test_credentials": "N/A — no auth on static landing page",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Static React landing page at /, no backend. All sections + data-testids verified. Only nuance: waitlist 'invalid email' toast is not reachable because of HTML5 native validation on input type='email'. To reproduce: scroll to [data-testid=cta-section], fill [data-testid=cta-email-input] with 'invalid-email', click [data-testid=cta-submit-button] — browser shows native validity bubble, no sonner toast appears. Empty submission and valid email both work via JS toast.",
+  "rca_of_the_issue": "Root cause: CTA.jsx renders <input type='email'> inside a <form> without noValidate. When the user clicks submit with a non-RFC-compliant email, Chromium triggers Constraint Validation API and aborts submission, so React's onSubmit (and the toast.error call) never runs. The regex check inside submit() is therefore dead code for malformed emails. Mitigation: add <form noValidate> OR change input type to 'text' to let the existing /^\\S+@\\S+\\.\\S+$/ regex govern feedback via sonner."
+}
