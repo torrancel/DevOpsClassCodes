@@ -55,11 +55,11 @@ export default function Hero() {
                         data-testid="hero-subline"
                         className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md"
                     >
-                        An emotional intelligence operating system that helps you become
-                        <span className="text-ink"> aware</span>,
-                        <span className="text-ink"> release</span>,
-                        <span className="text-ink"> grow</span>, and
-                        <span className="text-ink"> transform</span> — in real time, with AI that finally feels.
+                        An emotional intelligence operating system that senses
+                        <span className="text-ink"> stress</span>,
+                        <span className="text-ink"> anxiety</span>, and
+                        <span className="text-ink"> depression</span> — and helps
+                        kids, individuals, teams, and professionals come back to themselves.
                     </p>
 
                     <div className="mt-8 flex flex-wrap items-center gap-3">

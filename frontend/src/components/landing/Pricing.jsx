@@ -3,47 +3,63 @@ import { motion } from "framer-motion";
 
 const TIERS = [
     {
-        name: "Personal",
+        name: "Kids",
+        slug: "kids",
+        price: "$6",
+        cadence: "/ month / child",
+        sub: "Big feelings, small words.",
+        features: [
+            "Story-based emotion learning",
+            "Breath games & lullaby mode",
+            "Parent dashboard · COPPA-aligned",
+            "Zero ads · zero data sale",
+        ],
+        cta: "Start the gentle plan",
+        accent: false,
+    },
+    {
+        name: "Individual",
+        slug: "individual",
         price: "$14",
         cadence: "/ month",
         sub: "For your inner life.",
         features: [
-            "Affect sensing on device",
+            "Stress · anxiety · depression tracking",
             "Daily 90-sec check-ins",
             "12-month growth memory",
             "End-to-end encrypted",
         ],
-        cta: "Start a 14-day quiet trial",
+        cta: "14-day quiet trial",
         accent: false,
     },
     {
         name: "Team",
+        slug: "team",
         price: "$9",
         cadence: "/ user / month",
-        sub: "For groups that actually want to listen.",
+        sub: "For groups that listen.",
         features: [
-            "Everything in Personal",
+            "Everything in Individual",
             "Meeting co-pilot",
-            "Anonymous team affect telemetry",
-            "Facilitator dashboard",
+            "Anonymous team telemetry",
             "Slack & Zoom integrations",
         ],
         cta: "Book a quiet demo",
         accent: true,
     },
     {
-        name: "Enterprise",
-        price: "Custom",
-        cadence: "",
-        sub: "For organizations rebuilding around the human.",
+        name: "Professional",
+        slug: "professional",
+        price: "$39",
+        cadence: "/ month",
+        sub: "Doctors · attorneys · teachers · managers.",
         features: [
-            "Everything in Team",
-            "On-prem & VPC deployment",
-            "Agent SDK & evals",
-            "SOC 2 · HIPAA · ISO 27001",
-            "Dedicated EQ engineer",
+            "Profession-tuned mode",
+            "Burnout & vicarious-trauma early warning",
+            "HIPAA · FERPA · attorney-client",
+            "Audit-grade meta logs",
         ],
-        cta: "Talk to founders",
+        cta: "Choose your practice",
         accent: false,
     },
 ];
@@ -58,25 +74,23 @@ export default function Pricing() {
             <div className="mb-16 md:mb-20 max-w-3xl">
                 <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">Pricing</p>
                 <h2 className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink">
-                    Honest prices.
+                    A plan for every
                     <br />
-                    <em className="gradient-text">No</em> dark patterns.
+                    <em className="gradient-text">kind</em> of human.
                 </h2>
             </div>
 
             <div className="grid grid-cols-12 gap-4 md:gap-6">
                 {TIERS.map((t, i) => (
                     <motion.div
-                        key={t.name}
+                        key={t.slug}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: i * 0.1 }}
-                        data-testid={`pricing-tier-${t.name.toLowerCase()}`}
-                        className={`col-span-12 md:col-span-4 rounded-3xl p-8 md:p-10 relative flex flex-col overflow-hidden ${
-                            t.accent
-                                ? "md:scale-[1.04]"
-                                : ""
+                        transition={{ duration: 0.6, delay: i * 0.08 }}
+                        data-testid={`pricing-tier-${t.slug}`}
+                        className={`col-span-12 md:col-span-6 lg:col-span-3 rounded-3xl p-7 md:p-8 relative flex flex-col overflow-hidden ${
+                            t.accent ? "lg:scale-[1.04]" : ""
                         }`}
                         style={
                             t.accent
@@ -93,30 +107,39 @@ export default function Pricing() {
                         }
                     >
                         {t.accent && (
-                            <span className="self-start text-[10px] uppercase tracking-[0.3em] bg-gradient-to-r from-blue via-violet to-pink text-white px-3 py-1 rounded-full mb-6">
+                            <span className="self-start text-[10px] uppercase tracking-[0.3em] bg-gradient-to-r from-blue via-violet to-pink text-white px-3 py-1 rounded-full mb-5">
                                 Most chosen
                             </span>
                         )}
-                        <h3 className="font-display text-4xl text-ink">{t.name}</h3>
-                        <p className="mt-2 text-sm text-ink-soft">{t.sub}</p>
-                        <div className="mt-8 flex items-baseline gap-2">
-                            <span className={`font-display text-5xl md:text-6xl ${t.accent ? "gradient-text" : "text-ink"}`}>
+                        <h3 className="font-display text-3xl text-ink">{t.name}</h3>
+                        <p className="mt-2 text-xs text-ink-soft min-h-[2.5rem]">{t.sub}</p>
+                        <div className="mt-6 flex items-baseline gap-2">
+                            <span
+                                className={`font-display text-4xl md:text-5xl ${
+                                    t.accent ? "gradient-text" : "text-ink"
+                                }`}
+                            >
                                 {t.price}
                             </span>
-                            <span className="text-ink-soft">{t.cadence}</span>
+                            <span className="text-ink-soft text-xs">{t.cadence}</span>
                         </div>
-                        <ul className="mt-8 space-y-3 flex-1 text-ink">
+                        <ul className="mt-7 space-y-3 flex-1 text-ink">
                             {t.features.map((f) => (
-                                <li key={f} className="flex items-start gap-3 text-sm">
-                                    <Check size={16} className={`mt-0.5 ${t.accent ? "text-pink" : "text-violet"}`} />
+                                <li key={f} className="flex items-start gap-2.5 text-sm">
+                                    <Check
+                                        size={15}
+                                        className={`mt-0.5 shrink-0 ${
+                                            t.accent ? "text-pink" : "text-violet"
+                                        }`}
+                                    />
                                     {f}
                                 </li>
                             ))}
                         </ul>
                         <a
                             href="#cta"
-                            data-testid={`pricing-cta-${t.name.toLowerCase()}`}
-                            className={`mt-10 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
+                            data-testid={`pricing-cta-${t.slug}`}
+                            className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
                                 t.accent
                                     ? "btn-glow bg-gradient-to-r from-blue via-violet to-pink text-white"
                                     : "border border-white/15 text-ink hover:bg-white/5"
@@ -127,6 +150,14 @@ export default function Pricing() {
                     </motion.div>
                 ))}
             </div>
+
+            <p
+                data-testid="pricing-enterprise-note"
+                className="mt-10 text-sm text-ink-soft text-center max-w-2xl mx-auto"
+            >
+                Need on-prem, agent SDK, SOC 2, or a custom rollout?
+                <a href="#cta" className="link-underline ml-2 text-ink">Talk to founders →</a>
+            </p>
         </section>
     );
 }

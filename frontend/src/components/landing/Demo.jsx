@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 const SIGNALS = [
     { label: "Calm", value: 72, color: "#5E8BFF" },
     { label: "Focus", value: 64, color: "#8A4DFF" },
-    { label: "Tension", value: 28, color: "#FF8A5C" },
-    { label: "Warmth", value: 81, color: "#FF6FD3" },
+    { label: "Stress", value: 38, color: "#FF8A5C" },
+    { label: "Anxiety", value: 24, color: "#FF6FD3" },
+    { label: "Depression", value: 12, color: "#6B5BFF" },
+    { label: "Warmth", value: 81, color: "#FFB36F" },
 ];
 
 export default function Demo() {
@@ -61,9 +63,9 @@ export default function Demo() {
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                             {SIGNALS.map((s, i) => (
-                                <div key={s.label}>
+                                <div key={s.label} data-testid={`signal-${s.label.toLowerCase()}`}>
                                     <div className="flex justify-between text-xs mb-2">
                                         <span className="uppercase tracking-[0.2em] text-ink-soft">
                                             {s.label}
@@ -75,7 +77,7 @@ export default function Demo() {
                                             initial={{ width: 0 }}
                                             whileInView={{ width: `${s.value}%` }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 1.2, delay: 0.3 + i * 0.15 }}
+                                            transition={{ duration: 1.2, delay: 0.3 + i * 0.1 }}
                                             className="absolute left-0 top-0 h-full"
                                             style={{ background: s.color, boxShadow: `0 0 8px ${s.color}` }}
                                         />
@@ -89,7 +91,7 @@ export default function Demo() {
                                 Suggestion
                             </p>
                             <p className="font-display text-xl text-ink italic">
-                                "Slow breath. Shoulders down. You're carrying yesterday. Let it go."
+                                "Stress is climbing. Anxiety is whispering. Two slow breaths, eyes soft. Let it go."
                             </p>
                         </div>
                     </div>
@@ -109,21 +111,23 @@ export default function Demo() {
                         data-testid="demo-headline"
                         className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-ink"
                     >
-                        A nervous system,
+                        Stress. Anxiety.
                         <br />
-                        <em className="gradient-text">visualized</em>.
+                        Depression.
+                        <br />
+                        <em className="gradient-text">Seen</em> before they speak.
                     </h2>
                     <p className="mt-6 text-lg text-ink-soft leading-relaxed max-w-md">
-                        Twelve continuous signals, one quiet read. No dashboards to study,
-                        no charts to learn — just a soft presence that knows when to nudge,
-                        and when to disappear.
+                        Let It Go tracks six continuous affective signals — calm, focus, stress,
+                        anxiety, depression, warmth — and surfaces the one that needs you, gently,
+                        before it takes over.
                     </p>
 
                     <div className="mt-10 space-y-4 max-w-md">
                         {[
-                            "Voice prosody & breath cadence",
-                            "Linguistic affect & sentiment",
-                            "Optional biometrics (HRV, GSR)",
+                            "Stress & anxiety detection from voice + language",
+                            "Early depression pattern recognition (clinician-co-designed)",
+                            "Optional biometrics (HRV, GSR, sleep)",
                             "Contextual memory of your patterns",
                         ].map((t) => (
                             <div key={t} className="flex items-start gap-3">
