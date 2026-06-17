@@ -57,11 +57,7 @@ export default function Hero() {
                         data-testid="hero-subline"
                         className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md"
                     >
-                        An emotional intelligence operating system that senses
-                        <span className="text-ink"> stress</span>,
-                        <span className="text-ink"> anxiety</span>, and
-                        <span className="text-ink"> depression</span> — and helps
-                        kids, individuals, teams, and professionals come back to themselves.
+                        {t("hero.sub")}
                     </p>
 
                     <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -70,7 +66,7 @@ export default function Hero() {
                             data-testid="hero-primary-cta"
                             className="btn-glow group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-6 py-3 text-sm font-medium transition-all active:scale-[0.98]"
                         >
-                            Begin the Release
+                            {t("hero.ctaPrimary")}
                             <ArrowUpRight
                                 size={16}
                                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -81,7 +77,7 @@ export default function Hero() {
                             data-testid="hero-secondary-cta"
                             className="inline-flex items-center gap-2 rounded-full border border-white/15 text-ink px-6 py-3 text-sm font-medium hover:bg-white/5 transition-all"
                         >
-                            See it breathe
+                            {t("hero.ctaSecondary")}
                         </a>
                     </div>
                 </motion.div>
