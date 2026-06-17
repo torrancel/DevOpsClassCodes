@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Landing from "@/pages/Landing";
 import DoctorsLanding from "@/pages/DoctorsLanding";
+import AttorneysLanding from "@/pages/AttorneysLanding";
+import TeachersLanding from "@/pages/TeachersLanding";
+import ManagersLanding from "@/pages/ManagersLanding";
 
 function App() {
     return (
@@ -11,6 +14,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route path="/doctors" element={<DoctorsLanding />} />
+                    <Route path="/attorneys" element={<AttorneysLanding />} />
+                    <Route path="/teachers" element={<TeachersLanding />} />
+                    <Route path="/managers" element={<ManagersLanding />} />
                 </Routes>
             </BrowserRouter>
             <Toaster

@@ -175,14 +175,15 @@ export default function UseCases() {
                                         {c.professions.map((p, i) => {
                                             const Icon = p.icon;
                                             const slug = p.name.toLowerCase();
-                                            const isDoctors = slug === "doctors";
+                                            const PROFESSION_ROUTES = ["doctors", "attorneys", "teachers", "managers"];
+                                            const hasPage = PROFESSION_ROUTES.includes(slug);
                                             return (
                                                 <button
                                                     type="button"
                                                     key={p.name}
                                                     onClick={() => {
-                                                        if (isDoctors) {
-                                                            navigate("/doctors");
+                                                        if (hasPage) {
+                                                            navigate(`/${slug}`);
                                                             return;
                                                         }
                                                         setAudience(slug);
@@ -202,7 +203,7 @@ export default function UseCases() {
                                                         {p.desc}
                                                     </p>
                                                     <p className="mt-4 text-[10px] uppercase tracking-[0.25em] gradient-text">
-                                                        {isDoctors ? "Open doctors page →" : `Join ${p.name.toLowerCase()} beta →`}
+                                                        {hasPage ? `Open ${p.name.toLowerCase()} page →` : `Join ${p.name.toLowerCase()} beta →`}
                                                     </p>
                                                 </button>
                                             );

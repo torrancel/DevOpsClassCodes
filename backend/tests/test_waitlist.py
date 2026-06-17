@@ -88,6 +88,21 @@ class TestWaitlistCreate:
         assert data["audience"] == "watch", f"watch audience should be preserved, got {data['audience']}"
         assert data["source"] == "cta"
 
+    # Iteration 7: new profession audiences should NOT be coerced to null
+    @pytest.mark.parametrize("aud", ["attorneys", "teachers", "managers"])
+    def test_iteration7_profession_audiences_accepted(self, session, aud):
+        email = _rand_email(f"PROF_{aud.upper()}")
+        r = session.post(
+            WAITLIST,
+            json={"email": email, "audience": aud, "source": f"{aud}-page"},
+            timeout=30,
+        )
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["audience"] == aud, f"{aud} audience should be preserved, got {data['audience']}"
+        assert data["source"] == f"{aud}-page"
+
+
     def test_invalid_email_returns_422(self, session):
         r = session.post(WAITLIST, json={"email": "a@b", "audience": "kids"}, timeout=15)
         assert r.status_code == 422, f"expected 422, got {r.status_code}: {r.text}"

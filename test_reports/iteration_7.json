@@ -1,0 +1,51 @@
+{
+  "summary": "Iteration 7 (profession-specific landings for /attorneys, /teachers, /managers mirroring /doctors) fully verified. Backend: 25/25 pytest pass (3 new parametrized tests added for attorneys/teachers/managers audience preservation — all 3 audiences are NOT coerced to null, source 'attorneys-page'/'teachers-page'/'managers-page' is preserved). Frontend Playwright at 1440x900 + 375x812 validates all 12 review-request items end-to-end: 3 new pages render with correct eyebrows ('Let It Go · <Profession> mode'), gradient headlines ('the verdict.'/'thirty rooms at once'/'everyone's career'), required stats (28%/21%/33%, 44%/8 in 10/55%, 71%/1 in 3/59 min), required stressors (Adversarial residue + Ethical binds, Sensory load + Parent-conf weight, Sandwich pressure + Layoff weight), pricing tiers with correct prices ($34/$28/Custom firm-as-Most-chosen; $9/$7/Custom school-as-Most-chosen; $19/$14/Custom team-as-Most-chosen) and compliance copy ('Attorney-client aware', 'FERPA'). All <slug>-* data-testids present (landing, hero, headline, hero-cta, hero-back, nav-cta, back-link, stressor-0..3, module-0..3, compliance, compliance-0..N, pricing, tier-*, testimonial, faq-0..3, cta, cta-form, cta-email, cta-submit). Attorneys CTA POST captured via page.on('request') is exactly {email:'torrancel42@gmail.com', audience:'attorneys', source:'attorneys-page'} to /api/waitlist. Teachers back-link and Managers hero-back both navigate to /. Main landing Professional tab shows all 4 sub-cards with 'Open <slug> page' CTA labels; click on attorneys card navigates to /attorneys. Doctors regression: doctors-landing rendered, doctors-headline contains 'For the people'+'who hold', '63%' visible, doctors-tier-solo-physician/practice/hospital all present. Mobile 375x812 /attorneys renders without overflow. 0 console errors, 0 page errors across all four pages.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results_detail": {
+    "backend_pytest": "25/25 passed in 5.60s — /app/test_reports/pytest/waitlist_results.xml",
+    "new_iteration7_backend_tests": {
+      "test_iteration7_profession_audiences_accepted[attorneys]": "POST {audience:'attorneys', source:'attorneys-page'} -> 200, response.audience='attorneys', source preserved",
+      "test_iteration7_profession_audiences_accepted[teachers]": "POST {audience:'teachers', source:'teachers-page'} -> 200, response.audience='teachers'",
+      "test_iteration7_profession_audiences_accepted[managers]": "POST {audience:'managers', source:'managers-page'} -> 200, response.audience='managers'"
+    },
+    "frontend_flows_verified": {
+      "attorneys_page_structural": "headline contains 'the verdict'; stats 28%/21%/33% present; stressors 'Adversarial residue'+'Ethical binds' present; tiers solo-counsel=$34, firm=$28+'Most chosen', enterprise=Custom; compliance chip 'Attorney-client aware' present",
+      "teachers_page_structural": "headline contains 'thirty rooms at once'; stats 44%/8 in 10/55% present; stressors 'Sensory load'+'Parent-conf weight' present; tiers solo-teacher=$9, school=$7+'Most chosen', district=Custom; compliance chip mentions FERPA",
+      "managers_page_structural": "headline contains \"everyone's career\"; stats 71%/1 in 3/59 min present; stressors 'Sandwich pressure'+'Layoff weight' present; tiers solo-manager=$19, team=$14+'Most chosen', org=Custom",
+      "attorneys_cta_post": "Captured POST to /api/waitlist with body {email:'torrancel42@gmail.com', audience:'attorneys', source:'attorneys-page'}",
+      "teachers_back_link_nav": "Click teachers-back-link -> page.url='/' (main landing)",
+      "managers_hero_back_nav": "Click managers-hero-back -> page.url='/' (main landing)",
+      "main_landing_professional_subcards": "All 4 'Open doctors/attorneys/teachers/managers page' CTAs present on Professional tab; clicking 'Open attorneys page' navigates to /attorneys",
+      "doctors_regression": "doctors-landing rendered, doctors-headline OK, '63%' visible, doctors-tier-solo-physician/practice/hospital all present",
+      "mobile_375x812": "/attorneys loads cleanly at mobile viewport; stats and pricing stack to single column"
+    },
+    "regression": {
+      "console_errors": 0,
+      "page_errors": 0
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_waitlist.py",
+    "/app/test_reports/pytest/waitlist_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ProfessionLanding.jsx is well-factored — single source of truth driven entirely by cfg from professionConfigs.js. Adding a new profession is now a one-line config addition + one-line route in App.js, which is exactly the pattern that should have existed since iteration 4 when /doctors was first introduced.",
+    "professionConfigs.js: tier data-testids are generated from name.toLowerCase().replace(/\\s+/g, '-') — this produces stable slugs (solo-counsel, solo-teacher, solo-manager, etc.) but is implicit. Consider an explicit `testId` field per tier in the config to make the mapping self-documenting (low priority, current behaviour is correct).",
+    "ProfessionLanding.jsx CTA submit (L28-32) correctly POSTs {audience: cfg.audience, source: `${cfg.slug}-page`} — verified end-to-end with page.on('request') for /attorneys.",
+    "Framer-motion whileInView with initial opacity:0 means Playwright's locator.inner_text() returns empty for off-screen sections. Tests now use evaluate('el.textContent') for assertions on below-the-fold copy (compliance/testimonial/CTA blocks). Not a code bug, just a testing-tooling note.",
+    "Backend unchanged in this iteration: AUDIENCE_COPY in server.py already had 'doctors','attorneys','teachers','managers' entries from iteration 4, so the new pages route through tailored emails out of the box. Verified by curl (per problem statement) and now also covered by the 3 new pytest cases.",
+    "Pre-existing (unchanged from prior iterations): server.py logger defined after _send_confirmation_email — works at runtime but stylistically should move logging setup above first usage. Not a blocker."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_waitlist.py (added parametrized TestWaitlistCreate::test_iteration7_profession_audiences_accepted for attorneys/teachers/managers — 3 new test cases)"
+  ],
+  "success_rate": {"backend": "100% (25/25 pytest)", "frontend": "100% — all 12 iteration-7 spec items verified end-to-end, 0 console errors"},
+  "test_credentials": "Resend verified owner: torrancel42@gmail.com — used for the attorneys CTA POST capture (returned 200; full toast confirmation flow not asserted but POST shape verified).",
+  "seed_data_creation": "Pytest run inserts ~3 PROF_ATTORNEYS_/PROF_TEACHERS_/PROF_MANAGERS_ prefixed records per run, alongside existing TEST_/WATCH_/APPLE_/ANDROID_ etc. All idempotent on (email lower, audience, platform).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 7 adds /attorneys, /teachers, /managers pages and refactors /doctors to use a shared component (ProfessionLanding driven by PROFESSION_CONFIGS in /app/frontend/src/components/profession/). data-testids follow `${slug}-*` for all four pages: landing, hero, headline, hero-cta, hero-back, nav-cta, back-link, stressor-0..3, module-0..3, compliance, compliance-0..N, pricing, tier-<slug>, tier-cta-<slug>, testimonial, faq-0..3, cta, cta-form, cta-email, cta-submit. CTA submits POST {audience:'<slug>', source:'<slug>-page'} to /api/waitlist. Backend AUDIENCE_COPY already supported all four audiences since iteration 4 — verified via pytest. For Playwright assertions on copy below the fold, prefer evaluate('el.textContent') over inner_text() because framer-motion whileInView starts elements at opacity:0 and inner_text returns '' until they animate in. Run: `pytest /app/backend/tests/test_waitlist.py -v`.",
+  "rca_of_the_issue": "N/A — no defects found. All 12 review-request items verified end-to-end against the deployed preview URL."
+}
