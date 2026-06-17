@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import InfinityGlow from "./InfinityGlow";
-
-const NAV_LINKS = [
-    { label: "Pillars", href: "#pillars" },
-    { label: "Experience", href: "#experience" },
-    { label: "Wearable", href: "#wearable" },
-    { label: "Pricing", href: "#pricing" },
-];
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navigation() {
+    const { t } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -18,6 +14,13 @@ export default function Navigation() {
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    const links = [
+        { key: "pillars", label: t("nav.pillars"), href: "#pillars" },
+        { key: "experience", label: t("nav.experience"), href: "#experience" },
+        { key: "wearable", label: t("nav.wearable"), href: "#wearable" },
+        { key: "pricing", label: t("nav.pricing"), href: "#pricing" },
+    ];
 
     return (
         <header
@@ -37,11 +40,11 @@ export default function Navigation() {
                 </a>
 
                 <ul className="hidden md:flex items-center gap-10">
-                    {NAV_LINKS.map((l) => (
-                        <li key={l.href}>
+                    {links.map((l) => (
+                        <li key={l.key}>
                             <a
                                 href={l.href}
-                                data-testid={`nav-link-${l.label.toLowerCase().replace(" ", "-")}`}
+                                data-testid={`nav-link-${l.key}`}
                                 className="link-underline text-sm text-ink-soft hover:text-ink transition-colors"
                             >
                                 {l.label}
@@ -51,23 +54,27 @@ export default function Navigation() {
                 </ul>
 
                 <div className="hidden md:flex items-center gap-3">
+                    <LanguageSwitcher />
                     <a
                         href="#cta"
                         data-testid="nav-cta-button"
                         className="btn-glow rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium hover:opacity-95 transition-all active:scale-[0.98]"
                     >
-                        Begin the Release
+                        {t("nav.cta")}
                     </a>
                 </div>
 
-                <button
-                    data-testid="nav-mobile-toggle"
-                    onClick={() => setOpen(!open)}
-                    className="md:hidden text-ink p-2"
-                    aria-label="Menu"
-                >
-                    {open ? <X size={22} /> : <Menu size={22} />}
-                </button>
+                <div className="md:hidden flex items-center gap-2">
+                    <LanguageSwitcher />
+                    <button
+                        data-testid="nav-mobile-toggle"
+                        onClick={() => setOpen(!open)}
+                        className="text-ink p-2"
+                        aria-label="Menu"
+                    >
+                        {open ? <X size={22} /> : <Menu size={22} />}
+                    </button>
+                </div>
             </nav>
 
             {open && (
@@ -76,8 +83,8 @@ export default function Navigation() {
                     className="md:hidden px-6 pb-6 bg-bg/95 backdrop-blur-xl border-b border-white/5"
                 >
                     <ul className="flex flex-col gap-4 pt-4">
-                        {NAV_LINKS.map((l) => (
-                            <li key={l.href}>
+                        {links.map((l) => (
+                            <li key={l.key}>
                                 <a
                                     href={l.href}
                                     onClick={() => setOpen(false)}
@@ -93,7 +100,7 @@ export default function Navigation() {
                                 onClick={() => setOpen(false)}
                                 className="inline-block mt-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium"
                             >
-                                Begin the Release
+                                {t("nav.cta")}
                             </a>
                         </li>
                     </ul>

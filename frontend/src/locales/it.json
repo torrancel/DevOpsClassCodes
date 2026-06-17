@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "Pilastri",
+    "experience": "Esperienza",
+    "wearable": "Wearable",
+    "pricing": "Prezzi",
+    "cta": "Inizia il rilascio"
+  },
+  "hero": {
+    "eyebrow": "Il primo sistema operativo per l'intelligenza emotiva",
+    "headlinePre": "E se potessi davvero",
+    "headlineLine2": "davvero",
+    "headlineGradient": "lasciarlo andare",
+    "headlinePunct": "?",
+    "sub": "Un sistema operativo per l'intelligenza emotiva che percepisce stress, ansia e depressione — e aiuta bambini, individui, team e professionisti a ritrovare sé stessi.",
+    "ctaPrimary": "Inizia il rilascio",
+    "ctaSecondary": "Guardalo respirare"
+  },
+  "common": {
+    "joinWaitlist": "Unisciti alla lista d'attesa",
+    "reserveSeat": "Riserva il tuo posto",
+    "talkToFounders": "Parla con i fondatori",
+    "emailPlaceholder": "tu@quietmail.com",
+    "listening": "In ascolto...",
+    "validEmailError": "Inserisci un indirizzo email valido.",
+    "genericError": "Qualcosa è andato storto. Riprova tra un momento.",
+    "lifetimeLocked": "Prezzo fondatore · bloccato per sempre",
+    "foundingSeats": "Posti fondatori",
+    "foundingSeatsLeft": "{{n}} posti fondatori rimasti · 50% di sconto per sempre",
+    "cohortFull": "Coorte fondatrice al completo — lista d'attesa ordinaria aperta",
+    "mostChosen": "Il più scelto",
+    "month": "/ mese",
+    "child": "/ mese / bambino",
+    "perUser": "/ utente / mese",
+    "perPhysician": "/ medico / mese",
+    "perAttorney": "/ avvocato / mese",
+    "perTeacher": "/ insegnante / mese",
+    "perManager": "/ manager / mese",
+    "custom": "Su misura"
+  },
+  "pricing": {
+    "eyebrow": "Prezzi",
+    "headlinePre": "Un piano per ogni",
+    "headlineGradient": "tipo",
+    "headlinePost": "di essere umano.",
+    "banner": "Coorte fondatrice aperta.",
+    "bannerRest": "I primi posti per ciascun pubblico ottengono il 50% di sconto per sempre — bloccato a vita.",
+    "enterpriseNote": "Hai bisogno di on-prem, agent SDK, SOC 2, o un rollout personalizzato?",
+    "kids": {
+      "name": "Bambini",
+      "sub": "Emozioni grandi, parole piccole.",
+      "cta": "Inizia il piano gentile",
+      "feature1": "Apprendimento emotivo attraverso le storie",
+      "feature2": "Giochi di respirazione e modalità ninna nanna",
+      "feature3": "Dashboard per i genitori · conforme a COPPA",
+      "feature4": "Zero pubblicità · zero vendita di dati"
+    },
+    "individual": {
+      "name": "Individuale",
+      "sub": "Per la tua vita interiore.",
+      "cta": "14 giorni di prova silenziosa",
+      "feature1": "Monitoraggio di stress · ansia · depressione",
+      "feature2": "Check-in quotidiani da 90 secondi",
+      "feature3": "Memoria di crescita su 12 mesi",
+      "feature4": "Crittografia end-to-end"
+    },
+    "team": {
+      "name": "Team",
+      "sub": "Per i gruppi che sanno ascoltare.",
+      "cta": "Prenota una demo silenziosa",
+      "feature1": "Tutto incluso nel piano Individuale",
+      "feature2": "Co-pilota per le riunioni",
+      "feature3": "Telemetria anonima del team",
+      "feature4": "Integrazioni con Slack & Zoom"
+    },
+    "professional": {
+      "name": "Professionale",
+      "sub": "Medici · avvocati · insegnanti · manager.",
+      "cta": "Scegli la tua professione",
+      "feature1": "Modalità calibrata sulla professione",
+      "feature2": "Allerta precoce per burnout e trauma vicario",
+      "feature3": "HIPAA · FERPA · segreto professionale",
+      "feature4": "Log di audit certificati"
+    }
+  },
+  "cta": {
+    "eyebrow": "Unisciti all'evoluzione",
+    "headlinePre": "Sii tra i",
+    "headlinePost": "primi a",
+    "headlineGradient": "lasciarlo andare",
+    "sub": "La beta chiusa si apre in piccole coorti silenziose. Lascia la tua email e ti scriveremo — una volta sola, e solo quando ci sarà qualcosa di vero.",
+    "joiningAs": "Ti iscrivi come",
+    "yourWatch": "Il tuo orologio",
+    "tailoredFor": "Pensato per",
+    "specialistDetailPre": "Modalità specialista selezionata — la tua conferma sarà pensata per",
+    "footnote": "Niente marketing. Niente campagne automatiche. Solo una silenziosa email quando la tua coorte si apre.",
+    "successGeneric": "Sei in lista. Ti scriveremo in silenzio.",
+    "successWithAudience": "Sei nella lista {{label}}.",
+    "descriptionDelivered": "Una silenziosa conferma è appena arrivata nella tua casella.",
+    "descriptionSaved": "Salvato {{email}}. Ci faremo sentire."
+  },
+  "footer": {
+    "tagline": "Uno strumento per la vita interiore. Costruito in silenzio, per il decennio rumoroso che ci attende.",
+    "platform": "Piattaforma",
+    "company": "Azienda",
+    "legal": "Note legali",
+    "copyright": "Fatto con attenzione silenziosa."
+  },
+  "language": {
+    "label": "Lingua"
+  }
+}

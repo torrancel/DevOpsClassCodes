@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "Pilares",
+    "experience": "Experiência",
+    "wearable": "Wearable",
+    "pricing": "Preços",
+    "cta": "Começar a Soltar"
+  },
+  "hero": {
+    "eyebrow": "O primeiro OS de inteligência emocional",
+    "headlinePre": "E se você pudesse",
+    "headlineLine2": "de verdade",
+    "headlineGradient": "let it go",
+    "headlinePunct": "?",
+    "sub": "Um sistema operacional de inteligência emocional que percebe estresse, ansiedade e depressão — e ajuda crianças, indivíduos, equipes e profissionais a reencontrarem a si mesmos.",
+    "ctaPrimary": "Começar a Soltar",
+    "ctaSecondary": "Veja respirar"
+  },
+  "common": {
+    "joinWaitlist": "Entrar na lista de espera",
+    "reserveSeat": "Reserve seu lugar",
+    "talkToFounders": "Falar com os fundadores",
+    "emailPlaceholder": "voce@emailtranquilo.com",
+    "listening": "Ouvindo...",
+    "validEmailError": "Por favor, insira um e-mail válido.",
+    "genericError": "Algo deu errado. Tente novamente em um momento.",
+    "lifetimeLocked": "Preço fundador · fixado para sempre",
+    "foundingSeats": "Vagas fundadoras",
+    "foundingSeatsLeft": "{{n}} vagas fundadoras restantes · 50% de desconto para sempre",
+    "cohortFull": "Coorte fundadora completa — lista de espera regular aberta",
+    "mostChosen": "Mais escolhido",
+    "month": "/ mês",
+    "child": "/ mês / criança",
+    "perUser": "/ usuário / mês",
+    "perPhysician": "/ médico / mês",
+    "perAttorney": "/ advogado / mês",
+    "perTeacher": "/ professor / mês",
+    "perManager": "/ gestor / mês",
+    "custom": "Personalizado"
+  },
+  "pricing": {
+    "eyebrow": "Preços",
+    "headlinePre": "Um plano para cada",
+    "headlineGradient": "tipo",
+    "headlinePost": "de ser humano.",
+    "banner": "Coorte fundadora aberta.",
+    "bannerRest": "As primeiras vagas por público ganham 50% de desconto para sempre — fixado para a vida.",
+    "enterpriseNote": "Precisa de instalação local, agent SDK, SOC 2 ou uma implantação personalizada?",
+    "kids": {
+      "name": "Crianças",
+      "sub": "Sentimentos grandes, palavras pequenas.",
+      "cta": "Começar o plano gentil",
+      "feature1": "Aprendizado emocional por histórias",
+      "feature2": "Jogos de respiração & modo canção de ninar",
+      "feature3": "Painel para pais · alinhado ao COPPA",
+      "feature4": "Zero anúncios · zero venda de dados"
+    },
+    "individual": {
+      "name": "Individual",
+      "sub": "Para a sua vida interior.",
+      "cta": "14 dias de experiência tranquila",
+      "feature1": "Monitoramento de estresse · ansiedade · depressão",
+      "feature2": "Check-ins diários de 90 segundos",
+      "feature3": "Memória de crescimento de 12 meses",
+      "feature4": "Criptografia de ponta a ponta"
+    },
+    "team": {
+      "name": "Equipe",
+      "sub": "Para grupos que sabem ouvir.",
+      "cta": "Agendar uma demo tranquila",
+      "feature1": "Tudo do plano Individual",
+      "feature2": "Copiloto de reuniões",
+      "feature3": "Telemetria anônima de equipe",
+      "feature4": "Integrações com Slack & Zoom"
+    },
+    "professional": {
+      "name": "Profissional",
+      "sub": "Médicos · advogados · professores · gestores.",
+      "cta": "Escolha sua área",
+      "feature1": "Modo ajustado à profissão",
+      "feature2": "Alerta precoce de burnout & trauma vicário",
+      "feature3": "HIPAA · FERPA · sigilo profissional",
+      "feature4": "Registros de auditoria detalhados"
+    }
+  },
+  "cta": {
+    "eyebrow": "Junte-se à evolução",
+    "headlinePre": "Esteja entre os",
+    "headlinePost": "primeiros a",
+    "headlineGradient": "let it go",
+    "sub": "O beta fechado abre em coortes pequenas e tranquilas. Deixe seu e-mail e nós escreveremos — uma vez, e só quando houver algo verdadeiro a dizer.",
+    "joiningAs": "Entrando como",
+    "yourWatch": "Seu relógio",
+    "tailoredFor": "Moldado para",
+    "specialistDetailPre": "Modo especialista selecionado — sua confirmação será moldada para",
+    "footnote": "Sem marketing. Sem sequências automáticas. Apenas um e-mail tranquilo quando sua coorte abrir.",
+    "successGeneric": "Você está na lista. Escreveremos com calma.",
+    "successWithAudience": "Você está na lista {{label}}.",
+    "descriptionDelivered": "Uma confirmação tranquila acabou de chegar na sua caixa de entrada.",
+    "descriptionSaved": "Salvamos {{email}}. Entraremos em contato."
+  },
+  "footer": {
+    "tagline": "Um instrumento para a vida interior. Construído com calma, para a década barulhenta que vem pela frente.",
+    "platform": "Plataforma",
+    "company": "Empresa",
+    "legal": "Legal",
+    "copyright": "Feito com atenção tranquila."
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}

@@ -1,10 +1,12 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const LOGO_URL =
     "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/sl9ndszy_IMG_1175.png";
 
 export default function Hero() {
+    const { t } = useTranslation();
     return (
         <section
             id="top"
@@ -23,7 +25,7 @@ export default function Hero() {
                     data-testid="hero-eyebrow"
                     className="text-[11px] uppercase tracking-[0.35em] gradient-text font-medium"
                 >
-                    The first emotional intelligence OS
+                    {t("hero.eyebrow")}
                 </span>
             </motion.div>
 
@@ -37,10 +39,10 @@ export default function Hero() {
                         data-testid="hero-headline"
                         className="font-display text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.95] tracking-tight text-ink"
                     >
-                        What if you could
+                        {t("hero.headlinePre")}
                         <br />
-                        actually <span className="gradient-text italic">let it go</span>
-                        <span className="text-pink">?</span>
+                        {t("hero.headlineLine2")} <span className="gradient-text italic">{t("hero.headlineGradient")}</span>
+                        <span className="text-pink">{t("hero.headlinePunct")}</span>
                     </motion.h1>
                 </div>
 

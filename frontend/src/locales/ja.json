@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "柱",
+    "experience": "体験",
+    "wearable": "ウェアラブル",
+    "pricing": "料金",
+    "cta": "解放をはじめる"
+  },
+  "hero": {
+    "eyebrow": "はじめての感情知性OS",
+    "headlinePre": "もし、あなたが",
+    "headlineLine2": "本当に",
+    "headlineGradient": "手放せたら",
+    "headlinePunct": "？",
+    "sub": "ストレス、不安、そして憂鬱を感じとる感情知性オペレーティングシステム — 子どもたちも、個人も、チームも、専門家も、自分自身へと戻ってこられるように。",
+    "ctaPrimary": "解放をはじめる",
+    "ctaSecondary": "息吹を感じる"
+  },
+  "common": {
+    "joinWaitlist": "ウェイトリストに参加する",
+    "reserveSeat": "席を確保する",
+    "talkToFounders": "創業者と話す",
+    "emailPlaceholder": "you@quietmail.com",
+    "listening": "聴いています...",
+    "validEmailError": "有効なメールアドレスを入力してください。",
+    "genericError": "問題が発生しました。少し後にもう一度お試しください。",
+    "lifetimeLocked": "創業価格 · 永久固定",
+    "foundingSeats": "創設メンバー枠",
+    "foundingSeatsLeft": "残り{{n}}席 · 永久50%オフ",
+    "cohortFull": "創設コホートは満席です — 通常ウェイトリスト受付中",
+    "mostChosen": "最も選ばれています",
+    "month": "/ 月",
+    "child": "/ 月 / お子さま",
+    "perUser": "/ ユーザー / 月",
+    "perPhysician": "/ 医師 / 月",
+    "perAttorney": "/ 弁護士 / 月",
+    "perTeacher": "/ 教師 / 月",
+    "perManager": "/ マネージャー / 月",
+    "custom": "カスタム"
+  },
+  "pricing": {
+    "eyebrow": "料金",
+    "headlinePre": "すべての",
+    "headlineGradient": "人",
+    "headlinePost": "のためのプラン。",
+    "banner": "創設コホート、受付中。",
+    "bannerRest": "各層の先着席が永久50%オフ — 生涯固定。",
+    "enterpriseNote": "オンプレミス、エージェント SDK、SOC 2、またはカスタム導入が必要ですか？",
+    "kids": {
+      "name": "キッズ",
+      "sub": "大きな気持ち、小さな言葉。",
+      "cta": "やさしいプランをはじめる",
+      "feature1": "物語で学ぶ感情教育",
+      "feature2": "呼吸ゲーム & 子守唄モード",
+      "feature3": "保護者ダッシュボード · COPPA準拠",
+      "feature4": "広告ゼロ · データ販売ゼロ"
+    },
+    "individual": {
+      "name": "個人",
+      "sub": "あなたの内なる世界のために。",
+      "cta": "14日間の静かなトライアル",
+      "feature1": "ストレス · 不安 · 憂鬱のトラッキング",
+      "feature2": "毎日90秒のチェックイン",
+      "feature3": "12ヶ月の成長の記憶",
+      "feature4": "エンドツーエンド暗号化"
+    },
+    "team": {
+      "name": "チーム",
+      "sub": "耳を傾けるグループのために。",
+      "cta": "静かなデモを予約する",
+      "feature1": "個人プランのすべて",
+      "feature2": "ミーティング・コパイロット",
+      "feature3": "匿名チームテレメトリー",
+      "feature4": "Slack & Zoom 連携"
+    },
+    "professional": {
+      "name": "プロフェッショナル",
+      "sub": "医師 · 弁護士 · 教師 · マネージャー。",
+      "cta": "職種を選ぶ",
+      "feature1": "職種に合わせたモード",
+      "feature2": "燃え尽き症候群 & 二次的トラウマの早期警告",
+      "feature3": "HIPAA · FERPA · 弁護士-依頼人特権",
+      "feature4": "監査グレードのメタログ"
+    }
+  },
+  "cta": {
+    "eyebrow": "進化に参加する",
+    "headlinePre": "最初に",
+    "headlinePost": "",
+    "headlineGradient": "手放す",
+    "sub": "クローズドベータは、小さく静かなコホートで開かれます。メールアドレスをご登録ください — 本当に伝えたいことがある、そのときだけ、一度だけお便りします。",
+    "joiningAs": "参加者として",
+    "yourWatch": "あなたのウォッチ",
+    "tailoredFor": "に合わせてお届け",
+    "specialistDetailPre": "スペシャリストモードが選択されました — 確認メールは以下に合わせてお届けします：",
+    "footnote": "マーケティングなし。ドリップキャンペーンなし。コホートが開いたとき、ただ一通、静かなメールを。",
+    "successGeneric": "リストに登録されました。静かにお便りします。",
+    "successWithAudience": "{{label}}のリストに登録されました。",
+    "descriptionDelivered": "静かな確認メールが、受信トレイに届いています。",
+    "descriptionSaved": "{{email}}を保存しました。またご連絡いたします。"
+  },
+  "footer": {
+    "tagline": "内なる世界のための道具。騒がしい時代の先へ、静かに、丁寧に。",
+    "platform": "プラットフォーム",
+    "company": "会社情報",
+    "legal": "法的情報",
+    "copyright": "静かな心を込めて、つくりました。"
+  },
+  "language": {
+    "label": "言語"
+  }
+}

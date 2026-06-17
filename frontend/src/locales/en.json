@@ -1,0 +1,112 @@
+{
+    "nav": {
+        "pillars": "Pillars",
+        "experience": "Experience",
+        "wearable": "Wearable",
+        "pricing": "Pricing",
+        "cta": "Begin the Release"
+    },
+    "hero": {
+        "eyebrow": "The first emotional intelligence OS",
+        "headlinePre": "What if you could",
+        "headlineLine2": "actually",
+        "headlineGradient": "let it go",
+        "headlinePunct": "?",
+        "sub": "An emotional intelligence operating system that senses stress, anxiety, and depression — and helps kids, individuals, teams, and professionals come back to themselves.",
+        "ctaPrimary": "Begin the Release",
+        "ctaSecondary": "See it breathe"
+    },
+    "common": {
+        "joinWaitlist": "Join the waitlist",
+        "reserveSeat": "Reserve your seat",
+        "talkToFounders": "Talk to founders",
+        "emailPlaceholder": "you@quietmail.com",
+        "listening": "Listening...",
+        "validEmailError": "Please enter a valid email.",
+        "genericError": "Something went wrong. Try again in a moment.",
+        "lifetimeLocked": "Founding price · lifetime locked",
+        "foundingSeats": "Founding seats",
+        "foundingSeatsLeft": "{{n}} founding seats left · 50% off forever",
+        "cohortFull": "Founding cohort full — regular waitlist open",
+        "mostChosen": "Most chosen",
+        "month": "/ month",
+        "child": "/ month / child",
+        "perUser": "/ user / month",
+        "perPhysician": "/ physician / month",
+        "perAttorney": "/ attorney / month",
+        "perTeacher": "/ teacher / month",
+        "perManager": "/ manager / month",
+        "custom": "Custom"
+    },
+    "pricing": {
+        "eyebrow": "Pricing",
+        "headlinePre": "A plan for every",
+        "headlineGradient": "kind",
+        "headlinePost": "of human.",
+        "banner": "Founding cohort open.",
+        "bannerRest": "First seats per audience get 50% off forever — lifetime locked.",
+        "enterpriseNote": "Need on-prem, agent SDK, SOC 2, or a custom rollout?",
+        "kids": {
+            "name": "Kids",
+            "sub": "Big feelings, small words.",
+            "cta": "Start the gentle plan",
+            "feature1": "Story-based emotion learning",
+            "feature2": "Breath games & lullaby mode",
+            "feature3": "Parent dashboard · COPPA-aligned",
+            "feature4": "Zero ads · zero data sale"
+        },
+        "individual": {
+            "name": "Individual",
+            "sub": "For your inner life.",
+            "cta": "14-day quiet trial",
+            "feature1": "Stress · anxiety · depression tracking",
+            "feature2": "Daily 90-sec check-ins",
+            "feature3": "12-month growth memory",
+            "feature4": "End-to-end encrypted"
+        },
+        "team": {
+            "name": "Team",
+            "sub": "For groups that listen.",
+            "cta": "Book a quiet demo",
+            "feature1": "Everything in Individual",
+            "feature2": "Meeting co-pilot",
+            "feature3": "Anonymous team telemetry",
+            "feature4": "Slack & Zoom integrations"
+        },
+        "professional": {
+            "name": "Professional",
+            "sub": "Doctors · attorneys · teachers · managers.",
+            "cta": "Choose your practice",
+            "feature1": "Profession-tuned mode",
+            "feature2": "Burnout & vicarious-trauma early warning",
+            "feature3": "HIPAA · FERPA · attorney-client",
+            "feature4": "Audit-grade meta logs"
+        }
+    },
+    "cta": {
+        "eyebrow": "Join the evolution",
+        "headlinePre": "Be among the",
+        "headlinePost": "first to",
+        "headlineGradient": "let it go",
+        "sub": "Closed beta opens in small, quiet cohorts. Drop your email and we'll write — once, and only when there's something real.",
+        "joiningAs": "Joining as",
+        "yourWatch": "Your watch",
+        "tailoredFor": "Tailored for",
+        "specialistDetailPre": "Specialist mode selected — your confirmation will be tailored to",
+        "footnote": "No marketing. No drip campaigns. Just one quiet email when your cohort opens.",
+        "successGeneric": "You're on the list. We'll write quietly.",
+        "successWithAudience": "You're on the {{label}} list.",
+        "descriptionDelivered": "A quiet confirmation just landed in your inbox.",
+        "descriptionSaved": "Saved {{email}}. We'll be in touch."
+    },
+    "footer": {
+        "tagline": "An instrument for the inner life. Built quietly, for the noisy decade ahead.",
+        "platform": "Platform",
+        "company": "Company",
+        "legal": "Legal",
+        "copyright": "Made with quiet attention."
+    },
+    "language": {
+        "label": "Language"
+    }
+}

@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "Piliers",
+    "experience": "Expérience",
+    "wearable": "Wearable",
+    "pricing": "Tarifs",
+    "cta": "Commencer le lâcher-prise"
+  },
+  "hero": {
+    "eyebrow": "Le premier OS d'intelligence émotionnelle",
+    "headlinePre": "Et si vous pouviez",
+    "headlineLine2": "vraiment",
+    "headlineGradient": "let it go",
+    "headlinePunct": " ?",
+    "sub": "Un système d'exploitation d'intelligence émotionnelle qui perçoit le stress, l'anxiété et la dépression — et aide les enfants, les individus, les équipes et les professionnels à revenir à eux-mêmes.",
+    "ctaPrimary": "Commencer le lâcher-prise",
+    "ctaSecondary": "Le voir respirer"
+  },
+  "common": {
+    "joinWaitlist": "Rejoindre la liste d'attente",
+    "reserveSeat": "Réserver votre place",
+    "talkToFounders": "Parler aux fondateurs",
+    "emailPlaceholder": "vous@courrieldoux.com",
+    "listening": "À l'écoute…",
+    "validEmailError": "Veuillez entrer une adresse e-mail valide.",
+    "genericError": "Quelque chose s'est mal passé. Réessayez dans un instant.",
+    "lifetimeLocked": "Prix fondateur · verrouillé à vie",
+    "foundingSeats": "Places fondatrices",
+    "foundingSeatsLeft": "{{n}} places fondatrices restantes · 50 % de réduction pour toujours",
+    "cohortFull": "Cohorte fondatrice complète — liste d'attente ordinaire ouverte",
+    "mostChosen": "Le plus choisi",
+    "month": "/ mois",
+    "child": "/ mois / enfant",
+    "perUser": "/ utilisateur / mois",
+    "perPhysician": "/ médecin / mois",
+    "perAttorney": "/ avocat / mois",
+    "perTeacher": "/ enseignant / mois",
+    "perManager": "/ manager / mois",
+    "custom": "Sur mesure"
+  },
+  "pricing": {
+    "eyebrow": "Tarifs",
+    "headlinePre": "Un plan pour chaque",
+    "headlineGradient": "sorte",
+    "headlinePost": "d'être humain.",
+    "banner": "Cohorte fondatrice ouverte.",
+    "bannerRest": "Les premières places par audience bénéficient de 50 % de réduction pour toujours — verrouillées à vie.",
+    "enterpriseNote": "Besoin d'un déploiement on-prem, d'un agent SDK, d'une conformité SOC 2 ou d'un déploiement personnalisé ?",
+    "kids": {
+      "name": "Enfants",
+      "sub": "De grandes émotions, de petits mots.",
+      "cta": "Commencer le plan en douceur",
+      "feature1": "Apprentissage des émotions par le récit",
+      "feature2": "Jeux de respiration & mode berceuse",
+      "feature3": "Tableau de bord parent · conforme COPPA",
+      "feature4": "Zéro publicité · zéro revente de données"
+    },
+    "individual": {
+      "name": "Individuel",
+      "sub": "Pour votre vie intérieure.",
+      "cta": "Essai silencieux de 14 jours",
+      "feature1": "Suivi du stress · de l'anxiété · de la dépression",
+      "feature2": "Points quotidiens de 90 secondes",
+      "feature3": "Mémoire de croissance sur 12 mois",
+      "feature4": "Chiffrement de bout en bout"
+    },
+    "team": {
+      "name": "Équipe",
+      "sub": "Pour les groupes qui savent écouter.",
+      "cta": "Réserver une démo en douceur",
+      "feature1": "Tout ce qui est inclus dans Individuel",
+      "feature2": "Co-pilote de réunion",
+      "feature3": "Télémétrie d'équipe anonymisée",
+      "feature4": "Intégrations Slack & Zoom"
+    },
+    "professional": {
+      "name": "Professionnel",
+      "sub": "Médecins · avocats · enseignants · managers.",
+      "cta": "Choisir votre pratique",
+      "feature1": "Mode ajusté à la profession",
+      "feature2": "Alerte précoce d'épuisement & de traumatisme vicariant",
+      "feature3": "HIPAA · FERPA · secret professionnel",
+      "feature4": "Journaux méta de niveau audit"
+    }
+  },
+  "cta": {
+    "eyebrow": "Rejoindre l'évolution",
+    "headlinePre": "Soyez parmi les",
+    "headlinePost": "premiers à",
+    "headlineGradient": "let it go",
+    "sub": "La bêta fermée s'ouvre par petites cohortes, dans le calme. Laissez votre adresse e-mail et nous vous écrirons — une seule fois, et uniquement quand il y aura quelque chose de réel.",
+    "joiningAs": "Je rejoins en tant que",
+    "yourWatch": "Votre montre",
+    "tailoredFor": "Pensé pour",
+    "specialistDetailPre": "Mode spécialiste sélectionné — votre confirmation sera adaptée à",
+    "footnote": "Pas de marketing. Pas de campagnes en série. Un seul e-mail discret quand votre cohorte s'ouvre.",
+    "successGeneric": "Vous êtes sur la liste. Nous vous écrirons doucement.",
+    "successWithAudience": "Vous êtes sur la liste {{label}}.",
+    "descriptionDelivered": "Une confirmation discrète vient d'atterrir dans votre boîte mail.",
+    "descriptionSaved": "{{email}} enregistré. Nous vous contacterons."
+  },
+  "footer": {
+    "tagline": "Un instrument pour la vie intérieure. Construit avec soin, pour la décennie bruyante qui vient.",
+    "platform": "Plateforme",
+    "company": "Société",
+    "legal": "Mentions légales",
+    "copyright": "Fait avec une attention silencieuse."
+  },
+  "language": {
+    "label": "Langue"
+  }
+}

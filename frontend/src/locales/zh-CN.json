@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "核心支柱",
+    "experience": "体验",
+    "wearable": "可穿戴",
+    "pricing": "定价",
+    "cta": "开始释放"
+  },
+  "hero": {
+    "eyebrow": "首个情绪智能操作系统",
+    "headlinePre": "如果你真的可以",
+    "headlineLine2": "真正地",
+    "headlineGradient": "放下它",
+    "headlinePunct": "？",
+    "sub": "一个情绪智能操作系统，感知压力、焦虑与抑郁——帮助孩子、个人、团队与专业人士，重新回归自己。",
+    "ctaPrimary": "开始释放",
+    "ctaSecondary": "看它呼吸"
+  },
+  "common": {
+    "joinWaitlist": "加入候补名单",
+    "reserveSeat": "预留你的席位",
+    "talkToFounders": "与创始人交谈",
+    "emailPlaceholder": "you@quietmail.com",
+    "listening": "聆听中……",
+    "validEmailError": "请输入有效的邮箱地址。",
+    "genericError": "出了点问题，请稍后再试。",
+    "lifetimeLocked": "创始价格 · 终身锁定",
+    "foundingSeats": "创始席位",
+    "foundingSeatsLeft": "还剩 {{n}} 个创始席位 · 永久五折",
+    "cohortFull": "创始批次已满——普通候补名单开放中",
+    "mostChosen": "最受欢迎",
+    "month": "/ 月",
+    "child": "/ 月 / 孩子",
+    "perUser": "/ 用户 / 月",
+    "perPhysician": "/ 医生 / 月",
+    "perAttorney": "/ 律师 / 月",
+    "perTeacher": "/ 教师 / 月",
+    "perManager": "/ 管理者 / 月",
+    "custom": "定制"
+  },
+  "pricing": {
+    "eyebrow": "定价",
+    "headlinePre": "为每一种",
+    "headlineGradient": "人",
+    "headlinePost": "而设的方案。",
+    "banner": "创始批次开放中。",
+    "bannerRest": "每类用户的首批席位享永久五折——终身锁定。",
+    "enterpriseNote": "需要本地部署、代理 SDK、SOC 2 或定制化上线方案？",
+    "kids": {
+      "name": "儿童",
+      "sub": "大大的感受，小小的语言。",
+      "cta": "开启温柔方案",
+      "feature1": "故事式情绪学习",
+      "feature2": "呼吸游戏与摇篮曲模式",
+      "feature3": "家长仪表盘 · 符合 COPPA",
+      "feature4": "零广告 · 零数据出售"
+    },
+    "individual": {
+      "name": "个人",
+      "sub": "为你的内心世界。",
+      "cta": "14 天静心试用",
+      "feature1": "压力 · 焦虑 · 抑郁追踪",
+      "feature2": "每日 90 秒自我检视",
+      "feature3": "12 个月成长记忆",
+      "feature4": "端到端加密"
+    },
+    "team": {
+      "name": "团队",
+      "sub": "为懂得倾听的群体。",
+      "cta": "预约静心演示",
+      "feature1": "包含个人版全部功能",
+      "feature2": "会议协作引导",
+      "feature3": "匿名团队遥测",
+      "feature4": "Slack 与 Zoom 集成"
+    },
+    "professional": {
+      "name": "专业人士",
+      "sub": "医生 · 律师 · 教师 · 管理者。",
+      "cta": "选择你的职业模式",
+      "feature1": "职业定制模式",
+      "feature2": "职业倦怠与替代性创伤早期预警",
+      "feature3": "HIPAA · FERPA · 律师-委托人保密",
+      "feature4": "审计级元数据日志"
+    }
+  },
+  "cta": {
+    "eyebrow": "加入这场演进",
+    "headlinePre": "成为最早",
+    "headlinePost": "一批",
+    "headlineGradient": "放下它",
+    "sub": "封闭测试以小而安静的批次开放。留下你的邮箱，我们会写信——只写一次，且只在真正有话要说的时候。",
+    "joiningAs": "以身份加入",
+    "yourWatch": "你的手表",
+    "tailoredFor": "专为……定制",
+    "specialistDetailPre": "已选择专业模式——你的确认信将专为以下对象量身定制",
+    "footnote": "没有营销邮件，没有滴灌式推送。只有一封安静的信，在你的批次开放时送达。",
+    "successGeneric": "你已在名单上。我们会悄悄写信。",
+    "successWithAudience": "你已加入 {{label}} 名单。",
+    "descriptionDelivered": "一封安静的确认邮件刚刚落入你的收件箱。",
+    "descriptionSaved": "已保存 {{email}}。我们会与你联系。"
+  },
+  "footer": {
+    "tagline": "一件为内心世界而造的器物。静静地建造，为前方喧嚣的十年。",
+    "platform": "产品",
+    "company": "公司",
+    "legal": "法律",
+    "copyright": "以静默的专注，悉心打造。"
+  },
+  "language": {
+    "label": "语言"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "Säulen",
+    "experience": "Erleben",
+    "wearable": "Wearable",
+    "pricing": "Preise",
+    "cta": "Die Loslösung beginnen"
+  },
+  "hero": {
+    "eyebrow": "Das erste emotionale Intelligenz-Betriebssystem",
+    "headlinePre": "Was wäre, wenn du",
+    "headlineLine2": "wirklich",
+    "headlineGradient": "loslassen könntest",
+    "headlinePunct": "?",
+    "sub": "Ein emotionales Intelligenz-Betriebssystem, das Stress, Angst und Depression wahrnimmt — und Kindern, Einzelpersonen, Teams und Fachleuten hilft, zu sich selbst zurückzufinden.",
+    "ctaPrimary": "Die Loslösung beginnen",
+    "ctaSecondary": "Sieh es atmen"
+  },
+  "common": {
+    "joinWaitlist": "Zur Warteliste anmelden",
+    "reserveSeat": "Deinen Platz reservieren",
+    "talkToFounders": "Mit den Gründern sprechen",
+    "emailPlaceholder": "du@stillemail.de",
+    "listening": "Ich höre zu…",
+    "validEmailError": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "genericError": "Etwas ist schiefgelaufen. Versuch es gleich noch einmal.",
+    "lifetimeLocked": "Gründungspreis · dauerhaft festgeschrieben",
+    "foundingSeats": "Gründungsplätze",
+    "foundingSeatsLeft": "{{n}} Gründungsplätze übrig · 50% Rabatt für immer",
+    "cohortFull": "Gründungskohorte voll — reguläre Warteliste offen",
+    "mostChosen": "Am häufigsten gewählt",
+    "month": "/ Monat",
+    "child": "/ Monat / Kind",
+    "perUser": "/ Nutzer·in / Monat",
+    "perPhysician": "/ Ärztin·Arzt / Monat",
+    "perAttorney": "/ Anwältin·Anwalt / Monat",
+    "perTeacher": "/ Lehrerin·Lehrer / Monat",
+    "perManager": "/ Manager·in / Monat",
+    "custom": "Individuell"
+  },
+  "pricing": {
+    "eyebrow": "Preise",
+    "headlinePre": "Ein Plan für jede",
+    "headlineGradient": "Art",
+    "headlinePost": "von Mensch.",
+    "banner": "Gründungskohorte offen.",
+    "bannerRest": "Die ersten Plätze je Zielgruppe erhalten 50% Rabatt für immer — dauerhaft festgeschrieben.",
+    "enterpriseNote": "Brauchst du On-Premise, Agent SDK, SOC 2 oder einen maßgeschneiderten Rollout?",
+    "kids": {
+      "name": "Kinder",
+      "sub": "Große Gefühle, kleine Worte.",
+      "cta": "Den sanften Plan starten",
+      "feature1": "Emotionslernen durch Geschichten",
+      "feature2": "Atemspiele & Schlafliedmodus",
+      "feature3": "Eltern-Dashboard · COPPA-konform",
+      "feature4": "Keine Werbung · kein Datenverkauf"
+    },
+    "individual": {
+      "name": "Einzelperson",
+      "sub": "Für dein inneres Leben.",
+      "cta": "14 Tage stille Probezeit",
+      "feature1": "Stress-, Angst- & Depressions-Tracking",
+      "feature2": "Tägliche 90-Sekunden-Check-ins",
+      "feature3": "12-Monats-Wachstumsgedächtnis",
+      "feature4": "Ende-zu-Ende-verschlüsselt"
+    },
+    "team": {
+      "name": "Team",
+      "sub": "Für Gruppen, die zuhören.",
+      "cta": "Eine stille Demo buchen",
+      "feature1": "Alles aus Einzelperson",
+      "feature2": "Meeting-Copilot",
+      "feature3": "Anonyme Team-Telemetrie",
+      "feature4": "Slack & Zoom Integrationen"
+    },
+    "professional": {
+      "name": "Fachleute",
+      "sub": "Ärztinnen · Anwälte · Lehrende · Führungskräfte.",
+      "cta": "Deinen Bereich wählen",
+      "feature1": "Berufsspezifischer Modus",
+      "feature2": "Frühwarnung bei Burnout & Sekundärtrauma",
+      "feature3": "HIPAA · FERPA · Anwaltsprivileg",
+      "feature4": "Prüfungssichere Meta-Protokolle"
+    }
+  },
+  "cta": {
+    "eyebrow": "Teil der Entwicklung werden",
+    "headlinePre": "Sei unter den",
+    "headlinePost": "Ersten, die",
+    "headlineGradient": "loslassen",
+    "sub": "Die geschlossene Beta öffnet sich in kleinen, stillen Kohorten. Hinterlasse deine E-Mail — wir melden uns einmal, und nur dann, wenn es etwas Echtes zu sagen gibt.",
+    "joiningAs": "Du meldest dich an als",
+    "yourWatch": "Deine Uhr",
+    "tailoredFor": "Zugeschnitten auf",
+    "specialistDetailPre": "Spezialistenmodus ausgewählt — deine Bestätigung wird zugeschnitten auf",
+    "footnote": "Kein Marketing. Kein Drip-Campaign. Nur eine stille E-Mail, wenn deine Kohorte öffnet.",
+    "successGeneric": "Du stehst auf der Liste. Wir melden uns leise.",
+    "successWithAudience": "Du stehst auf der {{label}}-Liste.",
+    "descriptionDelivered": "Eine stille Bestätigung ist gerade in deinem Posteingang angekommen.",
+    "descriptionSaved": "{{email}} gespeichert. Wir melden uns."
+  },
+  "footer": {
+    "tagline": "Ein Instrument für das innere Leben. Still gebaut, für das laute Jahrzehnt, das vor uns liegt.",
+    "platform": "Plattform",
+    "company": "Unternehmen",
+    "legal": "Rechtliches",
+    "copyright": "Mit stiller Aufmerksamkeit gemacht."
+  },
+  "language": {
+    "label": "Sprache"
+  }
+}

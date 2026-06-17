@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { ArrowUpRight, X, Apple, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { useAudience, listAudiences, getAudienceMeta, setAudience, setPlatform } from "./audienceStore";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const PRIMARY = ["kids", "individual", "team", "professional", "watch"];
 
 export default function CTA() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [audience, , platform] = useAudience();
@@ -15,8 +17,6 @@ export default function CTA() {
     const all = listAudiences();
     const isSubAudience = audience && !PRIMARY.includes(audience);
 
-    // When a sub-audience (doctors/attorneys/teachers/managers) is selected via
-    // a card click, smooth-scroll into the form for feedback.
     useEffect(() => {
         if (audience) {
             const el = document.getElementById("cta");
@@ -27,7 +27,7 @@ export default function CTA() {
     const submit = async (e) => {
         e.preventDefault();
         if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            toast.error("Please enter a valid email.");
+            toast.error(t("common.validEmailError"));
             return;
         }
         setLoading(true);
@@ -41,17 +41,17 @@ export default function CTA() {
             const platformLabel =
                 audience === "watch" && platform === "apple" ? " (Apple Watch)" :
                 audience === "watch" && platform === "android" ? " (Wear OS)" : "";
-            toast.success(
-                meta ? `You're on the ${meta.label}${platformLabel} list.` : "You're on the list. We'll write quietly.",
-                {
-                    description: data.email_sent
-                        ? "A quiet confirmation just landed in your inbox."
-                        : `Saved ${email}. We'll be in touch.`,
-                }
-            );
+            const successMsg = meta
+                ? t("cta.successWithAudience", { label: meta.label + platformLabel })
+                : t("cta.successGeneric");
+            toast.success(successMsg, {
+                description: data.email_sent
+                    ? t("cta.descriptionDelivered")
+                    : t("cta.descriptionSaved", { email }),
+            });
             setEmail("");
         } catch (err) {
-            toast.error("Something went wrong. Try again in a moment.", {
+            toast.error(t("common.genericError"), {
                 description: err?.response?.data?.detail?.toString() || "Network or server error.",
             });
         } finally {
@@ -79,25 +79,24 @@ export default function CTA() {
 
                 <div className="relative max-w-3xl">
                     <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-8">
-                        Join the evolution
+                        {t("cta.eyebrow")}
                     </p>
                     <h2
                         data-testid="cta-headline"
                         className="font-display text-4xl md:text-7xl leading-[0.95] tracking-tight text-ink"
                     >
-                        Be among the
+                        {t("cta.headlinePre")}
                         <br />
-                        first to <em className="gradient-text">let it go</em>.
+                        {t("cta.headlinePost")} <em className="gradient-text">{t("cta.headlineGradient")}</em>.
                     </h2>
                     <p className="mt-8 text-lg md:text-xl text-ink-soft max-w-xl">
-                        Closed beta opens in small, quiet cohorts. Drop your email and
-                        we'll write — once, and only when there's something real.
+                        {t("cta.sub")}
                     </p>
 
                     {/* Audience picker */}
                     <div className="mt-10">
                         <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft mb-3">
-                            Joining as
+                            {t("cta.joiningAs")}
                         </p>
                         <div className="flex flex-wrap gap-2" data-testid="cta-audience-picker">
                             {all.map((a) => {
@@ -132,7 +131,7 @@ export default function CTA() {
                                 data-testid="cta-audience-detail"
                                 className="mt-3 text-xs text-ink-soft"
                             >
-                                Specialist mode selected — your confirmation will be tailored to{" "}
+                                {t("cta.specialistDetailPre")}{" "}
                                 <span className="text-ink">{meta.label.replace(" beta", "")}</span>.
                             </p>
                         )}
@@ -141,7 +140,7 @@ export default function CTA() {
                         {audience === "watch" && (
                             <div className="mt-4" data-testid="cta-platform-picker">
                                 <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft mb-2">
-                                    Your watch
+                                    {t("cta.yourWatch")}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
                                     {[
@@ -173,7 +172,7 @@ export default function CTA() {
                                         data-testid="cta-platform-detail"
                                         className="mt-2 text-xs text-ink-soft"
                                     >
-                                        Tailored for{" "}
+                                        {t("cta.tailoredFor")}{" "}
                                         <span className="text-ink">
                                             {platform === "apple" ? "Apple Watch · watchOS" : "Wear OS · Galaxy / Pixel"}
                                         </span>
@@ -194,7 +193,7 @@ export default function CTA() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="you@quietmail.com"
+                            placeholder={t("common.emailPlaceholder")}
                             data-testid="cta-email-input"
                             className="flex-1 rounded-full bg-white/[0.06] border border-white/15 text-ink placeholder:text-ink-soft/60 px-6 py-4 outline-none focus:bg-white/[0.1] focus:border-violet/60 transition-colors font-sans"
                         />
@@ -204,7 +203,7 @@ export default function CTA() {
                             data-testid="cta-submit-button"
                             className="btn-glow group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-6 py-4 text-sm font-medium transition-all active:scale-[0.98] disabled:opacity-60"
                         >
-                            {loading ? "Listening..." : "Join the waitlist"}
+                            {loading ? t("common.listening") : t("common.joinWaitlist")}
                             <ArrowUpRight
                                 size={16}
                                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -213,7 +212,7 @@ export default function CTA() {
                     </form>
 
                     <p className="mt-6 text-xs text-ink-soft">
-                        No marketing. No drip campaigns. Just one quiet email when your cohort opens.
+                        {t("cta.footnote")}
                     </p>
                 </div>
             </div>

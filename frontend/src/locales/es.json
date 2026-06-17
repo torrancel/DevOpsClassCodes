@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "Pilares",
+    "experience": "Experiencia",
+    "wearable": "Wearable",
+    "pricing": "Precios",
+    "cta": "Comenzar el soltar"
+  },
+  "hero": {
+    "eyebrow": "El primer sistema operativo de inteligencia emocional",
+    "headlinePre": "¿Y si pudieras",
+    "headlineLine2": "realmente",
+    "headlineGradient": "soltarlo",
+    "headlinePunct": "?",
+    "sub": "Un sistema operativo de inteligencia emocional que percibe el estrés, la ansiedad y la depresión — y ayuda a niños, personas, equipos y profesionales a volver a sí mismos.",
+    "ctaPrimary": "Comenzar el soltar",
+    "ctaSecondary": "Míralo respirar"
+  },
+  "common": {
+    "joinWaitlist": "Únete a la lista de espera",
+    "reserveSeat": "Reserva tu lugar",
+    "talkToFounders": "Habla con los fundadores",
+    "emailPlaceholder": "tú@correosereno.com",
+    "listening": "Escuchando...",
+    "validEmailError": "Por favor ingresa un correo válido.",
+    "genericError": "Algo salió mal. Intenta de nuevo en un momento.",
+    "lifetimeLocked": "Precio fundador · bloqueado de por vida",
+    "foundingSeats": "Lugares fundadores",
+    "foundingSeatsLeft": "{{n}} lugares fundadores disponibles · 50% de descuento para siempre",
+    "cohortFull": "Cohorte fundadora completa — lista de espera general abierta",
+    "mostChosen": "El más elegido",
+    "month": "/ mes",
+    "child": "/ mes / niño",
+    "perUser": "/ usuario / mes",
+    "perPhysician": "/ médico / mes",
+    "perAttorney": "/ abogado / mes",
+    "perTeacher": "/ docente / mes",
+    "perManager": "/ gerente / mes",
+    "custom": "Personalizado"
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "headlinePre": "Un plan para cada",
+    "headlineGradient": "tipo",
+    "headlinePost": "de persona.",
+    "banner": "Cohorte fundadora abierta.",
+    "bannerRest": "Los primeros lugares por audiencia reciben 50% de descuento para siempre — bloqueado de por vida.",
+    "enterpriseNote": "¿Necesitas instalación local, agent SDK, SOC 2 o un despliegue personalizado?",
+    "kids": {
+      "name": "Niños",
+      "sub": "Grandes sentimientos, pequeñas palabras.",
+      "cta": "Empezar el plan suave",
+      "feature1": "Aprendizaje emocional a través de historias",
+      "feature2": "Juegos de respiración y modo nana",
+      "feature3": "Panel para padres · alineado con COPPA",
+      "feature4": "Sin publicidad · sin venta de datos"
+    },
+    "individual": {
+      "name": "Individual",
+      "sub": "Para tu vida interior.",
+      "cta": "Prueba silenciosa de 14 días",
+      "feature1": "Seguimiento de estrés · ansiedad · depresión",
+      "feature2": "Chequeos diarios de 90 segundos",
+      "feature3": "Memoria de crecimiento de 12 meses",
+      "feature4": "Cifrado de extremo a extremo"
+    },
+    "team": {
+      "name": "Equipo",
+      "sub": "Para grupos que saben escuchar.",
+      "cta": "Solicita una demo tranquila",
+      "feature1": "Todo lo de Individual",
+      "feature2": "Copiloto para reuniones",
+      "feature3": "Telemetría anónima del equipo",
+      "feature4": "Integraciones con Slack y Zoom"
+    },
+    "professional": {
+      "name": "Profesional",
+      "sub": "Médicos · abogados · docentes · gerentes.",
+      "cta": "Elige tu especialidad",
+      "feature1": "Modo ajustado a la profesión",
+      "feature2": "Alerta temprana de burnout y trauma vicario",
+      "feature3": "HIPAA · FERPA · secreto profesional",
+      "feature4": "Registros meta de nivel auditivo"
+    }
+  },
+  "cta": {
+    "eyebrow": "Únete a la evolución",
+    "headlinePre": "Sé de los",
+    "headlinePost": "primeros en",
+    "headlineGradient": "soltarlo",
+    "sub": "La beta cerrada abre en cohortes pequeñas y tranquilas. Déjanos tu correo y te escribiremos — una sola vez, y únicamente cuando haya algo real.",
+    "joiningAs": "Uniéndome como",
+    "yourWatch": "Tu reloj",
+    "tailoredFor": "Hecho a medida para",
+    "specialistDetailPre": "Modo especialista seleccionado — tu confirmación será personalizada para",
+    "footnote": "Sin marketing. Sin campañas de goteo. Solo un correo tranquilo cuando tu cohorte abra.",
+    "successGeneric": "Estás en la lista. Te escribiremos en silencio.",
+    "successWithAudience": "Estás en la lista de {{label}}.",
+    "descriptionDelivered": "Una confirmación silenciosa acaba de llegar a tu bandeja de entrada.",
+    "descriptionSaved": "Guardamos {{email}}. Estaremos en contacto."
+  },
+  "footer": {
+    "tagline": "Un instrumento para la vida interior. Construido en silencio, para la ruidosa década que viene.",
+    "platform": "Plataforma",
+    "company": "Empresa",
+    "legal": "Legal",
+    "copyright": "Hecho con atención tranquila."
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}

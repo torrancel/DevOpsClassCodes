@@ -1,21 +1,13 @@
 import InfinityGlow from "./InfinityGlow";
-
-const COLS = [
-    {
-        title: "Pillars",
-        links: ["Aware", "Release", "Grow", "Transform", "Agent SDK"],
-    },
-    {
-        title: "Company",
-        links: ["Manifesto", "Research", "Careers", "Press", "Contact"],
-    },
-    {
-        title: "Legal",
-        links: ["Privacy", "Security", "Terms", "Data Ethics", "Consent Charter"],
-    },
-];
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+    const { t } = useTranslation();
+    const COLS = [
+        { title: t("footer.platform"), links: ["Aware", "Release", "Grow", "Transform", "Agent SDK"] },
+        { title: t("footer.company"),  links: ["Manifesto", "Research", "Careers", "Press", "Contact"] },
+        { title: t("footer.legal"),    links: ["Privacy", "Security", "Terms", "Data Ethics", "Consent Charter"] },
+    ];
     return (
         <footer
             data-testid="footer-section"
@@ -30,7 +22,7 @@ export default function Footer() {
                         </span>
                     </div>
                     <p className="mt-6 text-lg text-ink-soft max-w-md font-display italic">
-                        An instrument for the inner life. Built quietly, for the noisy decade ahead.
+                        {t("footer.tagline")}
                     </p>
                 </div>
 
@@ -69,7 +61,7 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-ink-soft">
-                <p>© {new Date().getFullYear()} Let It Go AI · Made with quiet attention.</p>
+                <p>© {new Date().getFullYear()} Let It Go AI · {t("footer.copyright")}</p>
                 <div className="flex items-center gap-6">
                     <a href="#" className="link-underline">Twitter</a>
                     <a href="#" className="link-underline">LinkedIn</a>

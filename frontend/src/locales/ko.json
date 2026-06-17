@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "pillars": "핵심 가치",
+    "experience": "경험",
+    "wearable": "웨어러블",
+    "pricing": "요금제",
+    "cta": "놓아주기 시작하기"
+  },
+  "hero": {
+    "eyebrow": "최초의 감성 지능 운영 체제",
+    "headlinePre": "만약 당신이",
+    "headlineLine2": "진정으로",
+    "headlineGradient": "let it go",
+    "headlinePunct": "할 수 있다면?",
+    "sub": "스트레스, 불안, 우울감을 감지하고 — 아이들, 개인, 팀, 그리고 전문가들이 자신에게로 돌아올 수 있도록 돕는 감성 지능 운영 체제입니다.",
+    "ctaPrimary": "놓아주기 시작하기",
+    "ctaSecondary": "숨 쉬는 모습 보기"
+  },
+  "common": {
+    "joinWaitlist": "대기 목록에 참여하기",
+    "reserveSeat": "자리 예약하기",
+    "talkToFounders": "창립자와 대화하기",
+    "emailPlaceholder": "you@quietmail.com",
+    "listening": "듣고 있어요...",
+    "validEmailError": "유효한 이메일을 입력해 주세요.",
+    "genericError": "문제가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+    "lifetimeLocked": "창립 가격 · 평생 고정",
+    "foundingSeats": "창립 멤버 자리",
+    "foundingSeatsLeft": "창립 멤버 자리 {{n}}개 남음 · 영구 50% 할인",
+    "cohortFull": "창립 코호트 마감 — 일반 대기 목록 열림",
+    "mostChosen": "가장 많이 선택",
+    "month": "/ 월",
+    "child": "/ 월 / 자녀",
+    "perUser": "/ 사용자 / 월",
+    "perPhysician": "/ 의사 / 월",
+    "perAttorney": "/ 변호사 / 월",
+    "perTeacher": "/ 교사 / 월",
+    "perManager": "/ 매니저 / 월",
+    "custom": "맞춤형"
+  },
+  "pricing": {
+    "eyebrow": "요금제",
+    "headlinePre": "모든",
+    "headlineGradient": "사람",
+    "headlinePost": "을 위한 플랜.",
+    "banner": "창립 코호트 모집 중.",
+    "bannerRest": "각 그룹의 첫 번째 자리는 영구 50% 할인 — 평생 고정.",
+    "enterpriseNote": "온프레미스, 에이전트 SDK, SOC 2, 또는 맞춤형 도입이 필요하신가요?",
+    "kids": {
+      "name": "어린이",
+      "sub": "큰 감정, 작은 말들.",
+      "cta": "부드러운 플랜 시작하기",
+      "feature1": "이야기 기반 감정 학습",
+      "feature2": "호흡 게임 & 자장가 모드",
+      "feature3": "부모 대시보드 · COPPA 준수",
+      "feature4": "광고 없음 · 데이터 판매 없음"
+    },
+    "individual": {
+      "name": "개인",
+      "sub": "당신의 내면을 위해.",
+      "cta": "14일 조용한 체험",
+      "feature1": "스트레스 · 불안 · 우울 추적",
+      "feature2": "매일 90초 체크인",
+      "feature3": "12개월 성장 기억",
+      "feature4": "종단간 암호화"
+    },
+    "team": {
+      "name": "팀",
+      "sub": "서로 귀 기울이는 그룹을 위해.",
+      "cta": "조용한 데모 예약하기",
+      "feature1": "개인 플랜의 모든 기능",
+      "feature2": "미팅 코파일럿",
+      "feature3": "익명 팀 텔레메트리",
+      "feature4": "Slack & Zoom 연동"
+    },
+    "professional": {
+      "name": "전문직",
+      "sub": "의사 · 변호사 · 교사 · 매니저.",
+      "cta": "직종 선택하기",
+      "feature1": "직종 맞춤 모드",
+      "feature2": "번아웃 & 대리 외상 조기 경보",
+      "feature3": "HIPAA · FERPA · 변호사-의뢰인 보호",
+      "feature4": "감사 수준 메타 로그"
+    }
+  },
+  "cta": {
+    "eyebrow": "변화에 함께하기",
+    "headlinePre": "가장",
+    "headlinePost": "먼저",
+    "headlineGradient": "let it go",
+    "sub": "클로즈드 베타는 작고 조용한 코호트로 열립니다. 이메일을 남겨 주시면 — 진심으로 전할 말이 있을 때, 단 한 번만 연락드릴게요.",
+    "joiningAs": "참여 유형",
+    "yourWatch": "내 워치",
+    "tailoredFor": "맞춤 설정",
+    "specialistDetailPre": "전문가 모드 선택됨 — 확인 메일은 다음에 맞게 조율될 예정입니다:",
+    "footnote": "마케팅 없음. 드립 캠페인 없음. 코호트가 열릴 때 조용한 이메일 한 통만 드립니다.",
+    "successGeneric": "목록에 등록되었습니다. 조용히 연락드릴게요.",
+    "successWithAudience": "{{label}} 목록에 등록되었습니다.",
+    "descriptionDelivered": "조용한 확인 메일이 받은편지함에 도착했습니다.",
+    "descriptionSaved": "{{email}}이 저장되었습니다. 곧 연락드릴게요."
+  },
+  "footer": {
+    "tagline": "내면의 삶을 위한 도구. 앞으로 다가올 소란스러운 시대를 위해, 조용히 만들었습니다.",
+    "platform": "플랫폼",
+    "company": "회사",
+    "legal": "법적 고지",
+    "copyright": "조용한 정성으로 만들었습니다."
+  },
+  "language": {
+    "label": "언어"
+  }
+}

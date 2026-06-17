@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -38,10 +39,11 @@ async function fetchCount() {
  */
 export default function FoundingBadge({
     audience,
-    label = "Founding seats",
+    label,
     accent = false,
     "data-testid": testid,
 }) {
+    const { t } = useTranslation();
     const cap = FOUNDING_CAPS[audience] ?? 500;
     const [claimed, setClaimed] = useState(0);
 
@@ -59,6 +61,7 @@ export default function FoundingBadge({
 
     const pct = Math.min(100, Math.round((claimed / cap) * 100));
     const remaining = Math.max(0, cap - claimed);
+    const resolvedLabel = label || t("common.foundingSeats");
 
     return (
         <div
@@ -74,7 +77,7 @@ export default function FoundingBadge({
             <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-ink-soft">
                 <span className="flex items-center gap-1.5">
                     <Sparkles size={11} className="text-pink" />
-                    {label}
+                    {resolvedLabel}
                 </span>
                 <span className="font-mono text-ink">
                     {claimed} / {cap}
@@ -92,8 +95,8 @@ export default function FoundingBadge({
             </div>
             <p className="mt-1.5 text-[10px] text-ink-soft">
                 {remaining > 0
-                    ? `${remaining} founding seats left · 50% off forever`
-                    : "Founding cohort full — regular waitlist open"}
+                    ? t("common.foundingSeatsLeft", { n: remaining })
+                    : t("common.cohortFull")}
             </p>
         </div>
     );

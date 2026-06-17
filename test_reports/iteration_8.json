@@ -1,0 +1,54 @@
+{
+  "summary": "Iteration 9 i18n testing complete. Tested LanguageSwitcher, 12 locale options, ES/JA/AR switching, RTL flip, localStorage persistence, CTA toast translation, footer translation, profession-page regression. 11/12 verification points PASS. ONE real bug: Hero subline + Hero primary/secondary CTAs are hardcoded English (not using t() despite the file list claiming they were translated).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Hero.jsx",
+        "issue": "Hero subline (lines 60-65) is hardcoded English: 'An emotional intelligence operating system that senses stress, anxiety, and depression — and helps kids, individuals, teams, and professionals come back to themselves.' It does NOT call t('hero.sub'). Reproducible in ES and AR — English text remains visible. The Spanish/Arabic translation keys exist in the locale files (hero.sub) but are never read.",
+        "selector": "[data-testid='hero-subline']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Hero.jsx",
+        "issue": "Hero primary CTA (line 73) hardcoded 'Begin the Release' and secondary CTA (around line 80, 'See it breathe') appear in English regardless of language. Confirmed in AR screenshot — both English while rest of nav/headline is Arabic. Locale keys hero.ctaPrimary / hero.ctaSecondary exist but are unused.",
+        "selector": "[data-testid='hero-primary-cta']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "passed_checks": [
+    "language-switcher-toggle visible in nav",
+    "Clicking toggle opens language-switcher-menu with 12 options (all data-testids correct: en, es, fr, de, pt-BR, it, ja, zh-CN, ko, ar, ru, hi)",
+    "Spanish switch: hero headline '¿Y si pudieras', nav (Pilares / Experiencia / Wearable / Precios), nav CTA 'Comenzar el soltar', toggle face 'Español', pricing cadence '/ mes', founding banner 'Cohorte fundadora abierta.', strikethrough discount math $14 → $7 visible, pricing 'bloqueado de por vida' rendered (i.e. lifetimeLocked key works), footer titles (PLATAFORMA / EMPRESA / LEGAL — uppercased via CSS) and copyright 'Hecho con atención tranquila.' all translated.",
+    "Japanese switch: nav 柱 · 体験 · ウェアラブル · 料金, pricing tiers キッズ / 個人 / チーム / プロフェッショナル.",
+    "Arabic switch: document.documentElement.dir === 'rtl', lang === 'ar', layout visually mirrored (logo on right, CTAs on left — verified in screenshot), hero headline rendered in Arabic script.",
+    "Switching back to en restores dir='ltr'.",
+    "Persistence: localStorage key 'letitgo_lang' = 'es' survives full page reload; UI still renders Spanish.",
+    "CTA form invalid email triggers Spanish toast 'Por favor ingresa un correo válido.'",
+    "FoundingBadge {{n}} interpolation works (visible in pricing area in selected language).",
+    "Profession page /doctors still loads in English without errors (no regression).",
+    "Zero console errors observed across en → es → reload → ja → ar → en → es language switches."
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "Replace hardcoded English in Hero.jsx lines 60-65 with t('hero.sub') (or split into Trans component to preserve the highlighted stress/anxiety/depression styling — recommend a single t() with <Trans> or interpolation tokens since each locale renders these words inline in its own language).",
+    "Replace hardcoded 'Begin the Release' (~line 73) with t('hero.ctaPrimary') and 'See it breathe' (~line 80) with t('hero.ctaSecondary').",
+    "After fix, re-verify in ES/JA/AR that hero subline and both hero CTAs render in the selected language."
+  ],
+  "critical_code_review_comments": [
+    "Hero.jsx imports useTranslation and uses t() for eyebrow/headline parts but never for subline or its two CTAs — this is an oversight in the i18n refactor.",
+    "The hero subline contains styled inline spans on 'stress', 'anxiety', 'depression'. A naive t('hero.sub') won't reproduce that. Recommend using <Trans i18nKey='hero.sub' components={{ s: <span className='text-ink'/> }} /> with markup tokens in the locale strings, OR splitting hero.sub into pre/keyword/mid/keyword/post parts in each locale.",
+    "LanguageSwitcher.jsx component itself is clean and correct (data-testids, outside-click close, aria attributes — good)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "85% (10/12 review points pass; hero subline + hero CTAs fail)"},
+  "test_credentials": "n/a",
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "i18n infrastructure is solid: switcher, 12 locales, RTL flip, persistence, footer, pricing, founding badge, CTA form toast — all working. Only Hero.jsx subline + both hero CTAs were left hardcoded in English. After main agent fixes, just re-verify Hero in ES (expect 'Un sistema operativo de inteligencia emocional...'), JA (expect 'ストレス、不安、そして憂鬱を感じとる...'), and AR (expect Arabic hero.sub). Profession pages /doctors, /attorneys, /teachers, /managers are intentionally NOT translated this iteration — that is expected.",
+  "rca of the issue": "Hero.jsx was only partially refactored: t() is wired for eyebrow + headline tokens but the subline JSX block (lines 60-65) and the two hero CTA <a> tags (~lines 73, 80) still contain literal English strings. The locale files contain hero.sub, hero.ctaPrimary, hero.ctaSecondary keys for all 12 languages, so once Hero.jsx is patched to call t() for these three fields the fix should be complete and require no locale changes."
+}

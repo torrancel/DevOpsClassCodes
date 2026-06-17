@@ -1,72 +1,19 @@
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { setAudience } from "./audienceStore";
 import FoundingBadge, { foundingPrice } from "./FoundingBadge";
 
 const TIERS = [
-    {
-        name: "Kids",
-        slug: "kids",
-        price: "$6",
-        cadence: "/ month / child",
-        sub: "Big feelings, small words.",
-        features: [
-            "Story-based emotion learning",
-            "Breath games & lullaby mode",
-            "Parent dashboard · COPPA-aligned",
-            "Zero ads · zero data sale",
-        ],
-        cta: "Start the gentle plan",
-        accent: false,
-    },
-    {
-        name: "Individual",
-        slug: "individual",
-        price: "$14",
-        cadence: "/ month",
-        sub: "For your inner life.",
-        features: [
-            "Stress · anxiety · depression tracking",
-            "Daily 90-sec check-ins",
-            "12-month growth memory",
-            "End-to-end encrypted",
-        ],
-        cta: "14-day quiet trial",
-        accent: false,
-    },
-    {
-        name: "Team",
-        slug: "team",
-        price: "$9",
-        cadence: "/ user / month",
-        sub: "For groups that listen.",
-        features: [
-            "Everything in Individual",
-            "Meeting co-pilot",
-            "Anonymous team telemetry",
-            "Slack & Zoom integrations",
-        ],
-        cta: "Book a quiet demo",
-        accent: true,
-    },
-    {
-        name: "Professional",
-        slug: "professional",
-        price: "$39",
-        cadence: "/ month",
-        sub: "Doctors · attorneys · teachers · managers.",
-        features: [
-            "Profession-tuned mode",
-            "Burnout & vicarious-trauma early warning",
-            "HIPAA · FERPA · attorney-client",
-            "Audit-grade meta logs",
-        ],
-        cta: "Choose your practice",
-        accent: false,
-    },
+    { slug: "kids",         price: "$6",  cadenceKey: "common.child",         accent: false },
+    { slug: "individual",   price: "$14", cadenceKey: "common.month",         accent: false },
+    { slug: "team",         price: "$9",  cadenceKey: "common.perUser",       accent: true  },
+    { slug: "professional", price: "$39", cadenceKey: "common.month",         accent: false },
 ];
 
 export default function Pricing() {
+    const { t } = useTranslation();
+
     return (
         <section
             id="pricing"
@@ -74,35 +21,34 @@ export default function Pricing() {
             className="px-6 md:px-12 lg:px-20 py-24 md:py-40"
         >
             <div className="mb-16 md:mb-20 max-w-3xl">
-                <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">Pricing</p>
+                <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">{t("pricing.eyebrow")}</p>
                 <h2 className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink">
-                    A plan for every
+                    {t("pricing.headlinePre")}
                     <br />
-                    <em className="gradient-text">kind</em> of human.
+                    <em className="gradient-text">{t("pricing.headlineGradient")}</em> {t("pricing.headlinePost")}
                 </h2>
                 <p className="mt-6 text-base md:text-lg text-ink-soft max-w-xl" data-testid="pricing-founding-banner">
-                    <span className="gradient-text font-medium">Founding cohort open.</span>{" "}
-                    First seats per audience get <span className="text-ink">50% off forever</span> — lifetime locked.
+                    <span className="gradient-text font-medium">{t("pricing.banner")}</span>{" "}
+                    {t("pricing.bannerRest")}
                 </p>
             </div>
 
             <div className="grid grid-cols-12 gap-4 md:gap-6">
-                {TIERS.map((t, i) => (
+                {TIERS.map((tier, i) => (
                     <motion.div
-                        key={t.slug}
+                        key={tier.slug}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: i * 0.08 }}
-                        data-testid={`pricing-tier-${t.slug}`}
+                        data-testid={`pricing-tier-${tier.slug}`}
                         className={`col-span-12 md:col-span-6 lg:col-span-3 rounded-3xl p-7 md:p-8 relative flex flex-col overflow-hidden ${
-                            t.accent ? "lg:scale-[1.04]" : ""
+                            tier.accent ? "lg:scale-[1.04]" : ""
                         }`}
                         style={
-                            t.accent
+                            tier.accent
                                 ? {
-                                      background:
-                                          "linear-gradient(160deg, rgba(94,139,255,0.15), rgba(138,77,255,0.18), rgba(255,111,211,0.15))",
+                                      background: "linear-gradient(160deg, rgba(94,139,255,0.15), rgba(138,77,255,0.18), rgba(255,111,211,0.15))",
                                       border: "1px solid rgba(255,255,255,0.18)",
                                       boxShadow: "0 30px 80px -20px rgba(138,77,255,0.45)",
                                   }
@@ -112,72 +58,51 @@ export default function Pricing() {
                                   }
                         }
                     >
-                        {t.accent && (
+                        {tier.accent && (
                             <span className="self-start text-[10px] uppercase tracking-[0.3em] bg-gradient-to-r from-blue via-violet to-pink text-white px-3 py-1 rounded-full mb-5">
-                                Most chosen
+                                {t("common.mostChosen")}
                             </span>
                         )}
-                        <h3 className="font-display text-3xl text-ink">{t.name}</h3>
-                        <p className="mt-2 text-xs text-ink-soft min-h-[2.5rem]">{t.sub}</p>
+                        <h3 className="font-display text-3xl text-ink">{t(`pricing.${tier.slug}.name`)}</h3>
+                        <p className="mt-2 text-xs text-ink-soft min-h-[2.5rem]">{t(`pricing.${tier.slug}.sub`)}</p>
                         <div className="mt-6 flex items-baseline gap-2 flex-wrap">
-                            {foundingPrice(t.price) ? (
-                                <>
-                                    <span
-                                        className={`font-display text-4xl md:text-5xl ${
-                                            t.accent ? "gradient-text" : "text-ink"
-                                        }`}
-                                    >
-                                        {foundingPrice(t.price)}
-                                    </span>
-                                    <span className="text-ink-soft line-through text-sm font-mono">
-                                        {t.price}
-                                    </span>
-                                </>
-                            ) : (
-                                <span
-                                    className={`font-display text-4xl md:text-5xl ${
-                                        t.accent ? "gradient-text" : "text-ink"
-                                    }`}
-                                >
-                                    {t.price}
-                                </span>
+                            <span className={`font-display text-4xl md:text-5xl ${tier.accent ? "gradient-text" : "text-ink"}`}>
+                                {foundingPrice(tier.price) || tier.price}
+                            </span>
+                            {foundingPrice(tier.price) && (
+                                <span className="text-ink-soft line-through text-sm font-mono">{tier.price}</span>
                             )}
-                            <span className="text-ink-soft text-xs">{t.cadence}</span>
+                            <span className="text-ink-soft text-xs">{t(tier.cadenceKey)}</span>
                         </div>
-                        {foundingPrice(t.price) && (
+                        {foundingPrice(tier.price) && (
                             <p className="mt-1 text-[10px] uppercase tracking-[0.25em] gradient-text">
-                                Founding price · lifetime locked
+                                {t("common.lifetimeLocked")}
                             </p>
                         )}
                         <ul className="mt-7 space-y-3 flex-1 text-ink">
-                            {t.features.map((f) => (
-                                <li key={f} className="flex items-start gap-2.5 text-sm">
-                                    <Check
-                                        size={15}
-                                        className={`mt-0.5 shrink-0 ${
-                                            t.accent ? "text-pink" : "text-violet"
-                                        }`}
-                                    />
-                                    {f}
+                            {[1, 2, 3, 4].map((n) => (
+                                <li key={n} className="flex items-start gap-2.5 text-sm">
+                                    <Check size={15} className={`mt-0.5 shrink-0 ${tier.accent ? "text-pink" : "text-violet"}`} />
+                                    {t(`pricing.${tier.slug}.feature${n}`)}
                                 </li>
                             ))}
                         </ul>
                         <a
                             href="#cta"
-                            onClick={() => setAudience(t.slug)}
-                            data-testid={`pricing-cta-${t.slug}`}
+                            onClick={() => setAudience(tier.slug)}
+                            data-testid={`pricing-cta-${tier.slug}`}
                             className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
-                                t.accent
+                                tier.accent
                                     ? "btn-glow bg-gradient-to-r from-blue via-violet to-pink text-white"
                                     : "border border-white/15 text-ink hover:bg-white/5"
                             }`}
                         >
-                            {t.cta}
+                            {t(`pricing.${tier.slug}.cta`)}
                         </a>
                         <FoundingBadge
-                            audience={t.slug}
-                            accent={t.accent}
-                            data-testid={`founding-${t.slug}`}
+                            audience={tier.slug}
+                            accent={tier.accent}
+                            data-testid={`founding-${tier.slug}`}
                         />
                     </motion.div>
                 ))}
@@ -187,8 +112,8 @@ export default function Pricing() {
                 data-testid="pricing-enterprise-note"
                 className="mt-10 text-sm text-ink-soft text-center max-w-2xl mx-auto"
             >
-                Need on-prem, agent SDK, SOC 2, or a custom rollout?
-                <a href="#cta" className="link-underline ml-2 text-ink">Talk to founders →</a>
+                {t("pricing.enterpriseNote")}
+                <a href="#cta" className="link-underline ml-2 text-ink">{t("common.talkToFounders")} →</a>
             </p>
         </section>
     );
