@@ -5,6 +5,7 @@ const AUDIENCES = {
     individual:   { label: "Individual beta",      color: "#8A4DFF" },
     team:         { label: "Team beta",            color: "#FF6FD3" },
     professional: { label: "Professional beta",    color: "#FF8A5C" },
+    watch:        { label: "Wrist beta",           color: "#5E8BFF" },
     doctors:      { label: "Doctors mode beta",    color: "#5E8BFF" },
     attorneys:    { label: "Attorneys mode beta",  color: "#8A4DFF" },
     teachers:     { label: "Teachers mode beta",   color: "#FF6FD3" },

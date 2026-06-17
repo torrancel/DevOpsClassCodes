@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAudience, listAudiences, getAudienceMeta, setAudience } from "./audienceStore";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const PRIMARY = ["kids", "individual", "team", "professional"];
+const PRIMARY = ["kids", "individual", "team", "professional", "watch"];
 
 export default function CTA() {
     const [email, setEmail] = useState("");

@@ -74,6 +74,7 @@ AUDIENCE_COPY = {
     "individual":    {"label": "Individual beta",          "hello": "for your inner life"},
     "team":          {"label": "Team beta",                "hello": "for the team you hold"},
     "professional":  {"label": "Professional beta",        "hello": "for the people who hold others"},
+    "watch":         {"label": "Wrist beta",               "hello": "for the pulse beneath your day — Apple Watch & Wear OS"},
     "doctors":       {"label": "Doctors mode beta",        "hello": "for the calm after the shift"},
     "attorneys":     {"label": "Attorneys mode beta",      "hello": "for the quiet after the courtroom"},
     "teachers":      {"label": "Teachers mode beta",       "hello": "for the breath after the bell"},

@@ -79,6 +79,15 @@ class TestWaitlistCreate:
         assert r.status_code == 200, r.text
         assert r.json()["audience"] == "doctors"
 
+    # Iteration 5: new 'watch' audience should NOT be coerced to null
+    def test_watch_audience_accepted(self, session):
+        email = _rand_email("WATCH")
+        r = session.post(WAITLIST, json={"email": email, "audience": "watch", "source": "cta"}, timeout=30)
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["audience"] == "watch", f"watch audience should be preserved, got {data['audience']}"
+        assert data["source"] == "cta"
+
     def test_invalid_email_returns_422(self, session):
         r = session.post(WAITLIST, json={"email": "a@b", "audience": "kids"}, timeout=15)
         assert r.status_code == 422, f"expected 422, got {r.status_code}: {r.text}"
@@ -143,3 +152,20 @@ class TestCountIncreases:
         assert r.status_code == 200
         after = session.get(COUNT, timeout=15).json()["count"]
         assert after >= before + 1, f"count should have increased: before={before} after={after}"
+
+
+# -------- Iteration 5: tailored email for 'watch' audience --------
+class TestWatchEmailRendering:
+    def test_render_email_html_watch_audience_subject_and_body(self):
+        """The tailored email for the 'watch' audience should mention Wrist beta + Apple Watch/Wear OS."""
+        import sys
+        sys.path.insert(0, "/app/backend")
+        from server import _render_email_html  # type: ignore
+
+        subject, html = _render_email_html("watch")
+        assert "Wrist beta" in subject, f"subject should mention 'Wrist beta', got: {subject}"
+        # Body should reference both wearable platforms
+        assert "Apple Watch" in html and "Wear OS" in html, \
+            "watch audience email body should mention 'Apple Watch' and 'Wear OS'"
+        assert "Wrist beta" in html
+

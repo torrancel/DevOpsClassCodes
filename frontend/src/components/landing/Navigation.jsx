@@ -5,7 +5,7 @@ import InfinityGlow from "./InfinityGlow";
 const NAV_LINKS = [
     { label: "Pillars", href: "#pillars" },
     { label: "Experience", href: "#experience" },
-    { label: "Manifesto", href: "#manifesto" },
+    { label: "Wearable", href: "#wearable" },
     { label: "Pricing", href: "#pricing" },
 ];
 

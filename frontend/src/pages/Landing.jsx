@@ -4,6 +4,7 @@ import Marquee from "@/components/landing/Marquee";
 import Problem from "@/components/landing/Problem";
 import Modules from "@/components/landing/Modules";
 import Demo from "@/components/landing/Demo";
+import Wearable from "@/components/landing/Wearable";
 import UseCases from "@/components/landing/UseCases";
 import Testimonials from "@/components/landing/Testimonials";
 import Manifesto from "@/components/landing/Manifesto";
@@ -21,6 +22,7 @@ export default function Landing() {
             <Problem />
             <Modules />
             <Demo />
+            <Wearable />
             <UseCases />
             <Testimonials />
             <Manifesto />
