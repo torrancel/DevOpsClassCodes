@@ -51,6 +51,7 @@ export default function CTA() {
 
                     <form
                         onSubmit={submit}
+                        noValidate
                         data-testid="cta-form"
                         className="mt-12 flex flex-col sm:flex-row items-stretch gap-3 max-w-xl"
                     >
