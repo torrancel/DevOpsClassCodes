@@ -6,6 +6,7 @@ import DoctorsLanding from "@/pages/DoctorsLanding";
 import AttorneysLanding from "@/pages/AttorneysLanding";
 import TeachersLanding from "@/pages/TeachersLanding";
 import ManagersLanding from "@/pages/ManagersLanding";
+import AdminAnalytics from "@/pages/AdminAnalytics";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/attorneys" element={<AttorneysLanding />} />
                     <Route path="/teachers" element={<TeachersLanding />} />
                     <Route path="/managers" element={<ManagersLanding />} />
+                    <Route path="/admin/analytics" element={<AdminAnalytics />} />
                 </Routes>
             </BrowserRouter>
             <Toaster

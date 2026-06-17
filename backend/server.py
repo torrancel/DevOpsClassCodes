@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Header
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -7,9 +7,9 @@ import asyncio
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import resend
 
 
@@ -25,6 +25,7 @@ db = client[os.environ['DB_NAME']]
 resend.api_key = os.environ.get('RESEND_API_KEY', '')
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 SENDER_NAME = os.environ.get('SENDER_NAME', 'Let It Go AI')
+ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', '')
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -249,6 +250,94 @@ async def waitlist_count():
     apple = await db.waitlist.count_documents({"audience": "watch", "platform": "apple"})
     android = await db.waitlist.count_documents({"audience": "watch", "platform": "android"})
     return {"count": n, "watch_apple": apple, "watch_android": android}
+
+
+# ---------- Admin analytics ----------
+def _check_admin(authorization: Optional[str]) -> None:
+    if not ADMIN_TOKEN:
+        raise HTTPException(status_code=503, detail="Admin not configured.")
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing bearer token.")
+    token = authorization.split(" ", 1)[1].strip()
+    if token != ADMIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Invalid admin token.")
+
+
+@api_router.get("/admin/analytics")
+async def admin_analytics(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+
+    total = await db.waitlist.count_documents({})
+    emailed = await db.waitlist.count_documents({"email_sent": True})
+
+    # Per-audience breakdown
+    audience_pipeline = [
+        {"$group": {"_id": "$audience", "count": {"$sum": 1}, "emailed": {"$sum": {"$cond": ["$email_sent", 1, 0]}}}},
+        {"$sort": {"count": -1}},
+    ]
+    by_audience_raw = await db.waitlist.aggregate(audience_pipeline).to_list(100)
+    by_audience = [
+        {"audience": (r["_id"] or "unspecified"), "count": r["count"], "emailed": r["emailed"]}
+        for r in by_audience_raw
+    ]
+
+    # Per-source breakdown
+    source_pipeline = [
+        {"$group": {"_id": "$source", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+    ]
+    by_source_raw = await db.waitlist.aggregate(source_pipeline).to_list(100)
+    by_source = [{"source": (r["_id"] or "unspecified"), "count": r["count"]} for r in by_source_raw]
+
+    # Watch platform split
+    platform_pipeline = [
+        {"$match": {"audience": "watch"}},
+        {"$group": {"_id": "$platform", "count": {"$sum": 1}}},
+    ]
+    plat_raw = await db.waitlist.aggregate(platform_pipeline).to_list(20)
+    by_platform = [{"platform": (r["_id"] or "unspecified"), "count": r["count"]} for r in plat_raw]
+
+    # Daily timeline (last 30 days). created_at is stored as ISO string, so prefix match works.
+    now = datetime.now(timezone.utc)
+    timeline = []
+    for i in range(29, -1, -1):
+        day = (now - timedelta(days=i)).strftime("%Y-%m-%d")
+        c = await db.waitlist.count_documents({"created_at": {"$regex": f"^{day}"}})
+        timeline.append({"day": day, "count": c})
+
+    # Recent signups (latest 25, redacted email)
+    recent_raw = await db.waitlist.find({}, {"_id": 0}).sort("created_at", -1).to_list(25)
+
+    def _redact(email: str) -> str:
+        if not email or "@" not in email:
+            return email
+        local, _, domain = email.partition("@")
+        if len(local) <= 2:
+            return f"{local[0]}*@{domain}"
+        return f"{local[0]}{'*' * (len(local) - 2)}{local[-1]}@{domain}"
+
+    recent = [
+        {
+            "email": _redact(r.get("email", "")),
+            "audience": r.get("audience"),
+            "platform": r.get("platform"),
+            "source": r.get("source"),
+            "created_at": r.get("created_at"),
+            "email_sent": r.get("email_sent", False),
+        }
+        for r in recent_raw
+    ]
+
+    return {
+        "total": total,
+        "emailed": emailed,
+        "send_rate": (emailed / total) if total else 0.0,
+        "by_audience": by_audience,
+        "by_source": by_source,
+        "by_platform": by_platform,
+        "timeline": timeline,
+        "recent": recent,
+    }
 
 
 # Include the router in the main app
