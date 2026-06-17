@@ -5,6 +5,7 @@ import { ArrowUpRight, Shield, Check, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
 import InfinityGlow from "@/components/landing/InfinityGlow";
+import FoundingBadge, { foundingPrice } from "@/components/landing/FoundingBadge";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -309,10 +310,28 @@ export default function ProfessionLanding({ cfg }) {
                             )}
                             <h3 className="font-display text-3xl text-ink">{t.name}</h3>
                             <p className="mt-2 text-sm text-ink-soft min-h-[2.5rem]">{t.sub}</p>
-                            <div className="mt-6 flex items-baseline gap-2">
-                                <span className={`font-display text-5xl ${t.accent ? "gradient-text" : "text-ink"}`}>{t.price}</span>
+                            <div className="mt-6 flex items-baseline gap-2 flex-wrap">
+                                {foundingPrice(t.price) ? (
+                                    <>
+                                        <span className={`font-display text-5xl ${t.accent ? "gradient-text" : "text-ink"}`}>
+                                            {foundingPrice(t.price)}
+                                        </span>
+                                        <span className="text-ink-soft line-through text-sm font-mono">
+                                            {t.price}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <span className={`font-display text-5xl ${t.accent ? "gradient-text" : "text-ink"}`}>
+                                        {t.price}
+                                    </span>
+                                )}
                                 <span className="text-ink-soft text-xs">{t.cadence}</span>
                             </div>
+                            {foundingPrice(t.price) && (
+                                <p className="mt-1 text-[10px] uppercase tracking-[0.25em] gradient-text">
+                                    Founding price · lifetime locked
+                                </p>
+                            )}
                             <ul className="mt-7 space-y-3 flex-1 text-ink">
                                 {t.features.map((f) => (
                                     <li key={f} className="flex items-start gap-2.5 text-sm">
@@ -328,6 +347,14 @@ export default function ProfessionLanding({ cfg }) {
                             >
                                 Reserve a seat
                             </a>
+                            {i === 0 && (
+                                <FoundingBadge
+                                    audience={cfg.audience}
+                                    accent={t.accent}
+                                    label={`Founding ${cfg.footerBrand.toLowerCase()} seats`}
+                                    data-testid={`${cfg.slug}-founding-badge`}
+                                />
+                            )}
                         </motion.div>
                     ))}
                 </div>

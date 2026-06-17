@@ -249,7 +249,18 @@ async def waitlist_count():
     n = await db.waitlist.count_documents({})
     apple = await db.waitlist.count_documents({"audience": "watch", "platform": "apple"})
     android = await db.waitlist.count_documents({"audience": "watch", "platform": "android"})
-    return {"count": n, "watch_apple": apple, "watch_android": android}
+    # Per-audience counts (used by founding-seat counters on the marketing pages).
+    pipeline = [
+        {"$group": {"_id": "$audience", "count": {"$sum": 1}}},
+    ]
+    rows = await db.waitlist.aggregate(pipeline).to_list(100)
+    by_audience: Dict[str, int] = {(r["_id"] or "unspecified"): r["count"] for r in rows}
+    return {
+        "count": n,
+        "watch_apple": apple,
+        "watch_android": android,
+        "by_audience": by_audience,
+    }
 
 
 # ---------- Admin analytics ----------

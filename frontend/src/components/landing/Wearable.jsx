@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Vibrate, HeartPulse, Moon, Watch } from "lucide-react";
+import { Vibrate, HeartPulse, Moon, Watch, Sparkles } from "lucide-react";
 import { setAudience, setPlatform } from "./audienceStore";
+import FoundingBadge from "./FoundingBadge";
 
 const FEATURES = [
     { icon: HeartPulse, title: "Continuous HRV", text: "Heart-rate variability + breath cadence read in the background. No active session needed." },
@@ -95,6 +96,38 @@ export default function Wearable() {
                     <p className="mt-4 text-xs text-ink-soft">
                         Pairs with iOS and Android · works alongside any tier above.
                     </p>
+
+                    {/* Founding wrist offer */}
+                    <div
+                        data-testid="wearable-founding-offer"
+                        className="mt-8 rounded-3xl p-5 md:p-6 relative overflow-hidden"
+                        style={{
+                            background:
+                                "linear-gradient(135deg, rgba(94,139,255,0.12), rgba(138,77,255,0.18), rgba(255,111,211,0.14))",
+                            border: "1px solid rgba(255,255,255,0.14)",
+                        }}
+                    >
+                        <div className="flex items-start gap-3 mb-3">
+                            <Sparkles size={16} className="text-pink mt-1" />
+                            <div>
+                                <p className="text-[10px] uppercase tracking-[0.3em] gradient-text">
+                                    Founding ring · first 1,000 seats
+                                </p>
+                                <p className="font-display text-2xl md:text-3xl text-ink mt-1 leading-snug">
+                                    50% off forever{" "}
+                                    <span className="text-ink-soft text-sm font-sans align-middle">
+                                        + exclusive gradient watch face only founders see
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <FoundingBadge
+                            audience="watch"
+                            accent
+                            label="Founding rings claimed"
+                            data-testid="wearable-founding-badge"
+                        />
+                    </div>
                 </motion.div>
 
                 {/* Right: watch mockup */}

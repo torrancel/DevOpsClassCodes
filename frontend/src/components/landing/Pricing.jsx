@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { setAudience } from "./audienceStore";
+import FoundingBadge, { foundingPrice } from "./FoundingBadge";
 
 const TIERS = [
     {
@@ -79,6 +80,10 @@ export default function Pricing() {
                     <br />
                     <em className="gradient-text">kind</em> of human.
                 </h2>
+                <p className="mt-6 text-base md:text-lg text-ink-soft max-w-xl" data-testid="pricing-founding-banner">
+                    <span className="gradient-text font-medium">Founding cohort open.</span>{" "}
+                    First seats per audience get <span className="text-ink">50% off forever</span> — lifetime locked.
+                </p>
             </div>
 
             <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -114,16 +119,36 @@ export default function Pricing() {
                         )}
                         <h3 className="font-display text-3xl text-ink">{t.name}</h3>
                         <p className="mt-2 text-xs text-ink-soft min-h-[2.5rem]">{t.sub}</p>
-                        <div className="mt-6 flex items-baseline gap-2">
-                            <span
-                                className={`font-display text-4xl md:text-5xl ${
-                                    t.accent ? "gradient-text" : "text-ink"
-                                }`}
-                            >
-                                {t.price}
-                            </span>
+                        <div className="mt-6 flex items-baseline gap-2 flex-wrap">
+                            {foundingPrice(t.price) ? (
+                                <>
+                                    <span
+                                        className={`font-display text-4xl md:text-5xl ${
+                                            t.accent ? "gradient-text" : "text-ink"
+                                        }`}
+                                    >
+                                        {foundingPrice(t.price)}
+                                    </span>
+                                    <span className="text-ink-soft line-through text-sm font-mono">
+                                        {t.price}
+                                    </span>
+                                </>
+                            ) : (
+                                <span
+                                    className={`font-display text-4xl md:text-5xl ${
+                                        t.accent ? "gradient-text" : "text-ink"
+                                    }`}
+                                >
+                                    {t.price}
+                                </span>
+                            )}
                             <span className="text-ink-soft text-xs">{t.cadence}</span>
                         </div>
+                        {foundingPrice(t.price) && (
+                            <p className="mt-1 text-[10px] uppercase tracking-[0.25em] gradient-text">
+                                Founding price · lifetime locked
+                            </p>
+                        )}
                         <ul className="mt-7 space-y-3 flex-1 text-ink">
                             {t.features.map((f) => (
                                 <li key={f} className="flex items-start gap-2.5 text-sm">
@@ -149,6 +174,11 @@ export default function Pricing() {
                         >
                             {t.cta}
                         </a>
+                        <FoundingBadge
+                            audience={t.slug}
+                            accent={t.accent}
+                            data-testid={`founding-${t.slug}`}
+                        />
                     </motion.div>
                 ))}
             </div>
