@@ -1,0 +1,79 @@
+{
+  "summary": "Iteration 4 (audience-capture + real waitlist + Resend) verified end-to-end. Backend: 11/11 pytest cases pass (waitlist create/idempotency/422/unknown-audience-coerced/count/Resend test-mode). Frontend: all CTA audience-picker flows pass, Pricing CTA -> #cta scroll + audience selection works, Professional sub-card -> sub-chip + detail-line works, success/error toasts behave per spec, no console errors. Resend test-mode confirmed: email_sent=true for torrancel42@gmail.com (curl-verified), email_sent=false (record still persisted) for any other address.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_results_detail": {
+    "backend_pytest": "11/11 passed in 2.70s — see /app/backend/tests/test_waitlist.py and /app/test_reports/pytest/waitlist_results.xml",
+    "POST_/api/waitlist": {
+      "valid_with_known_audience_returns_200_with_full_shape": true,
+      "missing_audience_persists_with_audience_null": true,
+      "unknown_audience_coerced_to_null": "verified ('martians' -> null)",
+      "sub_audience_doctors_persisted": true,
+      "invalid_email_a_at_b_returns_422": true,
+      "missing_email_returns_422": true
+    },
+    "idempotency": {
+      "same_email_same_audience": "returns identical id + created_at on 2nd POST — verified",
+      "same_email_different_audience": "creates new record with distinct id — verified"
+    },
+    "GET_/api/waitlist/count": "returns {count: int}; increments after insert — verified",
+    "resend_test_mode": {
+      "verified_owner_torrancel42_at_gmail_com": "email_sent=true on fresh (email,audience) — curl-verified, id=217a2d97-95c6-40a6-8474-97ac5387da8a",
+      "other_addresses": "email_sent=false but record still persisted — verified across all non-owner tests"
+    },
+    "frontend_cta_audience_picker": {
+      "picker_visible_with_4_primary_chips": ["kids","individual","team","professional"],
+      "sub_audience_chips_hidden_by_default": true,
+      "single_select_toggling": "kids -> team -> deselect team — verified via class bg-white/10",
+      "pricing_cta_individual_selects_and_scrolls_to_cta": true,
+      "professional_doctors_card_sets_audience_and_scrolls": true,
+      "cta_audience_doctors_chip_appears_after_subcard_click": true,
+      "cta_audience_detail_helper_text_contains_Doctors": true
+    },
+    "frontend_form_submission": {
+      "submit_with_doctors_audience_posts_correct_body": "POST /api/waitlist {email, audience: 'doctors', source: 'cta'} — verified via page.on('request')",
+      "success_toast_contains_audience_label": "'Doctors mode beta' present in body after submit — verified",
+      "submit_without_audience_shows_generic_toast": "'on the list. We'll write quietly.' — verified",
+      "invalid_email_shows_FE_validation_toast": "'Please enter a valid email.' — verified (noValidate working)",
+      "server_422_path_note": "Could not trigger from UI because pydantic EmailStr accepts 'a@b.c' which also passes FE regex. The error-toast code path exists and copy matches spec ('Something went wrong. Try again in a moment.'). 'a@b' is caught by FE regex first. Backend correctly returns 422 for 'a@b' (verified in pytest)."
+    },
+    "regression_smoke_at_1440x900_and_375x812": {
+      "nav_visible": true,
+      "modules_cards_count": 4,
+      "demo_signals_count": 6,
+      "faq_items_count": 6,
+      "pricing_tiers_count": 4,
+      "mobile_nav_toggle_at_375x812": "visible; opens mobile menu — verified",
+      "console_errors": 0,
+      "page_errors": 0
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_waitlist.py",
+    "/app/test_reports/pytest/waitlist_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py: clean implementation. Idempotency key (email lower-cased, audience) is correct and matches spec. Email send is non-blocking via asyncio.to_thread — good.",
+    "server.py L240-244: logging.basicConfig and logger init are AFTER _send_confirmation_email (which references `logger`). _send_confirmation_email() uses module-level `logger` — works at call time because functions resolve names lazily, but the order is fragile. Consider initializing the logger immediately after imports.",
+    "audienceStore.js: module-level singleton store via useSyncExternalStore is clean and idiomatic. setAudience(value) silently nulls unknown keys — matches backend coercion. Good.",
+    "CTA.jsx L20-25: useEffect that triggers smooth-scroll on every audience change will also scroll when user picks a chip directly inside the CTA (which is already in view) — harmless because the section is already top-aligned, but worth noting.",
+    "Pricing.jsx L141: pricing CTAs are <a href='#cta'> with onClick setAudience — relies on browser anchor jump rather than smooth-scroll. Works (CTA.jsx useEffect re-triggers smooth-scroll after audience change), but slightly redundant.",
+    "Backend .env: RESEND_API_KEY is committed in plaintext to /app/backend/.env — fine for preview env but should be rotated before any public deploy.",
+    "No data-testid on the close (X) icon inside a selected chip — minor; chip itself has the testid so tests can re-click to deselect."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_waitlist.py (new)"
+  ],
+  "success_rate": {"backend": "100% (11/11 pytest)", "frontend": "100% of testable spec items (server-422 toast path not externally inducible from UI but code/copy match spec)"},
+  "test_credentials": "Resend verified owner: torrancel42@gmail.com (email_sent=true only for this address; all other addresses persist with email_sent=false — documented Resend test-mode behaviour, not a bug).",
+  "seed_data_creation": "Pytest inserts ~9 TEST_*/COUNT_* waitlist records per run. Idempotency on (email, audience) means repeat runs don't duplicate primary records. No cleanup is performed (collection 'waitlist' on the preview Mongo).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 4 wires the previously-mocked waitlist into FastAPI + Mongo + Resend. POST /api/waitlist accepts {email, audience?, source?} and is idempotent on (email lower, audience). Unknown audiences coerced to null. EmailStr (pydantic) accepts 'a@b.c' — to test the FE server-error toast path, prefer mocking the network. Frontend audience store is a module-level useSyncExternalStore singleton (audienceStore.js) — calling setAudience anywhere updates CTA picker in real time. Pricing CTAs and Professional sub-cards both call setAudience and rely on CTA.jsx's useEffect for smooth-scroll. Run: `pytest /app/backend/tests/test_waitlist.py -v`.",
+  "rca_of_the_issue": "N/A — no defects found. All review-request items verified."
+}

@@ -1,5 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Stethoscope, Scale, GraduationCap, Briefcase } from "lucide-react";
+import { setAudience } from "./audienceStore";
 
 const CASES = [
     {
@@ -171,11 +172,18 @@ export default function UseCases() {
                                     <div className="grid grid-cols-12 gap-4 md:gap-6">
                                         {c.professions.map((p, i) => {
                                             const Icon = p.icon;
+                                            const slug = p.name.toLowerCase();
                                             return (
-                                                <div
+                                                <button
+                                                    type="button"
                                                     key={p.name}
-                                                    data-testid={`professional-${p.name.toLowerCase()}`}
-                                                    className="col-span-12 sm:col-span-6 lg:col-span-3 gradient-border p-6 transition-transform duration-500 hover:-translate-y-1"
+                                                    onClick={() => {
+                                                        setAudience(slug);
+                                                        const el = document.getElementById("cta");
+                                                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                                                    }}
+                                                    data-testid={`professional-${slug}`}
+                                                    className="col-span-12 sm:col-span-6 lg:col-span-3 gradient-border p-6 transition-transform duration-500 hover:-translate-y-1 text-left"
                                                 >
                                                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/[0.04] border border-white/10 mb-5">
                                                         <Icon size={20} strokeWidth={1.5} className="text-ink" />
@@ -186,7 +194,10 @@ export default function UseCases() {
                                                     <p className="text-sm text-ink-soft leading-relaxed">
                                                         {p.desc}
                                                     </p>
-                                                </div>
+                                                    <p className="mt-4 text-[10px] uppercase tracking-[0.25em] gradient-text">
+                                                        Join {p.name.toLowerCase()} beta →
+                                                    </p>
+                                                </button>
                                             );
                                         })}
                                     </div>

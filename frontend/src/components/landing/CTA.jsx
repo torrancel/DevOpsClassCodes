@@ -1,10 +1,28 @@
-import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowUpRight, X } from "lucide-react";
 import { toast } from "sonner";
+import axios from "axios";
+import { useAudience, listAudiences, getAudienceMeta, setAudience } from "./audienceStore";
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const PRIMARY = ["kids", "individual", "team", "professional"];
 
 export default function CTA() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
+    const [audience] = useAudience();
+    const meta = audience ? getAudienceMeta(audience) : null;
+    const all = listAudiences();
+    const isSubAudience = audience && !PRIMARY.includes(audience);
+
+    // When a sub-audience (doctors/attorneys/teachers/managers) is selected via
+    // a card click, smooth-scroll into the form for feedback.
+    useEffect(() => {
+        if (audience) {
+            const el = document.getElementById("cta");
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }, [audience]);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -13,12 +31,28 @@ export default function CTA() {
             return;
         }
         setLoading(true);
-        await new Promise((r) => setTimeout(r, 600));
-        toast.success("You're on the list. We'll write quietly.", {
-            description: `Saved ${email} to the Let It Go waitlist.`,
-        });
-        setEmail("");
-        setLoading(false);
+        try {
+            const { data } = await axios.post(`${API}/waitlist`, {
+                email,
+                audience: audience || null,
+                source: "cta",
+            });
+            toast.success(
+                meta ? `You're on the ${meta.label} list.` : "You're on the list. We'll write quietly.",
+                {
+                    description: data.email_sent
+                        ? "A quiet confirmation just landed in your inbox."
+                        : `Saved ${email}. We'll be in touch.`,
+                }
+            );
+            setEmail("");
+        } catch (err) {
+            toast.error("Something went wrong. Try again in a moment.", {
+                description: err?.response?.data?.detail?.toString() || "Network or server error.",
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -56,11 +90,55 @@ export default function CTA() {
                         we'll write — once, and only when there's something real.
                     </p>
 
+                    {/* Audience picker */}
+                    <div className="mt-10">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft mb-3">
+                            Joining as
+                        </p>
+                        <div className="flex flex-wrap gap-2" data-testid="cta-audience-picker">
+                            {all.map((a) => {
+                                const isPrimary = PRIMARY.includes(a.key);
+                                const isSelected = audience === a.key;
+                                // Hide sub-audiences unless selected, to keep the picker clean
+                                if (!isPrimary && !isSelected) return null;
+                                return (
+                                    <button
+                                        type="button"
+                                        key={a.key}
+                                        onClick={() => setAudience(isSelected ? null : a.key)}
+                                        data-testid={`cta-audience-${a.key}`}
+                                        className={`group inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs uppercase tracking-[0.18em] transition-all ${
+                                            isSelected
+                                                ? "bg-white/10 text-ink border border-white/30"
+                                                : "bg-white/[0.03] text-ink-soft border border-white/10 hover:text-ink hover:border-white/20"
+                                        }`}
+                                    >
+                                        <span
+                                            className="inline-block w-1.5 h-1.5 rounded-full"
+                                            style={{ background: a.color }}
+                                        />
+                                        {a.label.replace(" beta", "")}
+                                        {isSelected && <X size={12} className="opacity-70" />}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {isSubAudience && (
+                            <p
+                                data-testid="cta-audience-detail"
+                                className="mt-3 text-xs text-ink-soft"
+                            >
+                                Specialist mode selected — your confirmation will be tailored to{" "}
+                                <span className="text-ink">{meta.label.replace(" beta", "")}</span>.
+                            </p>
+                        )}
+                    </div>
+
                     <form
                         onSubmit={submit}
                         noValidate
                         data-testid="cta-form"
-                        className="mt-12 flex flex-col sm:flex-row items-stretch gap-3 max-w-xl"
+                        className="mt-8 flex flex-col sm:flex-row items-stretch gap-3 max-w-xl"
                     >
                         <input
                             type="email"
@@ -85,7 +163,7 @@ export default function CTA() {
                     </form>
 
                     <p className="mt-6 text-xs text-ink-soft">
-                        No marketing. No drip campaigns. Just one email when your cohort opens.
+                        No marketing. No drip campaigns. Just one quiet email when your cohort opens.
                     </p>
                 </div>
             </div>

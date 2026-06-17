@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { setAudience } from "./audienceStore";
 
 const TIERS = [
     {
@@ -138,6 +139,7 @@ export default function Pricing() {
                         </ul>
                         <a
                             href="#cta"
+                            onClick={() => setAudience(t.slug)}
                             data-testid={`pricing-cta-${t.slug}`}
                             className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
                                 t.accent
