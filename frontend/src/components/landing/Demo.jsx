@@ -1,20 +1,22 @@
 import { motion } from "framer-motion";
 
 const SIGNALS = [
-    { label: "Calm", value: 72, color: "#2B4C3B" },
-    { label: "Focus", value: 64, color: "#C49775" },
-    { label: "Tension", value: 28, color: "#9B5B3F" },
-    { label: "Warmth", value: 81, color: "#7A8A5C" },
+    { label: "Calm", value: 72, color: "#5E8BFF" },
+    { label: "Focus", value: 64, color: "#8A4DFF" },
+    { label: "Tension", value: 28, color: "#FF8A5C" },
+    { label: "Warmth", value: 81, color: "#FF6FD3" },
 ];
 
 export default function Demo() {
     return (
         <section
-            id="demo"
+            id="experience"
             data-testid="demo-section"
-            className="bg-bg-soft px-6 md:px-12 lg:px-24 py-24 md:py-40"
+            className="relative px-6 md:px-12 lg:px-20 py-24 md:py-40 overflow-hidden"
         >
-            <div className="grid grid-cols-12 gap-6 md:gap-12 items-center">
+            <div className="absolute inset-0 aurora opacity-50 pointer-events-none"></div>
+
+            <div className="relative grid grid-cols-12 gap-6 md:gap-12 items-center">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -24,14 +26,15 @@ export default function Demo() {
                 >
                     <div
                         data-testid="demo-mockup"
-                        className="relative rounded-3xl bg-surface border border-line shadow-[0_24px_80px_rgba(43,76,59,0.08)] p-8 md:p-10"
+                        className="relative gradient-border p-8 md:p-10"
+                        style={{ boxShadow: "0 40px 120px -20px rgba(138,77,255,0.35)" }}
                     >
-                        <div className="flex items-center justify-between mb-8 pb-6 border-b border-line">
+                        <div className="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
                             <div className="flex items-center gap-3">
-                                <span className="relative inline-block w-2.5 h-2.5 rounded-full bg-forest">
-                                    <span className="absolute inset-0 rounded-full bg-forest animate-breath"></span>
+                                <span className="relative inline-block w-2.5 h-2.5 rounded-full bg-pink">
+                                    <span className="absolute inset-0 rounded-full bg-pink animate-breath"></span>
                                 </span>
-                                <p className="text-xs uppercase tracking-[0.25em] text-ink-soft">
+                                <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">
                                     Affective state · live
                                 </p>
                             </div>
@@ -40,12 +43,18 @@ export default function Demo() {
 
                         {/* Pulse circle */}
                         <div className="relative h-56 mb-8 flex items-center justify-center">
-                            <div className="absolute w-48 h-48 rounded-full bg-forest/5 animate-breath-slow"></div>
-                            <div className="absolute w-32 h-32 rounded-full bg-forest/10 animate-breath"></div>
-                            <div className="relative w-20 h-20 rounded-full bg-forest flex items-center justify-center text-bg">
+                            <div className="absolute w-56 h-56 rounded-full bg-violet/10 animate-breath-slow"></div>
+                            <div className="absolute w-40 h-40 rounded-full bg-pink/15 animate-breath"></div>
+                            <div
+                                className="relative w-24 h-24 rounded-full flex items-center justify-center text-white"
+                                style={{
+                                    background: "linear-gradient(135deg, #5E8BFF, #8A4DFF, #FF6FD3)",
+                                    boxShadow: "0 0 60px rgba(138,77,255,0.7)",
+                                }}
+                            >
                                 <div className="text-center">
-                                    <p className="font-serif text-2xl leading-none">72</p>
-                                    <p className="text-[10px] uppercase tracking-[0.2em] mt-1 opacity-70">
+                                    <p className="font-display text-3xl leading-none">72</p>
+                                    <p className="text-[10px] uppercase tracking-[0.2em] mt-1 opacity-80">
                                         EQ
                                     </p>
                                 </div>
@@ -61,26 +70,26 @@ export default function Demo() {
                                         </span>
                                         <span className="font-mono text-ink">{s.value}</span>
                                     </div>
-                                    <div className="h-px bg-line relative overflow-hidden">
+                                    <div className="h-px bg-white/10 relative overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
                                             whileInView={{ width: `${s.value}%` }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 1.2, delay: 0.3 + i * 0.15 }}
                                             className="absolute left-0 top-0 h-full"
-                                            style={{ background: s.color }}
+                                            style={{ background: s.color, boxShadow: `0 0 8px ${s.color}` }}
                                         />
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="mt-8 p-4 rounded-2xl bg-bg-soft border border-line">
-                            <p className="text-xs uppercase tracking-[0.2em] text-forest mb-2">
+                        <div className="mt-8 p-5 rounded-2xl bg-white/[0.04] border border-white/10">
+                            <p className="text-[10px] uppercase tracking-[0.25em] gradient-text mb-2">
                                 Suggestion
                             </p>
-                            <p className="font-serif text-xl text-ink italic">
-                                "Take a slow breath. Shoulders down. You're carrying yesterday."
+                            <p className="font-display text-xl text-ink italic">
+                                "Slow breath. Shoulders down. You're carrying yesterday. Let it go."
                             </p>
                         </div>
                     </div>
@@ -93,21 +102,21 @@ export default function Demo() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="col-span-12 md:col-span-5 md:pl-8"
                 >
-                    <p className="text-xs uppercase tracking-[0.3em] text-forest mb-6">
+                    <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
                         See it work
                     </p>
                     <h2
                         data-testid="demo-headline"
-                        className="font-serif text-4xl md:text-5xl leading-[1.05] tracking-tight text-ink"
+                        className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-ink"
                     >
                         A nervous system,
                         <br />
-                        <em className="text-forest">visualized</em>.
+                        <em className="gradient-text">visualized</em>.
                     </h2>
                     <p className="mt-6 text-lg text-ink-soft leading-relaxed max-w-md">
-                        Aura listens to twelve continuous signals — and synthesizes them into a
-                        single, ambient sense of state. No charts to read. No dashboards to study.
-                        Just a quiet, intelligent presence.
+                        Twelve continuous signals, one quiet read. No dashboards to study,
+                        no charts to learn — just a soft presence that knows when to nudge,
+                        and when to disappear.
                     </p>
 
                     <div className="mt-10 space-y-4 max-w-md">
@@ -118,7 +127,7 @@ export default function Demo() {
                             "Contextual memory of your patterns",
                         ].map((t) => (
                             <div key={t} className="flex items-start gap-3">
-                                <span className="mt-2 inline-block h-px w-6 bg-forest/60"></span>
+                                <span className="mt-2 inline-block h-px w-6 bg-gradient-to-r from-blue to-pink"></span>
                                 <p className="text-base text-ink">{t}</p>
                             </div>
                         ))}

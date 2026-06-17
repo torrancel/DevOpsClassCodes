@@ -53,14 +53,14 @@ export default function Pricing() {
         <section
             id="pricing"
             data-testid="pricing-section"
-            className="px-6 md:px-12 lg:px-24 py-24 md:py-40"
+            className="px-6 md:px-12 lg:px-20 py-24 md:py-40"
         >
             <div className="mb-16 md:mb-20 max-w-3xl">
-                <p className="text-xs uppercase tracking-[0.3em] text-forest mb-6">Pricing</p>
-                <h2 className="font-serif text-4xl md:text-6xl leading-[1.05] tracking-tight text-ink">
+                <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">Pricing</p>
+                <h2 className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink">
                     Honest prices.
                     <br />
-                    <em className="text-forest">No</em> dark patterns.
+                    <em className="gradient-text">No</em> dark patterns.
                 </h2>
             </div>
 
@@ -73,42 +73,42 @@ export default function Pricing() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: i * 0.1 }}
                         data-testid={`pricing-tier-${t.name.toLowerCase()}`}
-                        className={`col-span-12 md:col-span-4 rounded-3xl p-8 md:p-10 border flex flex-col ${
+                        className={`col-span-12 md:col-span-4 rounded-3xl p-8 md:p-10 relative flex flex-col overflow-hidden ${
                             t.accent
-                                ? "bg-forest text-bg border-forest-deep md:scale-[1.03] shadow-[0_24px_80px_rgba(43,76,59,0.18)]"
-                                : "bg-surface text-ink border-line"
+                                ? "md:scale-[1.04]"
+                                : ""
                         }`}
+                        style={
+                            t.accent
+                                ? {
+                                      background:
+                                          "linear-gradient(160deg, rgba(94,139,255,0.15), rgba(138,77,255,0.18), rgba(255,111,211,0.15))",
+                                      border: "1px solid rgba(255,255,255,0.18)",
+                                      boxShadow: "0 30px 80px -20px rgba(138,77,255,0.45)",
+                                  }
+                                : {
+                                      background: "rgba(255,255,255,0.025)",
+                                      border: "1px solid rgba(255,255,255,0.08)",
+                                  }
+                        }
                     >
                         {t.accent && (
-                            <span className="self-start text-[10px] uppercase tracking-[0.3em] bg-clay text-ink px-3 py-1 rounded-full mb-6">
+                            <span className="self-start text-[10px] uppercase tracking-[0.3em] bg-gradient-to-r from-blue via-violet to-pink text-white px-3 py-1 rounded-full mb-6">
                                 Most chosen
                             </span>
                         )}
-                        <h3 className="font-serif text-3xl">{t.name}</h3>
-                        <p
-                            className={`mt-2 text-sm ${
-                                t.accent ? "text-bg/70" : "text-ink-soft"
-                            }`}
-                        >
-                            {t.sub}
-                        </p>
+                        <h3 className="font-display text-4xl text-ink">{t.name}</h3>
+                        <p className="mt-2 text-sm text-ink-soft">{t.sub}</p>
                         <div className="mt-8 flex items-baseline gap-2">
-                            <span className="font-serif text-5xl md:text-6xl">{t.price}</span>
-                            <span className={t.accent ? "text-bg/60" : "text-ink-soft"}>
-                                {t.cadence}
+                            <span className={`font-display text-5xl md:text-6xl ${t.accent ? "gradient-text" : "text-ink"}`}>
+                                {t.price}
                             </span>
+                            <span className="text-ink-soft">{t.cadence}</span>
                         </div>
-                        <ul
-                            className={`mt-8 space-y-3 flex-1 ${
-                                t.accent ? "text-bg/85" : "text-ink"
-                            }`}
-                        >
+                        <ul className="mt-8 space-y-3 flex-1 text-ink">
                             {t.features.map((f) => (
                                 <li key={f} className="flex items-start gap-3 text-sm">
-                                    <Check
-                                        size={16}
-                                        className={`mt-0.5 ${t.accent ? "text-clay" : "text-forest"}`}
-                                    />
+                                    <Check size={16} className={`mt-0.5 ${t.accent ? "text-pink" : "text-violet"}`} />
                                     {f}
                                 </li>
                             ))}
@@ -118,8 +118,8 @@ export default function Pricing() {
                             data-testid={`pricing-cta-${t.name.toLowerCase()}`}
                             className={`mt-10 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
                                 t.accent
-                                    ? "bg-bg text-forest hover:bg-clay hover:text-ink"
-                                    : "bg-forest text-bg hover:bg-forest-deep"
+                                    ? "btn-glow bg-gradient-to-r from-blue via-violet to-pink text-white"
+                                    : "border border-white/15 text-ink hover:bg-white/5"
                             }`}
                         >
                             {t.cta}

@@ -1,114 +1,114 @@
-import { Ear, Compass, Sparkles, Network } from "lucide-react";
+import { Brain, Heart, Leaf, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
 
-const MODULES = [
+const PILLARS = [
     {
-        icon: Ear,
-        title: "Affect Sensing",
+        icon: Brain,
+        title: "Aware",
         sub: "01",
-        text: "Multimodal signals — voice timbre, micro-expressions, language patterns, biometrics — distilled into a continuous emotional state estimate.",
-        tone: "light",
-        span: "md:col-span-7 md:row-span-2",
+        color: "blue",
+        gradient: "from-blue/30 to-blue/0",
+        text: "Multimodal sensing — voice prosody, language, micro-context, optional biometrics — distilled into a quiet, continuous read of where you actually are.",
     },
     {
-        icon: Compass,
-        title: "Regulation Coaching",
+        icon: Heart,
+        title: "Release",
         sub: "02",
-        text: "Real-time, low-friction nudges. Breathe. Reframe. Pause. Adapted to your nervous system, not someone else's.",
-        tone: "dark",
-        span: "md:col-span-5",
+        color: "pink",
+        gradient: "from-pink/30 to-pink/0",
+        text: "Real-time, low-friction nudges. Breathe. Reframe. Soften. Tuned to your nervous system, not someone else's protocol.",
     },
     {
-        icon: Network,
-        title: "Conflict Mediation",
+        icon: Leaf,
+        title: "Grow",
         sub: "03",
-        text: "When two parties (human or agent) misalign, Aura translates underneath the words — surfacing the need behind the position.",
-        tone: "clay",
-        span: "md:col-span-5",
+        color: "violet",
+        gradient: "from-violet/30 to-violet/0",
+        text: "A private, encrypted memory of your patterns over time. The first long-term record of who you're becoming, owned only by you.",
     },
     {
-        icon: Sparkles,
-        title: "Growth Memory",
+        icon: CircleDot,
+        title: "Transform",
         sub: "04",
-        text: "A private, encrypted ledger of your emotional patterns over time. The first long-term record of who you're becoming.",
-        tone: "light",
-        span: "md:col-span-12",
+        color: "orange",
+        gradient: "from-orange/30 to-orange/0",
+        text: "Aware → Release → Grow loops back into action. Let It Go translates inner shifts into outer change — how you speak, lead, love, and build.",
     },
 ];
 
-const toneStyle = {
-    light: "bg-surface text-ink border-line",
-    dark: "bg-forest text-bg border-forest-deep",
-    clay: "bg-clay/20 text-ink border-clay/40",
+const dotColor = {
+    blue: "bg-blue",
+    pink: "bg-pink",
+    violet: "bg-violet",
+    orange: "bg-orange",
 };
 
 export default function Modules() {
     return (
         <section
-            id="modules"
+            id="pillars"
             data-testid="modules-section"
-            className="px-6 md:px-12 lg:px-24 py-24 md:py-40"
+            className="px-6 md:px-12 lg:px-20 py-24 md:py-40"
         >
             <div className="mb-16 md:mb-24 max-w-4xl">
-                <p className="text-xs uppercase tracking-[0.3em] text-forest mb-6">
-                    The platform
+                <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
+                    Four pillars
                 </p>
                 <h2
                     data-testid="modules-headline"
-                    className="font-serif text-4xl md:text-6xl leading-[1.05] tracking-tight text-ink"
+                    className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink"
                 >
-                    Four modules.
+                    The shape of
                     <br />
-                    One <em className="text-forest">inner</em> operating system.
+                    <em className="gradient-text">letting go</em>.
                 </h2>
             </div>
 
-            <div className="grid grid-cols-12 gap-4 md:gap-6 auto-rows-fr">
-                {MODULES.map((m, i) => {
-                    const Icon = m.icon;
+            <div className="grid grid-cols-12 gap-4 md:gap-6">
+                {PILLARS.map((p, i) => {
+                    const Icon = p.icon;
                     return (
                         <motion.div
-                            key={m.title}
+                            key={p.title}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: i * 0.08 }}
                             data-testid={`module-card-${i}`}
-                            className={`col-span-12 ${m.span} relative rounded-3xl border p-8 md:p-10 overflow-hidden group transition-all duration-500 hover:-translate-y-1 ${toneStyle[m.tone]}`}
+                            className="col-span-12 md:col-span-6 relative gradient-border p-8 md:p-10 overflow-hidden group transition-transform duration-500 hover:-translate-y-1"
                         >
-                            <div className="flex items-start justify-between mb-10">
+                            {/* gradient wash */}
+                            <div
+                                className={`absolute -top-32 -right-32 w-72 h-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl opacity-70 pointer-events-none`}
+                            ></div>
+
+                            <div className="relative flex items-start justify-between mb-10">
                                 <div
-                                    className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                                        m.tone === "dark"
-                                            ? "bg-bg/10 text-bg"
-                                            : "bg-forest/10 text-forest"
-                                    }`}
+                                    className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-white/[0.04] border border-white/10`}
                                 >
-                                    <Icon size={20} strokeWidth={1.5} />
+                                    <Icon
+                                        size={22}
+                                        strokeWidth={1.5}
+                                        className={
+                                            p.color === "blue" ? "text-blue" :
+                                            p.color === "pink" ? "text-pink" :
+                                            p.color === "violet" ? "text-violet" :
+                                            "text-orange"
+                                        }
+                                    />
                                 </div>
-                                <span
-                                    className={`text-xs tracking-[0.25em] ${
-                                        m.tone === "dark" ? "text-bg/50" : "text-ink-soft"
-                                    }`}
-                                >
-                                    {m.sub}
-                                </span>
+                                <div className="flex items-center gap-3">
+                                    <span className={`w-2 h-2 rounded-full ${dotColor[p.color]}`}></span>
+                                    <span className="text-xs tracking-[0.3em] text-ink-soft">{p.sub}</span>
+                                </div>
                             </div>
 
-                            <h3 className="font-serif text-3xl md:text-4xl tracking-tight mb-4">
-                                {m.title}
+                            <h3 className="relative font-display text-4xl md:text-5xl tracking-tight mb-4 text-ink">
+                                {p.title}
                             </h3>
-                            <p
-                                className={`text-base md:text-lg leading-relaxed max-w-xl ${
-                                    m.tone === "dark" ? "text-bg/75" : "text-ink-soft"
-                                }`}
-                            >
-                                {m.text}
+                            <p className="relative text-base md:text-lg leading-relaxed max-w-xl text-ink-soft">
+                                {p.text}
                             </p>
-
-                            {m.tone === "dark" && (
-                                <div className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full bg-clay/15 blur-3xl pointer-events-none"></div>
-                            )}
                         </motion.div>
                     );
                 })}

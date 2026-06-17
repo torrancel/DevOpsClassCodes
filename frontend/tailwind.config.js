@@ -8,51 +8,31 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                serif: ['"Cormorant Garamond"', 'serif'],
-                sans: ['"Figtree"', 'system-ui', 'sans-serif'],
+                display: ['"Instrument Serif"', 'serif'],
+                sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
             },
             colors: {
-                bg: '#F7F5F0',
-                'bg-soft': '#EFEBE1',
-                surface: '#FFFFFF',
-                ink: '#1A1A1A',
-                'ink-soft': '#4A4A4A',
-                forest: {
-                    DEFAULT: '#2B4C3B',
-                    deep: '#1E3629',
+                bg: '#050208',
+                'bg-soft': '#0B0613',
+                surface: '#110820',
+                ink: '#F4EEFF',
+                'ink-soft': '#B5A8CC',
+                violet: {
+                    DEFAULT: '#8A4DFF',
+                    deep: '#5A2BC9',
                 },
-                clay: '#C49775',
-                line: '#DCD7C9',
+                pink: '#FF6FD3',
+                blue: '#5E8BFF',
+                orange: '#FF8A5C',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
-                card: {
-                    DEFAULT: 'hsl(var(--card))',
-                    foreground: 'hsl(var(--card-foreground))'
-                },
-                popover: {
-                    DEFAULT: 'hsl(var(--popover))',
-                    foreground: 'hsl(var(--popover-foreground))'
-                },
-                primary: {
-                    DEFAULT: 'hsl(var(--primary))',
-                    foreground: 'hsl(var(--primary-foreground))'
-                },
-                secondary: {
-                    DEFAULT: 'hsl(var(--secondary))',
-                    foreground: 'hsl(var(--secondary-foreground))'
-                },
-                muted: {
-                    DEFAULT: 'hsl(var(--muted))',
-                    foreground: 'hsl(var(--muted-foreground))'
-                },
-                accent: {
-                    DEFAULT: 'hsl(var(--accent))',
-                    foreground: 'hsl(var(--accent-foreground))'
-                },
-                destructive: {
-                    DEFAULT: 'hsl(var(--destructive))',
-                    foreground: 'hsl(var(--destructive-foreground))'
-                },
+                card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+                popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+                primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+                secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+                muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+                accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+                destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
@@ -63,14 +43,8 @@ module.exports = {
                 sm: 'calc(var(--radius) - 4px)'
             },
             keyframes: {
-                'accordion-down': {
-                    from: { height: '0' },
-                    to: { height: 'var(--radix-accordion-content-height)' }
-                },
-                'accordion-up': {
-                    from: { height: 'var(--radix-accordion-content-height)' },
-                    to: { height: '0' }
-                }
+                'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },
+                'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',

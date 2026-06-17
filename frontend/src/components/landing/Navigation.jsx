@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import InfinityGlow from "./InfinityGlow";
 
 const NAV_LINKS = [
-    { label: "Platform", href: "#modules" },
-    { label: "Use Cases", href: "#use-cases" },
+    { label: "Pillars", href: "#pillars" },
+    { label: "Experience", href: "#experience" },
     { label: "Manifesto", href: "#manifesto" },
     { label: "Pricing", href: "#pricing" },
 ];
@@ -23,21 +24,15 @@ export default function Navigation() {
             data-testid="main-navigation"
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
                 scrolled
-                    ? "backdrop-blur-xl bg-bg/70 border-b border-line/60"
+                    ? "backdrop-blur-xl bg-bg/70 border-b border-white/5"
                     : "bg-transparent"
             }`}
         >
-            <nav className="px-6 md:px-12 lg:px-24 py-5 flex items-center justify-between">
-                <a
-                    href="#top"
-                    data-testid="nav-brand"
-                    className="flex items-center gap-2 group"
-                >
-                    <span className="relative inline-block w-3 h-3 rounded-full bg-forest">
-                        <span className="absolute inset-0 rounded-full bg-forest animate-breath-slow"></span>
-                    </span>
-                    <span className="font-serif text-2xl tracking-tight text-ink">
-                        Aura<span className="text-clay italic">.</span>OS
+            <nav className="px-6 md:px-12 lg:px-20 py-5 flex items-center justify-between">
+                <a href="#top" data-testid="nav-brand" className="flex items-center gap-3 group">
+                    <InfinityGlow size={36} />
+                    <span className="font-display text-2xl tracking-tight text-ink">
+                        Let It Go <span className="gradient-text font-sans text-base font-medium align-top">AI</span>
                     </span>
                 </a>
 
@@ -55,13 +50,13 @@ export default function Navigation() {
                     ))}
                 </ul>
 
-                <div className="hidden md:flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-3">
                     <a
                         href="#cta"
                         data-testid="nav-cta-button"
-                        className="rounded-full bg-forest text-bg px-5 py-2.5 text-sm font-medium hover:bg-forest-deep transition-all active:scale-[0.98]"
+                        className="btn-glow rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium hover:opacity-95 transition-all active:scale-[0.98]"
                     >
-                        Request Access
+                        Begin the Release
                     </a>
                 </div>
 
@@ -78,7 +73,7 @@ export default function Navigation() {
             {open && (
                 <div
                     data-testid="nav-mobile-menu"
-                    className="md:hidden px-6 pb-6 bg-bg/95 backdrop-blur-xl border-b border-line/60"
+                    className="md:hidden px-6 pb-6 bg-bg/95 backdrop-blur-xl border-b border-white/5"
                 >
                     <ul className="flex flex-col gap-4 pt-4">
                         {NAV_LINKS.map((l) => (
@@ -96,9 +91,9 @@ export default function Navigation() {
                             <a
                                 href="#cta"
                                 onClick={() => setOpen(false)}
-                                className="inline-block mt-2 rounded-full bg-forest text-bg px-5 py-2.5 text-sm font-medium"
+                                className="inline-block mt-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium"
                             >
-                                Request Access
+                                Begin the Release
                             </a>
                         </li>
                     </ul>

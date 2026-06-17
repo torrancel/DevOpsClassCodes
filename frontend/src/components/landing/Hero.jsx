@@ -1,12 +1,15 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
+const LOGO_URL =
+    "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/sl9ndszy_IMG_1175.png";
+
 export default function Hero() {
     return (
         <section
             id="top"
             data-testid="hero-section"
-            className="relative pt-40 pb-24 md:pt-48 md:pb-32 px-6 md:px-12 lg:px-24 overflow-hidden grain"
+            className="relative pt-36 pb-24 md:pt-44 md:pb-32 px-6 md:px-12 lg:px-20 overflow-hidden aurora stars grain"
         >
             {/* Floating eyebrow */}
             <motion.div
@@ -15,12 +18,12 @@ export default function Hero() {
                 transition={{ duration: 0.8 }}
                 className="flex items-center gap-3 mb-10"
             >
-                <span className="h-px w-12 bg-forest/40"></span>
+                <span className="h-px w-12 bg-gradient-to-r from-blue to-pink"></span>
                 <span
                     data-testid="hero-eyebrow"
-                    className="text-xs uppercase tracking-[0.3em] text-forest font-medium"
+                    className="text-[11px] uppercase tracking-[0.35em] gradient-text font-medium"
                 >
-                    The first of its kind · Est. 2026
+                    The first emotional intelligence OS
                 </span>
             </motion.div>
 
@@ -32,14 +35,12 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.1 }}
                         data-testid="hero-headline"
-                        className="font-serif text-[clamp(2.75rem,7vw,7rem)] leading-[0.95] tracking-tight text-ink"
+                        className="font-display text-[clamp(3rem,7.5vw,7.5rem)] leading-[0.95] tracking-tight text-ink"
                     >
-                        The operating
+                        What if you could
                         <br />
-                        system for
-                        <br />
-                        <span className="italic text-forest">human emotion</span>
-                        <span className="text-clay">.</span>
+                        actually <span className="gradient-text italic">let it go</span>
+                        <span className="text-pink">?</span>
                     </motion.h1>
                 </div>
 
@@ -48,34 +49,37 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.4 }}
-                    className="col-span-12 lg:col-span-4 lg:pl-8 lg:border-l lg:border-line"
+                    className="col-span-12 lg:col-span-4 lg:pl-8 lg:border-l lg:border-white/10"
                 >
                     <p
                         data-testid="hero-subline"
                         className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md"
                     >
-                        Aura OS senses affect, coaches regulation, and mediates communication —
-                        so humans and AI can finally meet in the middle.
+                        An emotional intelligence operating system that helps you become
+                        <span className="text-ink"> aware</span>,
+                        <span className="text-ink"> release</span>,
+                        <span className="text-ink"> grow</span>, and
+                        <span className="text-ink"> transform</span> — in real time, with AI that finally feels.
                     </p>
 
-                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                    <div className="mt-8 flex flex-wrap items-center gap-3">
                         <a
                             href="#cta"
                             data-testid="hero-primary-cta"
-                            className="group inline-flex items-center gap-2 rounded-full bg-forest text-bg px-6 py-3 text-sm font-medium hover:bg-forest-deep transition-all active:scale-[0.98]"
+                            className="btn-glow group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-6 py-3 text-sm font-medium transition-all active:scale-[0.98]"
                         >
-                            Request Access
+                            Begin the Release
                             <ArrowUpRight
                                 size={16}
                                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             />
                         </a>
                         <a
-                            href="#demo"
+                            href="#experience"
                             data-testid="hero-secondary-cta"
-                            className="inline-flex items-center gap-2 rounded-full border border-forest/30 text-forest px-6 py-3 text-sm font-medium hover:bg-bg-soft transition-all"
+                            className="inline-flex items-center gap-2 rounded-full border border-white/15 text-ink px-6 py-3 text-sm font-medium hover:bg-white/5 transition-all"
                         >
-                            Watch the demo
+                            See it breathe
                         </a>
                     </div>
                 </motion.div>
@@ -88,47 +92,51 @@ export default function Hero() {
                 transition={{ duration: 1.2, delay: 0.5 }}
                 className="mt-20 md:mt-28 grid grid-cols-12 gap-4 md:gap-6"
             >
-                <div className="col-span-12 md:col-span-7 relative h-[360px] md:h-[480px] rounded-3xl overflow-hidden border border-line">
-                    <img
-                        src="https://images.pexels.com/photos/29390707/pexels-photo-29390707.jpeg"
-                        alt="Soft organic forms"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-forest/30 via-transparent to-transparent"></div>
+                <div className="col-span-12 md:col-span-7 relative h-[360px] md:h-[520px] gradient-border overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <img
+                            src={LOGO_URL}
+                            alt="Let It Go AI"
+                            className="w-[78%] h-auto animate-drift"
+                            style={{
+                                filter: "drop-shadow(0 0 80px rgba(138,77,255,0.4))",
+                            }}
+                        />
+                    </div>
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                         <div>
-                            <p className="text-xs uppercase tracking-[0.25em] text-bg/80">Sensing</p>
-                            <p className="font-serif text-bg text-2xl md:text-3xl mt-1">
-                                A new affective layer
+                            <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">Now sensing</p>
+                            <p className="font-display text-ink text-2xl md:text-3xl mt-1">
+                                4 inner pillars · 1 quiet system
                             </p>
                         </div>
-                        <div className="hidden md:flex items-center gap-3 rounded-full bg-bg/90 px-4 py-2">
-                            <span className="relative inline-block w-2.5 h-2.5 rounded-full bg-clay animate-breath"></span>
+                        <div className="hidden md:flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-4 py-2 backdrop-blur">
+                            <span className="relative inline-block w-2 h-2 rounded-full bg-pink animate-breath"></span>
                             <span className="text-xs text-ink-soft">Live · 12 signals</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-span-12 md:col-span-5 grid grid-rows-2 gap-4 md:gap-6">
-                    <div className="relative rounded-3xl bg-forest text-bg p-8 overflow-hidden">
-                        <p className="text-xs uppercase tracking-[0.3em] text-bg/60">01 — Modulation</p>
-                        <p className="font-serif text-3xl md:text-4xl mt-4 leading-tight">
+                    <div className="relative gradient-border p-8 overflow-hidden">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">01 — Release</p>
+                        <p className="font-display text-3xl md:text-4xl mt-4 leading-tight text-ink">
                             From reactivity
                             <br />
-                            to <em className="text-clay not-italic">response</em>.
+                            to <em className="gradient-text not-italic">response</em>.
                         </p>
-                        <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-clay/20 blur-2xl"></div>
+                        <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-violet/30 blur-3xl"></div>
                     </div>
-                    <div className="relative rounded-3xl bg-bg-soft p-8 border border-line overflow-hidden">
+                    <div className="relative rounded-3xl bg-white/[0.03] p-8 border border-white/10 overflow-hidden backdrop-blur">
                         <div className="flex items-center gap-2 mb-4">
-                            <span className="h-2 w-2 rounded-full bg-forest"></span>
-                            <span className="h-2 w-2 rounded-full bg-clay"></span>
-                            <span className="h-2 w-2 rounded-full bg-ink/30"></span>
+                            <span className="h-2 w-2 rounded-full bg-blue"></span>
+                            <span className="h-2 w-2 rounded-full bg-violet"></span>
+                            <span className="h-2 w-2 rounded-full bg-pink"></span>
                         </div>
-                        <p className="font-serif text-2xl text-ink leading-snug">
-                            "Aura noticed I was tense before I did. It paused the meeting."
+                        <p className="font-display text-2xl text-ink leading-snug italic">
+                            "It noticed I was clenching before I did. Then it walked me home."
                         </p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-ink-soft mt-6">
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-ink-soft mt-6">
                             — Beta user, Day 9
                         </p>
                     </div>
