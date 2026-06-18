@@ -32,7 +32,7 @@ function loadPrefs() {
 function savePrefs(p) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-    } catch {}
+    } catch (e) { void e; }
 }
 
 // Build a small procedural ambient soundscape per preset using Web Audio.
@@ -65,44 +65,55 @@ function buildAudioGraph(ctx, preset, masterGain) {
     const gain = ctx.createGain();
 
     if (preset === "rain") {
+        // Softer, less hissy rain — lower cutoff and quieter base.
         filter.type = "highpass";
-        filter.frequency.value = 800;
-        gain.gain.value = 0.6;
+        filter.frequency.value = 600;
+        const lp = ctx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.value = 4500;
+        filter.connect(lp);
+        gain.gain.value = 0.32;
+        noise.connect(filter);
+        lp.connect(gain).connect(masterGain);
+        noise.start();
+        stop.push(() => { try { noise.stop(); } catch (e) { void e; } });
+        return () => stop.forEach((fn) => fn());
     } else if (preset === "forest") {
+        // Warmer, quieter wind. Birds are softer + slower.
         filter.type = "lowpass";
-        filter.frequency.value = 1500;
-        gain.gain.value = 0.5;
+        filter.frequency.value = 1200;
+        gain.gain.value = 0.28;
     } else if (preset === "ocean") {
+        // Lower base + tighter swing so peaks don't overwhelm.
         filter.type = "lowpass";
-        filter.frequency.value = 500;
-        gain.gain.value = 0.7;
-        // Slow LFO on gain for wave swell
+        filter.frequency.value = 400;
+        gain.gain.value = 0.42;
         const lfo = ctx.createOscillator();
         const lfoGain = ctx.createGain();
-        lfo.frequency.value = 0.12;
-        lfoGain.gain.value = 0.45;
+        lfo.frequency.value = 0.10;
+        lfoGain.gain.value = 0.22;
         lfo.connect(lfoGain).connect(gain.gain);
         lfo.start();
-        stop.push(() => { try { lfo.stop(); } catch {} });
+        stop.push(() => { try { lfo.stop(); } catch (e) { void e; } });
     } else if (preset === "breath") {
+        // Whisper-soft, peaks barely audible — meant to entrain, not dominate.
         filter.type = "bandpass";
-        filter.frequency.value = 500;
-        filter.Q.value = 0.7;
+        filter.frequency.value = 420;
+        filter.Q.value = 0.9;
         gain.gain.value = 0.0;
-        // Breath cadence: 4s inhale, 6s exhale via gain ramp
         const now = ctx.currentTime;
         const cycle = 10;
         for (let i = 0; i < 360; i++) {
             const t = now + i * cycle;
             gain.gain.setValueAtTime(0.0, t);
-            gain.gain.linearRampToValueAtTime(0.55, t + 4);
+            gain.gain.linearRampToValueAtTime(0.28, t + 4);
             gain.gain.linearRampToValueAtTime(0.0, t + 10);
         }
     }
 
     noise.connect(filter).connect(gain).connect(masterGain);
     noise.start();
-    stop.push(() => { try { noise.stop(); } catch {} });
+    stop.push(() => { try { noise.stop(); } catch (e) { void e; } });
 
     // Forest: add gentle sine "bird" pings every 8-15s
     if (preset === "forest") {
@@ -117,7 +128,7 @@ function buildAudioGraph(ctx, preset, masterGain) {
                 osc.connect(og).connect(masterGain);
                 osc.start();
                 osc.stop(ctx.currentTime + 0.5);
-            } catch {}
+            } catch (e) { void e; }
         };
         const handle = setInterval(tick, 9000 + Math.random() * 6000);
         stop.push(() => clearInterval(handle));
@@ -142,9 +153,17 @@ export function AmbienceProvider({ children }) {
             const AC = window.AudioContext || window.webkitAudioContext;
             if (!AC) return null;
             ctxRef.current = new AC();
+            // Master chain: gain → soft compressor → destination. The compressor
+            // gracefully tames any peaks (esp. ocean swell LFO + breath ramps).
             masterRef.current = ctxRef.current.createGain();
             masterRef.current.gain.value = volume;
-            masterRef.current.connect(ctxRef.current.destination);
+            const comp = ctxRef.current.createDynamicsCompressor();
+            comp.threshold.value = -20;
+            comp.knee.value = 18;
+            comp.ratio.value = 6;
+            comp.attack.value = 0.05;
+            comp.release.value = 0.4;
+            masterRef.current.connect(comp).connect(ctxRef.current.destination);
         }
         if (ctxRef.current.state === "suspended") {
             ctxRef.current.resume();
@@ -152,14 +171,34 @@ export function AmbienceProvider({ children }) {
         return ctxRef.current;
     }, [volume]);
 
-    // Re-build graph when sound changes
+    // Re-build graph when sound changes (with a brief fade on switch)
     useEffect(() => {
         savePrefs({ sound, color, volume });
-        if (stopRef.current) { stopRef.current(); stopRef.current = null; }
+        const ctx = ctxRef.current;
+        const m = masterRef.current;
+        const cleanup = stopRef.current;
+        if (cleanup && ctx && m) {
+            // Fade out current bed before tearing it down
+            try {
+                m.gain.cancelScheduledValues(ctx.currentTime);
+                m.gain.setValueAtTime(m.gain.value, ctx.currentTime);
+                m.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.25);
+                setTimeout(() => { try { cleanup(); } catch (e) { void e; } m.gain.setValueAtTime(volume, ctx.currentTime); }, 280);
+            } catch {
+                cleanup();
+            }
+            stopRef.current = null;
+        }
         if (sound === "off") return;
-        const ctx = ensureContext();
-        if (!ctx) return;
-        stopRef.current = buildAudioGraph(ctx, sound, masterRef.current);
+        const newCtx = ensureContext();
+        if (!newCtx) return;
+        // Fade in
+        try {
+            masterRef.current.gain.cancelScheduledValues(newCtx.currentTime);
+            masterRef.current.gain.setValueAtTime(0, newCtx.currentTime);
+            masterRef.current.gain.linearRampToValueAtTime(volume, newCtx.currentTime + 0.6);
+        } catch (e) { void e; }
+        stopRef.current = buildAudioGraph(newCtx, sound, masterRef.current);
         return () => { if (stopRef.current) stopRef.current(); };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sound]);
