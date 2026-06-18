@@ -1,6 +1,5 @@
 import ProfessionLanding from "@/components/profession/ProfessionLanding";
-import { PROFESSION_CONFIGS } from "@/components/profession/professionConfigs";
 
 export default function DoctorsLanding() {
-    return <ProfessionLanding cfg={PROFESSION_CONFIGS.doctors} />;
+    return <ProfessionLanding slug="doctors" />;
 }

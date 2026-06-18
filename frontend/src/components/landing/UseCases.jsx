@@ -2,76 +2,28 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Stethoscope, Scale, GraduationCap, Briefcase } from "lucide-react";
 import { setAudience } from "./audienceStore";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const CASES = [
-    {
-        key: "kids",
-        label: "Kids",
-        eyebrow: "01 / Ages 6–14",
-        title: "Big feelings, small words. We help kids name them.",
-        body: "A gentle, playful companion that teaches children to notice and name what they feel — through stories, breathing games, and characters they choose. Parent-controlled, screen-time aware, COPPA-aligned.",
-        bullets: [
-            "Story-based emotion learning",
-            "Calming breath games & lullaby mode",
-            "Parent dashboard · COPPA-aligned",
-            "Zero ads, zero data sale, ever",
-        ],
-        accent: "blue",
-    },
-    {
-        key: "individual",
-        label: "Individual",
-        eyebrow: "02 / For yourself",
-        title: "Become the calmest person in the room.",
-        body: "Let It Go learns your patterns — when you tighten, when you spiral, when you light up. It nudges you back to center, gently, without ever taking the wheel.",
-        bullets: [
-            "Daily 90-second check-ins",
-            "Stress · anxiety · depression tracking",
-            "12-month growth memory",
-            "Private. Encrypted. Yours.",
-        ],
-        accent: "violet",
-    },
-    {
-        key: "team",
-        label: "Team",
-        eyebrow: "03 / For groups",
-        title: "Meetings that don't burn people out.",
-        body: "Sits quietly in your calls — never recording, never reporting. Surfaces unspoken tension, suggests pauses, and helps facilitators see the room.",
-        bullets: [
-            "Real-time facilitator co-pilot",
-            "Anonymous team affect telemetry",
-            "Slack & Zoom integrations",
-            "Built for psychological safety",
-        ],
-        accent: "pink",
-    },
-    {
-        key: "professional",
-        label: "Professional",
-        eyebrow: "04 / For practitioners",
-        title: "A clinical-grade companion for the people who hold others.",
-        body: "Specialized modes for doctors, attorneys, teachers, and managers — tuned to the unique stressors and ethical demands of each profession.",
-        bullets: [
-            "Compliance: HIPAA · attorney-client · FERPA",
-            "Burnout & vicarious-trauma early warning",
-            "End-of-day decompression routines",
-            "Audit trails (never content — only meta)",
-        ],
-        accent: "orange",
-        professions: [
-            { icon: Stethoscope, name: "Doctors", desc: "Compassion fatigue, on-call recovery, post-shift decompression." },
-            { icon: Scale, name: "Attorneys", desc: "Adversarial stress, ethical bind detection, court-day calm." },
-            { icon: GraduationCap, name: "Teachers", desc: "Classroom dysregulation mirror, parent-conf coaching." },
-            { icon: Briefcase, name: "Managers", desc: "1:1 affect prep, conflict mediation, layoff conversation support." },
-        ],
-    },
+const CASE_META = [
+    { key: "kids", accent: "blue" },
+    { key: "individual", accent: "violet" },
+    { key: "team", accent: "pink" },
+    { key: "professional", accent: "orange" },
+];
+
+const PROFESSIONS = [
+    { slug: "doctors", icon: Stethoscope, nameKey: "doctorsName", descKey: "doctorsDesc" },
+    { slug: "attorneys", icon: Scale, nameKey: "attorneysName", descKey: "attorneysDesc" },
+    { slug: "teachers", icon: GraduationCap, nameKey: "teachersName", descKey: "teachersDesc" },
+    { slug: "managers", icon: Briefcase, nameKey: "managersName", descKey: "managersDesc" },
 ];
 
 const dotColor = { blue: "#5E8BFF", violet: "#8A4DFF", pink: "#FF6FD3", orange: "#FF8A5C" };
 
 export default function UseCases() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     return (
         <section
             data-testid="usecases-section"
@@ -79,15 +31,15 @@ export default function UseCases() {
         >
             <div className="mb-12 md:mb-16">
                 <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
-                    Built for everyone who feels
+                    {t("usecases.eyebrow")}
                 </p>
                 <h2
                     data-testid="usecases-headline"
                     className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink max-w-4xl"
                 >
-                    From kids to clinicians.
+                    {t("usecases.headlinePre")}
                     <br />
-                    One <em className="gradient-text">felt</em> sense of being heard.
+                    {t("usecases.headlineMiddle")} <em className="gradient-text">{t("usecases.headlineGradient")}</em> {t("usecases.headlinePost")}
                 </h2>
             </div>
 
@@ -96,19 +48,19 @@ export default function UseCases() {
                     data-testid="usecases-tabs"
                     className="bg-white/[0.04] border border-white/10 rounded-full p-1 h-auto inline-flex mb-12 backdrop-blur flex-wrap"
                 >
-                    {CASES.map((c) => (
+                    {CASE_META.map((c) => (
                         <TabsTrigger
                             key={c.key}
                             value={c.key}
                             data-testid={`usecases-tab-${c.key}`}
                             className="rounded-full px-5 md:px-6 py-2.5 text-sm text-ink-soft data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue data-[state=active]:via-violet data-[state=active]:to-pink data-[state=active]:text-white data-[state=active]:shadow-none"
                         >
-                            {c.label}
+                            {t(`usecases.${c.key}.label`)}
                         </TabsTrigger>
                     ))}
                 </TabsList>
 
-                {CASES.map((c) => (
+                {CASE_META.map((c) => (
                     <TabsContent
                         key={c.key}
                         value={c.key}
@@ -137,10 +89,10 @@ export default function UseCases() {
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <div className="text-center">
                                                     <p className="font-display italic text-3xl md:text-5xl gradient-text">
-                                                        {c.label}
+                                                        {t(`usecases.${c.key}.label`)}
                                                     </p>
                                                     <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft mt-2">
-                                                        {c.eyebrow}
+                                                        {t(`usecases.${c.key}.eyebrow`)}
                                                     </p>
                                                 </div>
                                             </div>
@@ -150,60 +102,51 @@ export default function UseCases() {
                             </div>
                             <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
                                 <h3 className="font-display text-3xl md:text-5xl tracking-tight text-ink leading-tight">
-                                    {c.title}
+                                    {t(`usecases.${c.key}.title`)}
                                 </h3>
                                 <p className="mt-6 text-base md:text-lg text-ink-soft leading-relaxed">
-                                    {c.body}
+                                    {t(`usecases.${c.key}.body`)}
                                 </p>
                                 <ul className="mt-8 space-y-3">
-                                    {c.bullets.map((b) => (
-                                        <li key={b} className="flex items-start gap-3 text-base text-ink">
+                                    {[1, 2, 3, 4].map((n) => (
+                                        <li key={n} className="flex items-start gap-3 text-base text-ink">
                                             <span className="mt-2 inline-block h-px w-6 bg-gradient-to-r from-blue to-pink"></span>
-                                            {b}
+                                            {t(`usecases.${c.key}.bullet${n}`)}
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
-                            {/* Professional sub-grid */}
-                            {c.professions && (
+                            {c.key === "professional" && (
                                 <div className="col-span-12 mt-8">
                                     <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
-                                        Four specialist modes
+                                        {t("usecases.specialistModes")}
                                     </p>
                                     <div className="grid grid-cols-12 gap-4 md:gap-6">
-                                        {c.professions.map((p, i) => {
+                                        {PROFESSIONS.map((p) => {
                                             const Icon = p.icon;
-                                            const slug = p.name.toLowerCase();
-                                            const PROFESSION_ROUTES = ["doctors", "attorneys", "teachers", "managers"];
-                                            const hasPage = PROFESSION_ROUTES.includes(slug);
+                                            const name = t(`usecases.${p.nameKey}`);
                                             return (
                                                 <button
                                                     type="button"
-                                                    key={p.name}
+                                                    key={p.slug}
                                                     onClick={() => {
-                                                        if (hasPage) {
-                                                            navigate(`/${slug}`);
-                                                            return;
-                                                        }
-                                                        setAudience(slug);
-                                                        const el = document.getElementById("cta");
-                                                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                                                        navigate(`/${p.slug}`);
                                                     }}
-                                                    data-testid={`professional-${slug}`}
+                                                    data-testid={`professional-${p.slug}`}
                                                     className="col-span-12 sm:col-span-6 lg:col-span-3 gradient-border p-6 transition-transform duration-500 hover:-translate-y-1 text-left"
                                                 >
                                                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/[0.04] border border-white/10 mb-5">
                                                         <Icon size={20} strokeWidth={1.5} className="text-ink" />
                                                     </div>
                                                     <h4 className="font-display text-2xl text-ink mb-2">
-                                                        {p.name}
+                                                        {name}
                                                     </h4>
                                                     <p className="text-sm text-ink-soft leading-relaxed">
-                                                        {p.desc}
+                                                        {t(`usecases.${p.descKey}`)}
                                                     </p>
                                                     <p className="mt-4 text-[10px] uppercase tracking-[0.25em] gradient-text">
-                                                        {hasPage ? `Open ${p.name.toLowerCase()} page →` : `Join ${p.name.toLowerCase()} beta →`}
+                                                        {t("usecases.openPage", { name: name.toLowerCase() })}
                                                     </p>
                                                 </button>
                                             );

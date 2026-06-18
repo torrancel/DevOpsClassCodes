@@ -1,40 +1,6 @@
 import { Brain, Heart, Leaf, CircleDot } from "lucide-react";
 import { motion } from "framer-motion";
-
-const PILLARS = [
-    {
-        icon: Brain,
-        title: "Aware",
-        sub: "01",
-        color: "blue",
-        gradient: "from-blue/30 to-blue/0",
-        text: "Multimodal sensing — voice prosody, language, micro-context, optional biometrics — distilled into a quiet, continuous read of where you actually are.",
-    },
-    {
-        icon: Heart,
-        title: "Release",
-        sub: "02",
-        color: "pink",
-        gradient: "from-pink/30 to-pink/0",
-        text: "Real-time, low-friction nudges. Breathe. Reframe. Soften. Tuned to your nervous system, not someone else's protocol.",
-    },
-    {
-        icon: Leaf,
-        title: "Grow",
-        sub: "03",
-        color: "violet",
-        gradient: "from-violet/30 to-violet/0",
-        text: "A private, encrypted memory of your patterns over time. The first long-term record of who you're becoming, owned only by you.",
-    },
-    {
-        icon: CircleDot,
-        title: "Transform",
-        sub: "04",
-        color: "orange",
-        gradient: "from-orange/30 to-orange/0",
-        text: "Aware → Release → Grow loops back into action. Let It Go translates inner shifts into outer change — how you speak, lead, love, and build.",
-    },
-];
+import { useTranslation } from "react-i18next";
 
 const dotColor = {
     blue: "bg-blue",
@@ -44,6 +10,13 @@ const dotColor = {
 };
 
 export default function Modules() {
+    const { t } = useTranslation();
+    const PILLARS = [
+        { icon: Brain, key: "aware", sub: "01", color: "blue", gradient: "from-blue/30 to-blue/0" },
+        { icon: Heart, key: "release", sub: "02", color: "pink", gradient: "from-pink/30 to-pink/0" },
+        { icon: Leaf, key: "grow", sub: "03", color: "violet", gradient: "from-violet/30 to-violet/0" },
+        { icon: CircleDot, key: "transform", sub: "04", color: "orange", gradient: "from-orange/30 to-orange/0" },
+    ];
     return (
         <section
             id="pillars"
@@ -52,15 +25,15 @@ export default function Modules() {
         >
             <div className="mb-16 md:mb-24 max-w-4xl">
                 <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
-                    Four pillars
+                    {t("modules.eyebrow")}
                 </p>
                 <h2
                     data-testid="modules-headline"
                     className="font-display text-4xl md:text-7xl leading-[1.02] tracking-tight text-ink"
                 >
-                    The shape of
+                    {t("modules.headlinePre")}
                     <br />
-                    <em className="gradient-text">letting go</em>.
+                    <em className="gradient-text">{t("modules.headlineGradient")}</em>{t("modules.headlinePost")}
                 </h2>
             </div>
 
@@ -69,7 +42,7 @@ export default function Modules() {
                     const Icon = p.icon;
                     return (
                         <motion.div
-                            key={p.title}
+                            key={p.key}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -77,15 +50,12 @@ export default function Modules() {
                             data-testid={`module-card-${i}`}
                             className="col-span-12 md:col-span-6 relative gradient-border p-8 md:p-10 overflow-hidden group transition-transform duration-500 hover:-translate-y-1"
                         >
-                            {/* gradient wash */}
                             <div
                                 className={`absolute -top-32 -right-32 w-72 h-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl opacity-70 pointer-events-none`}
                             ></div>
 
                             <div className="relative flex items-start justify-between mb-10">
-                                <div
-                                    className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-white/[0.04] border border-white/10`}
-                                >
+                                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/[0.04] border border-white/10">
                                     <Icon
                                         size={22}
                                         strokeWidth={1.5}
@@ -104,10 +74,10 @@ export default function Modules() {
                             </div>
 
                             <h3 className="relative font-display text-4xl md:text-5xl tracking-tight mb-4 text-ink">
-                                {p.title}
+                                {t(`modules.${p.key}.title`)}
                             </h3>
                             <p className="relative text-base md:text-lg leading-relaxed max-w-xl text-ink-soft">
-                                {p.text}
+                                {t(`modules.${p.key}.text`)}
                             </p>
                         </motion.div>
                     );

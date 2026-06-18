@@ -103,25 +103,25 @@ export default function Hero() {
                     </div>
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                         <div>
-                            <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">Now sensing</p>
+                            <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">{t("hero.nowSensing")}</p>
                             <p className="font-display text-ink text-2xl md:text-3xl mt-1">
-                                4 inner pillars · 1 quiet system
+                                {t("hero.nowSensingTitle")}
                             </p>
                         </div>
                         <div className="hidden md:flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-4 py-2 backdrop-blur">
                             <span className="relative inline-block w-2 h-2 rounded-full bg-pink animate-breath"></span>
-                            <span className="text-xs text-ink-soft">Live · 12 signals</span>
+                            <span className="text-xs text-ink-soft">{t("hero.liveSignals")}</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-span-12 md:col-span-5 grid grid-rows-2 gap-4 md:gap-6">
                     <div className="relative gradient-border p-8 overflow-hidden">
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">01 — Release</p>
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-ink-soft">{t("hero.side1Eyebrow")}</p>
                         <p className="font-display text-3xl md:text-4xl mt-4 leading-tight text-ink">
-                            From reactivity
+                            {t("hero.side1Pre")}
                             <br />
-                            to <em className="gradient-text not-italic">response</em>.
+                            {t("hero.side1Post")} <em className="gradient-text not-italic">{t("hero.side1Gradient")}</em>.
                         </p>
                         <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-violet/30 blur-3xl"></div>
                     </div>
@@ -132,10 +132,10 @@ export default function Hero() {
                             <span className="h-2 w-2 rounded-full bg-pink"></span>
                         </div>
                         <p className="font-display text-2xl text-ink leading-snug italic">
-                            "It noticed I was clenching before I did. Then it walked me home."
+                            &ldquo;{t("hero.side2Quote")}&rdquo;
                         </p>
                         <p className="text-[10px] uppercase tracking-[0.25em] text-ink-soft mt-6">
-                            — Beta user, Day 9
+                            {t("hero.side2Author")}
                         </p>
                     </div>
                 </div>

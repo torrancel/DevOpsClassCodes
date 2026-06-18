@@ -4,35 +4,14 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const FAQ_ITEMS = [
-    {
-        q: "Is Let It Go listening to me all the time?",
-        a: "No. It only senses when you explicitly start a session, join a meeting where it's invited, or open the daily check-in. Nothing is recorded by default. Everything is on-device unless you choose otherwise.",
-    },
-    {
-        q: "How is this different from a mood tracker or meditation app?",
-        a: "Mood trackers ask you. Meditation apps prescribe you. Let It Go senses, contextualizes, and adapts — across personal life, teamwork, and the agents you talk to. It's infrastructure for the inner life, not another single-purpose app.",
-    },
-    {
-        q: "What about privacy?",
-        a: "Affective data is the most intimate data there is. We treat it that way: end-to-end encryption, on-device inference for sensing, zero third-party data sale, full export and delete on demand, SOC 2 Type II in progress.",
-    },
-    {
-        q: "Will it work with my AI agents?",
-        a: "Yes. The Let It Go Agent SDK exposes affect signals and regulation suggestions via REST and WebSocket. Works with OpenAI, Anthropic, open-source LLMs, or your own stack.",
-    },
-    {
-        q: "Is this clinical?",
-        a: "Let It Go is not a medical device and does not diagnose. It is a co-regulation instrument — designed alongside clinicians, but never replacing them.",
-    },
-    {
-        q: "When can I actually try it?",
-        a: "Closed beta is running now. Join the waitlist and we'll send you a quiet, no-marketing invitation the moment your cohort opens.",
-    },
-];
+import { useTranslation } from "react-i18next";
 
 export default function FAQ() {
+    const { t } = useTranslation();
+    const items = [1, 2, 3, 4, 5, 6].map((n) => ({
+        q: t(`faq.q${n}`),
+        a: t(`faq.a${n}`),
+    }));
     return (
         <section
             data-testid="faq-section"
@@ -40,11 +19,13 @@ export default function FAQ() {
         >
             <div className="grid grid-cols-12 gap-6 md:gap-10">
                 <div className="col-span-12 md:col-span-4">
-                    <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">FAQ</p>
+                    <p className="text-[11px] uppercase tracking-[0.35em] gradient-text mb-6">
+                        {t("faq.eyebrow")}
+                    </p>
                     <h2 className="font-display text-4xl md:text-6xl leading-[1.02] tracking-tight text-ink sticky top-32">
-                        Honest answers.
+                        {t("faq.titlePre")}
                         <br />
-                        <em className="gradient-text">No</em> tap-dancing.
+                        <em className="gradient-text">{t("faq.titleGradient")}</em> {t("faq.titlePost")}
                     </h2>
                 </div>
                 <div className="col-span-12 md:col-span-8">
@@ -54,7 +35,7 @@ export default function FAQ() {
                         data-testid="faq-accordion"
                         className="w-full"
                     >
-                        {FAQ_ITEMS.map((item, i) => (
+                        {items.map((item, i) => (
                             <AccordionItem
                                 key={i}
                                 value={`item-${i}`}

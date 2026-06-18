@@ -1,0 +1,48 @@
+{
+  "summary": "i18n verification across EN / ES / FR / AR / DE for landing surfaces + 4 profession pages + admin analytics. Most surfaces render cleanly. Found 1 CRITICAL bug: malformed dict-leaf values in ar.json and de.json (translator script wrote `{\"English source\": \"translation\"}` instead of just the translated string), which surface as the literal i18next warning text 'key 'profession.reserveCta (ar)' returned an object instead of string.' rendered in CTA buttons across all profession pages in AR and DE.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/waitlist", "issue": "Returned 422 (Pydantic validation) when submitting with only email from doctors-cta-form during AR locale test — likely the front-end form is missing required `source`/`audience` fields, OR backend payload contract was not satisfied. Not strictly an i18n issue, but worth verifying since this is the documented success path in the request."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "ProfessionLanding hero CTA + Navigation Reserve button + Pricing tier 'Reserve a seat' buttons",
+        "issue": "In AR and DE locales, the literal string \"key 'profession.reserveCta (ar)' returned an object instead of string.\" / \"key 'profession.reserveSeat (de)' returned an object instead of string.\" is rendered as the visible button text. Root cause: /app/frontend/src/locales/ar.json and /app/frontend/src/locales/de.json contain malformed leaves where the value is `{\"English source\": \"translation\"}` instead of just the translation string. Affected keys: profession.reserveCta, profession.reserveSeat, profession.weKnow (in both ar and de); plus profession.specificAnswers in de only.",
+        "selector": "a/button containing data-testid for hero/nav/pricing Reserve",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "Footer (Company column)",
+        "issue": "Hardcoded English labels ['Manifesto','Research','Careers','Press','Contact'] in /app/frontend/src/components/landing/Footer.jsx do not translate. Causes a residual 'Manifesto' English leak in AR/FR/ES/DE.",
+        "selector": "footer column 'Company'",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {"flow": "Doctors waitlist submission", "issue": "POST /api/waitlist responded 422 with {detail:...}. Form likely sending only `email` while backend expects `audience` / `source`. Did not block other tests.", "affected_selectors": ["[data-testid=\"doctors-cta-form\"]"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix the translator script (/app/scripts/translate_locales.py) — currently for some leaf strings it writes a dict {English: translated} instead of writing the translated string at the same path. Then re-run for ar and de (and audit all other locales that were translated by it).",
+    "Quick mitigation: flatten the 4 bad leaves in de.json and 3 in ar.json — set their value to the translated string only (e.g. de.profession.reserveCta = 'Reserviere deinen Platz', ar.profession.reserveCta = 'احجز مقعدك').",
+    "Add t() coverage for Footer 'Company' column link labels in /app/frontend/src/components/landing/Footer.jsx (Manifesto/Research/Careers/Press/Contact still hardcoded English).",
+    "Investigate /api/waitlist 422 from /doctors form — confirm what payload shape backend requires and what the DoctorsCtaForm is actually POSTing. Could be a regression from the i18n refactor of ProfessionLanding."
+  ],
+  "critical_code_review_comments": [
+    "Translator script wrote malformed leaves. Recommend adding a sanity check that all locale files contain the same shape as en.json (all leaves are strings, no extra dict nesting) — fail the CI/translate run otherwise.",
+    "Locale dict-leaf bug renders i18next's debug warning string in production UI; consider setting `returnEmptyString: false` and a fallback `parseMissingKeyHandler` or `missingKeyHandler` in i18n.js init to avoid leaking internal warning text to end users."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend only)", "frontend": "85% — all surfaces render and 4 of 5 tested locales clean; AR/DE break on CTA buttons"},
+  "test_credentials": "Admin token Dx4d1IIhLTg5Ct_luV9Frd3XACckoJi5iufadpC8D6lYc6P4MEZj1w used successfully against /admin/analytics gate.",
+  "seed_data_creation": "Posted one waitlist signup attempt with test-i18n-<ts>@example.test from /doctors (received 422, so nothing persisted).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Bug surface to look for in locale files: any leaf in {ar,de,...}.json that is a dict of shape {\"English Source String\":\"translation\"} instead of just a string. Found in profession.reserveCta / reserveSeat / weKnow in both ar.json and de.json, plus profession.specificAnswers in de.json. Other locales (es, fr, hi, ja, ko, ru, zh-CN, pt-BR, it) are clean for those specific keys but a full shape-vs-en.json audit was NOT performed — recommend running a recursive shape-diff against en.json for every locale. The 422 on POST /api/waitlist from /doctors should be investigated since the previously documented success path failed during this run.",
+  "rca of the issue": "The refactored translator (translate_locales.py) appears to chunk-translate by top-level key and, for some leaf strings it had to retry / patch, it merged the result into a {source: translation} dict instead of overwriting the leaf with the translation string. The malformed leaves show up directly in any t('profession.reserveCta') call. Because the doctors/attorneys/teachers/managers nav, hero CTA, and pricing tier CTAs all use these three keys, every profession page in AR and DE shows the i18next warning text 'key X (locale) returned an object instead of string.' in big pill buttons. Mitigation: hand-fix the 7 leaves, then patch the translator to assert isinstance(translated, str) before writing each leaf back."
+}
