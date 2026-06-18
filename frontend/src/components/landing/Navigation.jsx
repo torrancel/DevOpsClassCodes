@@ -3,9 +3,11 @@ import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import InfinityGlow from "./InfinityGlow";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Navigation() {
     const { t } = useTranslation();
+    const { user, login } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -55,13 +57,32 @@ export default function Navigation() {
 
                 <div className="hidden md:flex items-center gap-3">
                     <LanguageSwitcher />
-                    <a
-                        href="#cta"
-                        data-testid="nav-cta-button"
-                        className="btn-glow rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium hover:opacity-95 transition-all active:scale-[0.98]"
-                    >
-                        {t("nav.cta")}
-                    </a>
+                    {user ? (
+                        <a
+                            href="/app"
+                            data-testid="nav-app-link"
+                            className="btn-glow rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium hover:opacity-95 transition-all active:scale-[0.98]"
+                        >
+                            Open the app
+                        </a>
+                    ) : (
+                        <>
+                            <button
+                                onClick={login}
+                                data-testid="nav-signin"
+                                className="text-sm text-ink-soft hover:text-ink transition-colors"
+                            >
+                                Sign in
+                            </button>
+                            <a
+                                href="#cta"
+                                data-testid="nav-cta-button"
+                                className="btn-glow rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-5 py-2.5 text-sm font-medium hover:opacity-95 transition-all active:scale-[0.98]"
+                            >
+                                {t("nav.cta")}
+                            </a>
+                        </>
+                    )}
                 </div>
 
                 <div className="md:hidden flex items-center gap-2">

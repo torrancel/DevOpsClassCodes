@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Header, Cookie, Response, Request, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,6 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional, Dict, Any
 import uuid
+import httpx
 from datetime import datetime, timezone, timedelta
 import resend
 
@@ -351,8 +352,7 @@ async def admin_analytics(authorization: Optional[str] = Header(default=None)):
     }
 
 
-# Include the router in the main app
-app.include_router(api_router)
+# Include the router in the main app — MOVED to end of file so all @api_router decorators register first
 
 app.add_middleware(
     CORSMiddleware,
@@ -373,3 +373,239 @@ logger = logging.getLogger(__name__)
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+# ---------- Auth (Emergent Google OAuth) ----------
+EMERGENT_AUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+
+
+class AuthUser(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    user_id: str
+    email: EmailStr
+    name: str
+    picture: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+async def _resolve_user_from_token(token: str) -> Optional[AuthUser]:
+    if not token:
+        return None
+    session = await db.user_sessions.find_one({"session_token": token}, {"_id": 0})
+    if not session:
+        return None
+    expires_at = session["expires_at"]
+    if isinstance(expires_at, str):
+        expires_at = datetime.fromisoformat(expires_at)
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if expires_at < datetime.now(timezone.utc):
+        return None
+    user_doc = await db.users.find_one({"user_id": session["user_id"]}, {"_id": 0})
+    if not user_doc:
+        return None
+    if isinstance(user_doc.get("created_at"), str):
+        user_doc["created_at"] = datetime.fromisoformat(user_doc["created_at"])
+    return AuthUser(**user_doc)
+
+
+async def require_user(
+    session_token: Optional[str] = Cookie(default=None),
+    authorization: Optional[str] = Header(default=None),
+) -> AuthUser:
+    token = session_token
+    if not token and authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ", 1)[1].strip()
+    user = await _resolve_user_from_token(token or "")
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated.")
+    return user
+
+
+class SessionExchange(BaseModel):
+    session_id: str
+
+
+@api_router.post("/auth/session")
+async def auth_session(payload: SessionExchange, response: Response):
+    """Exchange session_id from Emergent OAuth fragment for a user + persistent session."""
+    async with httpx.AsyncClient(timeout=10.0) as cx:
+        r = await cx.get(EMERGENT_AUTH_URL, headers={"X-Session-ID": payload.session_id})
+    if r.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid Emergent session.")
+    data = r.json()
+    email = (data.get("email") or "").lower()
+    if not email:
+        raise HTTPException(status_code=502, detail="Auth provider returned no email.")
+
+    # Upsert user
+    user = await db.users.find_one({"email": email}, {"_id": 0})
+    if user:
+        user_id = user["user_id"]
+        await db.users.update_one(
+            {"user_id": user_id},
+            {"$set": {"name": data.get("name") or user.get("name"),
+                      "picture": data.get("picture") or user.get("picture")}},
+        )
+    else:
+        user_id = f"user_{uuid.uuid4().hex[:12]}"
+        await db.users.insert_one({
+            "user_id": user_id,
+            "email": email,
+            "name": data.get("name") or email.split("@")[0],
+            "picture": data.get("picture"),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+    session_token = data.get("session_token") or str(uuid.uuid4())
+    expires = datetime.now(timezone.utc) + timedelta(days=7)
+    await db.user_sessions.insert_one({
+        "user_id": user_id,
+        "session_token": session_token,
+        "expires_at": expires.isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    response.set_cookie(
+        key="session_token",
+        value=session_token,
+        max_age=7 * 24 * 3600,
+        path="/",
+        httponly=True,
+        secure=True,
+        samesite="none",
+    )
+    return {"user_id": user_id, "email": email, "name": data.get("name"),
+            "picture": data.get("picture"), "session_token": session_token}
+
+
+@api_router.get("/auth/me")
+async def auth_me(user: AuthUser = Depends(require_user)):
+    return user.model_dump()
+
+
+@api_router.post("/auth/logout")
+async def auth_logout(response: Response,
+                      session_token: Optional[str] = Cookie(default=None),
+                      authorization: Optional[str] = Header(default=None)):
+    token = session_token
+    if not token and authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ", 1)[1].strip()
+    if token:
+        await db.user_sessions.delete_one({"session_token": token})
+    response.delete_cookie("session_token", path="/")
+    return {"ok": True}
+
+
+# ---------- Check-ins ----------
+SIGNALS = ["calm", "focus", "stress", "anxiety", "depression", "warmth"]
+
+
+class CheckInCreate(BaseModel):
+    calm: int = Field(ge=0, le=100)
+    focus: int = Field(ge=0, le=100)
+    stress: int = Field(ge=0, le=100)
+    anxiety: int = Field(ge=0, le=100)
+    depression: int = Field(ge=0, le=100)
+    warmth: int = Field(ge=0, le=100)
+    reflection: Optional[str] = None
+
+
+class CheckIn(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    user_id: str
+    calm: int
+    focus: int
+    stress: int
+    anxiety: int
+    depression: int
+    warmth: int
+    eq: int  # composite: ((calm+focus+warmth)/3) - ((stress+anxiety+depression)/3) shifted to 0-100
+    reflection: Optional[str] = None
+    suggestion: Optional[str] = None
+    created_at: datetime
+
+
+def _compute_eq(c: Dict[str, int]) -> int:
+    positive = (c["calm"] + c["focus"] + c["warmth"]) / 3.0
+    negative = (c["stress"] + c["anxiety"] + c["depression"]) / 3.0
+    score = (positive - negative + 100) / 2.0  # maps -100..100 -> 0..100
+    return max(0, min(100, int(round(score))))
+
+
+async def _generate_suggestion(check: Dict[str, Any]) -> str:
+    """Use Claude via emergentintegrations for a one-sentence regulation suggestion."""
+    try:
+        from emergentintegrations.llm.chat import LlmChat, UserMessage
+        key = os.environ.get("EMERGENT_LLM_KEY") or "sk-emergent-527E64a7a837aAaE0A"
+        chat = (LlmChat(
+            api_key=key,
+            session_id=f"checkin-{check['id']}",
+            system_message=(
+                "You are Let It Go AI, a contemplative emotional-regulation companion. "
+                "Given a 6-signal affective snapshot (calm/focus/stress/anxiety/depression/warmth, 0-100) "
+                "and optional reflection, respond with EXACTLY one short, kind, embodied co-regulation "
+                "suggestion (under 25 words, no preamble, no list, no quotes, no emojis). "
+                "Soft, literary, never clinical. Address the person directly."
+            ),
+        ).with_model("anthropic", "claude-sonnet-4-6"))
+        snapshot = ", ".join(f"{k}={check[k]}" for k in SIGNALS)
+        ref = check.get("reflection") or ""
+        prompt = f"Snapshot: {snapshot}\nReflection: {ref}\n\nOne sentence, please."
+        resp = await chat.send_message(UserMessage(text=prompt))
+        return (resp if isinstance(resp, str) else str(resp)).strip().strip('"').strip("'")
+    except Exception as e:
+        logger.warning(f"Suggestion generation failed: {e}")
+        # Soft fallback that still feels in-brand.
+        if check["stress"] > 60 or check["anxiety"] > 60:
+            return "Two slow breaths, shoulders down. You're carrying more than you realize. Let it go."
+        return "You're doing fine. Notice one thing in the room that's soft. Rest there for a breath."
+
+
+@api_router.post("/checkins", response_model=CheckIn)
+async def create_checkin(payload: CheckInCreate, user: AuthUser = Depends(require_user)):
+    now = datetime.now(timezone.utc)
+    data = payload.model_dump()
+    entry = {
+        "id": str(uuid.uuid4()),
+        "user_id": user.user_id,
+        **{k: int(data[k]) for k in SIGNALS},
+        "eq": _compute_eq(data),
+        "reflection": payload.reflection,
+        "suggestion": None,
+        "created_at": now.isoformat(),
+    }
+    entry["suggestion"] = await _generate_suggestion(entry)
+    await db.checkins.insert_one({**entry})
+    entry["created_at"] = now
+    return CheckIn(**entry)
+
+
+@api_router.get("/checkins", response_model=List[CheckIn])
+async def list_checkins(days: int = 30, user: AuthUser = Depends(require_user)):
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    rows = await db.checkins.find(
+        {"user_id": user.user_id, "created_at": {"$gte": cutoff}},
+        {"_id": 0},
+    ).sort("created_at", -1).to_list(500)
+    out = []
+    for r in rows:
+        if isinstance(r.get("created_at"), str):
+            r["created_at"] = datetime.fromisoformat(r["created_at"])
+        out.append(CheckIn(**r))
+    return out
+
+
+@api_router.get("/checkins/latest")
+async def latest_checkin(user: AuthUser = Depends(require_user)):
+    doc = await db.checkins.find_one(
+        {"user_id": user.user_id}, {"_id": 0}, sort=[("created_at", -1)]
+    )
+    if not doc:
+        return {"latest": None}
+    if isinstance(doc.get("created_at"), str):
+        doc["created_at"] = datetime.fromisoformat(doc["created_at"])
+    return {"latest": CheckIn(**doc).model_dump()}
+
+app.include_router(api_router)
