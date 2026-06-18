@@ -304,13 +304,6 @@
     "descriptionDelivered": "Uma confirmação silenciosa acabou de chegar na sua caixa de entrada.",
     "descriptionSaved": "Salvamos {{email}}. Entraremos em contato."
   },
-  "footer": {
-    "tagline": "Um instrumento para a vida interior. Construído com calma, para a década barulhenta que vem.",
-    "platform": "Plataforma",
-    "company": "Empresa",
-    "legal": "Legal",
-    "copyright": "Feito com atenção silenciosa."
-  },
   "language": {
     "label": "Idioma"
   },
@@ -744,5 +737,33 @@
     "colWhen": "Quando",
     "yes": "Sim",
     "no": "Não"
+  },
+  "footer": {
+    "tagline": "Um instrumento para a vida interior. Construído com calma, para a década barulhenta que vem.",
+    "platform": "Plataforma",
+    "company": "Empresa",
+    "legal": "Legal",
+    "copyright": "Feito com atenção silenciosa.",
+    "linksPlatform": [
+      "Aware",
+      "Release",
+      "Grow",
+      "Transform",
+      "Agent SDK"
+    ],
+    "linksCompany": [
+      "Manifesto",
+      "Pesquisa",
+      "Carreiras",
+      "Imprensa",
+      "Contato"
+    ],
+    "linksLegal": [
+      "Privacidade",
+      "Segurança",
+      "Termos",
+      "Ética de dados",
+      "Carta de consentimento"
+    ]
   }
 }

@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 export default function Footer() {
     const { t } = useTranslation();
     const COLS = [
-        { title: t("footer.platform"), links: ["Aware", "Release", "Grow", "Transform", "Agent SDK"] },
-        { title: t("footer.company"),  links: ["Manifesto", "Research", "Careers", "Press", "Contact"] },
-        { title: t("footer.legal"),    links: ["Privacy", "Security", "Terms", "Data Ethics", "Consent Charter"] },
+        { title: t("footer.platform"), links: t("footer.linksPlatform", { returnObjects: true }) },
+        { title: t("footer.company"),  links: t("footer.linksCompany",  { returnObjects: true }) },
+        { title: t("footer.legal"),    links: t("footer.linksLegal",    { returnObjects: true }) },
     ];
     return (
         <footer

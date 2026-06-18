@@ -309,7 +309,10 @@
         "platform": "Platform",
         "company": "Company",
         "legal": "Legal",
-        "copyright": "Made with quiet attention."
+        "copyright": "Made with quiet attention.",
+        "linksPlatform": ["Aware", "Release", "Grow", "Transform", "Agent SDK"],
+        "linksCompany": ["Manifesto", "Research", "Careers", "Press", "Contact"],
+        "linksLegal": ["Privacy", "Security", "Terms", "Data Ethics", "Consent Charter"]
     },
     "language": {
         "label": "Language"

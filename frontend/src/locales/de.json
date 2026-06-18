@@ -25,101 +25,6 @@
     "side2Quote": "Es bemerkte, dass ich verkrampfte, bevor ich es tat. Dann führte es mich nach Hause.",
     "side2Author": "— Beta-Nutzer, Tag 9"
   },
-  "common": {
-    "joinWaitlist": "auf die warteliste",
-    "reserveSeat": "deinen platz reservieren",
-    "talkToFounders": "mit den gründern sprechen",
-    "emailPlaceholder": "du@stillepost.com",
-    "listening": "höre zu...",
-    "validEmailError": "bitte gib eine gültige e-mail ein.",
-    "genericError": "etwas ist schiefgelaufen. versuch es gleich noch einmal.",
-    "lifetimeLocked": "gründungspreis · lebenslang festgeschrieben",
-    "foundingSeats": "gründungsplätze",
-    "foundingSeatsLeft": "{{n}} gründungsplätze übrig · 50% rabatt für immer",
-    "cohortFull": "gründungskohorte voll — reguläre warteliste offen",
-    "mostChosen": "am häufigsten gewählt",
-    "month": "/ monat",
-    "child": "/ monat / kind",
-    "perUser": "/ nutzer / monat",
-    "perPhysician": "/ arzt / monat",
-    "perAttorney": "/ anwalt / monat",
-    "perTeacher": "/ lehrer / monat",
-    "perManager": "/ manager / monat",
-    "custom": "individuell",
-    "backToSite": "zurück zur hauptseite",
-    "seeFullPlatform": "die ganze plattform sehen"
-  },
-  "pricing": {
-    "eyebrow": "Preise",
-    "headlinePre": "Ein Plan für jede",
-    "headlineGradient": "Art",
-    "headlinePost": "von Mensch.",
-    "banner": "Gründungskohorte offen.",
-    "bannerRest": "Die ersten Plätze je Zielgruppe erhalten 50% Rabatt für immer — dauerhaft festgeschrieben.",
-    "enterpriseNote": "Brauchst du On-Premise, Agent SDK, SOC 2 oder einen maßgeschneiderten Rollout?",
-    "kids": {
-      "name": "Kinder",
-      "sub": "Große Gefühle, kleine Worte.",
-      "cta": "Den sanften Plan starten",
-      "feature1": "Emotionslernen durch Geschichten",
-      "feature2": "Atemspiele & Schlafliedmodus",
-      "feature3": "Eltern-Dashboard · COPPA-konform",
-      "feature4": "Keine Werbung · kein Datenverkauf"
-    },
-    "individual": {
-      "name": "Einzelperson",
-      "sub": "Für dein inneres Leben.",
-      "cta": "14 Tage stille Probezeit",
-      "feature1": "Stress-, Angst- & Depressions-Tracking",
-      "feature2": "Tägliche 90-Sekunden-Check-ins",
-      "feature3": "12-Monats-Wachstumsgedächtnis",
-      "feature4": "Ende-zu-Ende-verschlüsselt"
-    },
-    "team": {
-      "name": "Team",
-      "sub": "Für Gruppen, die zuhören.",
-      "cta": "Eine stille Demo buchen",
-      "feature1": "Alles aus Einzelperson",
-      "feature2": "Meeting-Copilot",
-      "feature3": "Anonyme Team-Telemetrie",
-      "feature4": "Slack & Zoom Integrationen"
-    },
-    "professional": {
-      "name": "Fachleute",
-      "sub": "Ärztinnen · Anwälte · Lehrende · Führungskräfte.",
-      "cta": "Deinen Bereich wählen",
-      "feature1": "Berufsspezifischer Modus",
-      "feature2": "Frühwarnung bei Burnout & Sekundärtrauma",
-      "feature3": "HIPAA · FERPA · Anwaltsprivileg",
-      "feature4": "Prüfungssichere Meta-Protokolle"
-    }
-  },
-  "cta": {
-    "eyebrow": "Teil der Entwicklung werden",
-    "headlinePre": "Sei unter den",
-    "headlinePost": "Ersten, die",
-    "headlineGradient": "loslassen",
-    "sub": "Die geschlossene Beta öffnet sich in kleinen, stillen Kohorten. Hinterlasse deine E-Mail — wir melden uns einmal, und nur dann, wenn es etwas Echtes zu sagen gibt.",
-    "joiningAs": "Du meldest dich an als",
-    "yourWatch": "Deine Uhr",
-    "tailoredFor": "Zugeschnitten auf",
-    "specialistDetailPre": "Spezialistenmodus ausgewählt — deine Bestätigung wird zugeschnitten auf",
-    "footnote": "Kein Marketing. Kein Drip-Campaign. Nur eine stille E-Mail, wenn deine Kohorte öffnet.",
-    "successGeneric": "Du stehst auf der Liste. Wir melden uns leise.",
-    "successWithAudience": "Du stehst auf der {{label}}-Liste.",
-    "descriptionDelivered": "Eine stille Bestätigung ist gerade in deinem Posteingang angekommen.",
-    "descriptionSaved": "{{email}} gespeichert. Wir melden uns."
-  },
-  "footer": {
-    "tagline": "Ein Instrument für das innere Leben. Still gebaut, für das laute Jahrzehnt, das vor uns liegt.",
-    "platform": "Plattform",
-    "company": "Unternehmen",
-    "legal": "Rechtliches",
-    "copyright": "Mit stiller Aufmerksamkeit gemacht."
-  },
-  "language": {
-    "label": "Sprache"
-  },
   "marquee": {
     "aware": "BEWUSST",
     "release": "LOSLASSEN",
@@ -314,35 +219,103 @@
     "q6": "Wann kann ich es tatsächlich ausprobieren?",
     "a6": "Die geschlossene Beta läuft bereits. Tritt der Warteliste bei und wir senden dir eine ruhige, marketingfreie Einladung, sobald deine Kohorte öffnet."
   },
+  "common": {
+    "joinWaitlist": "auf die warteliste",
+    "reserveSeat": "deinen platz reservieren",
+    "talkToFounders": "mit den gründern sprechen",
+    "emailPlaceholder": "du@stillepost.com",
+    "listening": "höre zu...",
+    "validEmailError": "bitte gib eine gültige e-mail ein.",
+    "genericError": "etwas ist schiefgelaufen. versuch es gleich noch einmal.",
+    "lifetimeLocked": "gründungspreis · lebenslang festgeschrieben",
+    "foundingSeats": "gründungsplätze",
+    "foundingSeatsLeft": "{{n}} gründungsplätze übrig · 50% rabatt für immer",
+    "cohortFull": "gründungskohorte voll — reguläre warteliste offen",
+    "mostChosen": "am häufigsten gewählt",
+    "month": "/ monat",
+    "child": "/ monat / kind",
+    "perUser": "/ nutzer / monat",
+    "perPhysician": "/ arzt / monat",
+    "perAttorney": "/ anwalt / monat",
+    "perTeacher": "/ lehrer / monat",
+    "perManager": "/ manager / monat",
+    "custom": "individuell",
+    "backToSite": "zurück zur hauptseite",
+    "seeFullPlatform": "die ganze plattform sehen"
+  },
+  "pricing": {
+    "eyebrow": "Preise",
+    "headlinePre": "Ein Plan für jede",
+    "headlineGradient": "Art",
+    "headlinePost": "von Mensch.",
+    "banner": "Gründungskohorte offen.",
+    "bannerRest": "Die ersten Plätze je Zielgruppe erhalten 50% Rabatt für immer — dauerhaft festgeschrieben.",
+    "enterpriseNote": "Brauchst du On-Premise, Agent SDK, SOC 2 oder einen maßgeschneiderten Rollout?",
+    "kids": {
+      "name": "Kinder",
+      "sub": "Große Gefühle, kleine Worte.",
+      "cta": "Den sanften Plan starten",
+      "feature1": "Emotionslernen durch Geschichten",
+      "feature2": "Atemspiele & Schlafliedmodus",
+      "feature3": "Eltern-Dashboard · COPPA-konform",
+      "feature4": "Keine Werbung · kein Datenverkauf"
+    },
+    "individual": {
+      "name": "Einzelperson",
+      "sub": "Für dein inneres Leben.",
+      "cta": "14 Tage stille Probezeit",
+      "feature1": "Stress-, Angst- & Depressions-Tracking",
+      "feature2": "Tägliche 90-Sekunden-Check-ins",
+      "feature3": "12-Monats-Wachstumsgedächtnis",
+      "feature4": "Ende-zu-Ende-verschlüsselt"
+    },
+    "team": {
+      "name": "Team",
+      "sub": "Für Gruppen, die zuhören.",
+      "cta": "Eine stille Demo buchen",
+      "feature1": "Alles aus Einzelperson",
+      "feature2": "Meeting-Copilot",
+      "feature3": "Anonyme Team-Telemetrie",
+      "feature4": "Slack & Zoom Integrationen"
+    },
+    "professional": {
+      "name": "Fachleute",
+      "sub": "Ärztinnen · Anwälte · Lehrende · Führungskräfte.",
+      "cta": "Deinen Bereich wählen",
+      "feature1": "Berufsspezifischer Modus",
+      "feature2": "Frühwarnung bei Burnout & Sekundärtrauma",
+      "feature3": "HIPAA · FERPA · Anwaltsprivileg",
+      "feature4": "Prüfungssichere Meta-Protokolle"
+    }
+  },
+  "cta": {
+    "eyebrow": "Teil der Entwicklung werden",
+    "headlinePre": "Sei unter den",
+    "headlinePost": "Ersten, die",
+    "headlineGradient": "loslassen",
+    "sub": "Die geschlossene Beta öffnet sich in kleinen, stillen Kohorten. Hinterlasse deine E-Mail — wir melden uns einmal, und nur dann, wenn es etwas Echtes zu sagen gibt.",
+    "joiningAs": "Du meldest dich an als",
+    "yourWatch": "Deine Uhr",
+    "tailoredFor": "Zugeschnitten auf",
+    "specialistDetailPre": "Spezialistenmodus ausgewählt — deine Bestätigung wird zugeschnitten auf",
+    "footnote": "Kein Marketing. Kein Drip-Campaign. Nur eine stille E-Mail, wenn deine Kohorte öffnet.",
+    "successGeneric": "Du stehst auf der Liste. Wir melden uns leise.",
+    "successWithAudience": "Du stehst auf der {{label}}-Liste.",
+    "descriptionDelivered": "Eine stille Bestätigung ist gerade in deinem Posteingang angekommen.",
+    "descriptionSaved": "{{email}} gespeichert. Wir melden uns."
+  },
+  "language": {
+    "label": "Sprache"
+  },
   "profession": {
-    "reserveCta": {
-      "Reserve your seat": "reserviere deinen platz"
-    },
-    "reserveSeat": {
-      "Reserve a seat": "einen platz reservieren"
-    },
-    "weKnow": {
-      "We know what you carry": "Wir wissen, was du trägst"
-    },
-    "privacyEyebrow": {
-      "profession": {
-        "privacyEyebrow": "Datenschutz & Compliance"
-      }
-    },
-    "pricingSuffix": {
-      "pricing": "preisgestaltung"
-    },
-    "faqEyebrow": {
-      "profession": {
-        "faqEyebrow": "FAQ"
-      }
-    },
-    "honest": {
-      "honest": "ehrlich"
-    },
-    "specificAnswers": {
-      "{{brand}}-specific\nhonest answers.": "{{brand}}-spezifische\nehrliche antworten."
-    },
+    "reserveCta": "reserviere deinen platz",
+    "reserveSeat": "einen platz reservieren",
+    "weKnow": "Wir wissen, was du trägst",
+    "privacyEyebrow": "Datenschutz & Compliance",
+    "pricingSuffix": "preisgestaltung",
+    "faqEyebrow": "FAQ",
+    "honest": "ehrlich",
+    "specificAnswers": "{{brand}}-spezifische\nehrliche antworten.",
     "doctors": {
       "footerBrand": "Ärzte",
       "eyebrowLabel": "Let It Go · Ärzte-Modus",
@@ -764,5 +737,33 @@
     "colWhen": "Wann",
     "yes": "Ja",
     "no": "Nein"
+  },
+  "footer": {
+    "tagline": "Ein Instrument für das innere Leben. Still gebaut, für das laute Jahrzehnt, das vor uns liegt.",
+    "platform": "Plattform",
+    "company": "Unternehmen",
+    "legal": "Rechtliches",
+    "copyright": "Mit stiller Aufmerksamkeit gemacht.",
+    "linksPlatform": [
+      "Aware",
+      "Release",
+      "Grow",
+      "Transform",
+      "Agent SDK"
+    ],
+    "linksCompany": [
+      "Manifest",
+      "Forschung",
+      "Karriere",
+      "Presse",
+      "Kontakt"
+    ],
+    "linksLegal": [
+      "Datenschutz",
+      "Sicherheit",
+      "AGB",
+      "Datenethik",
+      "Einwilligung"
+    ]
   }
 }

@@ -55,16 +55,30 @@ def get_key() -> str:
     return os.environ.get("EMERGENT_LLM_KEY", "")
 
 
-async def llm_translate(code: str, style: str, key_path: str, payload: dict) -> dict:
-    """Translate one JSON blob; retries on failure."""
+async def llm_translate(code: str, style: str, key_path: str, payload):
+    """Translate one payload (dict OR string); retries on failure.
+
+    For string payloads we ask the model to return ONLY the translated string (no JSON
+    wrapper) and then we sanitize. For dict payloads we ask for an identically-shaped JSON.
+    """
     from emergentintegrations.llm.chat import LlmChat, UserMessage
 
-    src_json = json.dumps(payload, ensure_ascii=False, indent=2)
-    prompt = (
-        f"Translate the following JSON dictionary to {style}. Target locale code: {code}. "
-        f"Section: `{key_path}`. Return ONLY the translated JSON object, identical structure, "
-        f"no commentary, no markdown fences.\n\n{src_json}"
-    )
+    is_string = isinstance(payload, str)
+    if is_string:
+        prompt = (
+            f"Translate the following short UI string to {style}. Target locale code: {code}. "
+            f"Key path: `{key_path}`. Preserve interpolation tokens like {{{{n}}}}, {{{{brand}}}}, "
+            f"{{{{email}}}}, {{{{label}}}} EXACTLY. Preserve line breaks (\\n) and punctuation. "
+            f"Return ONLY the translated text — no quotes, no JSON, no commentary, no markdown.\n\n"
+            f"STRING TO TRANSLATE:\n{payload}"
+        )
+    else:
+        src_json = json.dumps(payload, ensure_ascii=False, indent=2)
+        prompt = (
+            f"Translate the following JSON dictionary to {style}. Target locale code: {code}. "
+            f"Section: `{key_path}`. Return ONLY the translated JSON object, identical structure, "
+            f"no commentary, no markdown fences.\n\n{src_json}"
+        )
 
     last_err = None
     for attempt in range(1, MAX_RETRIES + 1):
@@ -85,7 +99,32 @@ async def llm_translate(code: str, style: str, key_path: str, payload: dict) -> 
                 if raw.startswith("json"):
                     raw = raw[4:]
                 raw = raw.strip().rstrip("`").strip()
-            return json.loads(raw)
+
+            if is_string:
+                # Strip surrounding quotes if model wrapped it
+                if (raw.startswith('"') and raw.endswith('"')) or (raw.startswith("'") and raw.endswith("'")):
+                    raw = raw[1:-1]
+                # Reject obviously broken outputs (model wrapped in JSON object anyway)
+                if raw.startswith("{") and raw.endswith("}"):
+                    try:
+                        candidate = json.loads(raw)
+                        # Common malformations: {"source": "translation"} or {"key": {...}}
+                        if isinstance(candidate, dict):
+                            vals = list(candidate.values())
+                            if len(vals) == 1 and isinstance(vals[0], str):
+                                raw = vals[0]
+                            else:
+                                raise ValueError(f"string leaf came back as dict: {candidate}")
+                    except json.JSONDecodeError:
+                        pass  # not actually JSON, keep raw
+                if not isinstance(raw, str):
+                    raise ValueError(f"expected string, got {type(raw).__name__}")
+                return raw
+
+            parsed = json.loads(raw)
+            if not isinstance(parsed, dict):
+                raise ValueError(f"expected dict for section {key_path}, got {type(parsed).__name__}")
+            return parsed
         except Exception as e:  # noqa: BLE001
             last_err = e
             print(f"  [{code}:{key_path}] attempt {attempt} failed: {type(e).__name__}: {e}", file=sys.stderr)

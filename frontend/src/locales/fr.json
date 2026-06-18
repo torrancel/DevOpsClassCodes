@@ -304,13 +304,6 @@
     "descriptionDelivered": "Une confirmation discrète vient d'atterrir dans votre boîte de réception.",
     "descriptionSaved": "{{email}} enregistré. Nous reviendrons vers vous."
   },
-  "footer": {
-    "tagline": "Un instrument pour la vie intérieure. Construit avec soin, pour la décennie agitée qui vient.",
-    "platform": "Plateforme",
-    "company": "Entreprise",
-    "legal": "Mentions légales",
-    "copyright": "Fait avec une attention silencieuse."
-  },
   "language": {
     "label": "Langue"
   },
@@ -744,5 +737,33 @@
     "colWhen": "Quand",
     "yes": "Oui",
     "no": "Non"
+  },
+  "footer": {
+    "tagline": "Un instrument pour la vie intérieure. Construit avec soin, pour la décennie agitée qui vient.",
+    "platform": "Plateforme",
+    "company": "Entreprise",
+    "legal": "Mentions légales",
+    "copyright": "Fait avec une attention silencieuse.",
+    "linksPlatform": [
+      "Aware",
+      "Release",
+      "Grow",
+      "Transform",
+      "Agent SDK"
+    ],
+    "linksCompany": [
+      "Manifeste",
+      "Recherche",
+      "Carrières",
+      "Presse",
+      "Contact"
+    ],
+    "linksLegal": [
+      "Confidentialité",
+      "Sécurité",
+      "Conditions",
+      "Éthique des données",
+      "Charte de consentement"
+    ]
   }
 }

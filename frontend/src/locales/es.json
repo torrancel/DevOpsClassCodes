@@ -304,13 +304,6 @@
     "descriptionDelivered": "Una confirmación silenciosa acaba de llegar a tu bandeja de entrada.",
     "descriptionSaved": "Guardamos {{email}}. Pronto estaremos en contacto."
   },
-  "footer": {
-    "tagline": "Un instrumento para la vida interior. Construido en silencio, para la ruidosa década que se avecina.",
-    "platform": "Plataforma",
-    "company": "Empresa",
-    "legal": "Legal",
-    "copyright": "Hecho con atención silenciosa."
-  },
   "language": {
     "label": "Idioma"
   },
@@ -744,5 +737,33 @@
     "colWhen": "Cuándo",
     "yes": "Sí",
     "no": "No"
+  },
+  "footer": {
+    "tagline": "Un instrumento para la vida interior. Construido en silencio, para la ruidosa década que se avecina.",
+    "platform": "Plataforma",
+    "company": "Empresa",
+    "legal": "Legal",
+    "copyright": "Hecho con atención silenciosa.",
+    "linksPlatform": [
+      "Aware",
+      "Release",
+      "Grow",
+      "Transform",
+      "Agent SDK"
+    ],
+    "linksCompany": [
+      "Manifiesto",
+      "Investigación",
+      "Carreras",
+      "Prensa",
+      "Contacto"
+    ],
+    "linksLegal": [
+      "Privacidad",
+      "Seguridad",
+      "Términos",
+      "Ética de datos",
+      "Carta de consentimiento"
+    ]
   }
 }

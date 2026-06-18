@@ -304,13 +304,6 @@
     "descriptionDelivered": "Una conferma silenziosa è appena arrivata nella tua casella di posta.",
     "descriptionSaved": "Salvato {{email}}. Ci faremo vivi."
   },
-  "footer": {
-    "tagline": "Uno strumento per la vita interiore. Costruito in silenzio, per il decennio rumoroso che ci attende.",
-    "platform": "Piattaforma",
-    "company": "Azienda",
-    "legal": "Note legali",
-    "copyright": "Fatto con attenzione silenziosa."
-  },
   "language": {
     "label": "Lingua"
   },
@@ -744,5 +737,33 @@
     "colWhen": "Quando",
     "yes": "Sì",
     "no": "No"
+  },
+  "footer": {
+    "tagline": "Uno strumento per la vita interiore. Costruito in silenzio, per il decennio rumoroso che ci attende.",
+    "platform": "Piattaforma",
+    "company": "Azienda",
+    "legal": "Note legali",
+    "copyright": "Fatto con attenzione silenziosa.",
+    "linksPlatform": [
+      "Aware",
+      "Release",
+      "Grow",
+      "Transform",
+      "Agent SDK"
+    ],
+    "linksCompany": [
+      "Manifesto",
+      "Ricerca",
+      "Carriere",
+      "Stampa",
+      "Contatti"
+    ],
+    "linksLegal": [
+      "Privacy",
+      "Sicurezza",
+      "Termini",
+      "Etica dei dati",
+      "Carta del consenso"
+    ]
   }
 }
