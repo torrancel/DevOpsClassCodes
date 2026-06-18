@@ -3,6 +3,7 @@ import "@/i18n";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { AmbienceProvider } from "@/contexts/AmbienceContext";
 import Landing from "@/pages/Landing";
 import DoctorsLanding from "@/pages/DoctorsLanding";
 import AttorneysLanding from "@/pages/AttorneysLanding";
@@ -53,7 +54,9 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <AuthProvider>
-                    <AppRouter />
+                    <AmbienceProvider>
+                        <AppRouter />
+                    </AmbienceProvider>
                 </AuthProvider>
             </BrowserRouter>
             <Toaster

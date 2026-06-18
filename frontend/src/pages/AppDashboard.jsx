@@ -6,6 +6,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { Plus, LogOut, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import InfinityGlow from "@/components/landing/InfinityGlow";
+import AmbiencePanel from "@/components/AmbiencePanel";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SIGNALS = ["calm", "focus", "stress", "anxiety", "depression", "warmth"];
@@ -35,7 +36,9 @@ export default function AppDashboard() {
     }));
 
     return (
-        <main data-testid="app-dashboard" className="min-h-screen bg-bg text-ink font-sans">
+        <main data-testid="app-dashboard" className="min-h-screen bg-bg text-ink font-sans relative">
+            <AmbiencePanel latestEq={latest?.eq} />
+            <div className="relative z-10">
             {/* Top bar */}
             <header className="border-b border-white/10 backdrop-blur-xl bg-bg/70 sticky top-0 z-40">
                 <div className="px-6 md:px-12 lg:px-20 py-4 flex items-center justify-between">
@@ -196,6 +199,7 @@ export default function AppDashboard() {
                     )}
                 </div>
             </section>
+            </div>
         </main>
     );
 }

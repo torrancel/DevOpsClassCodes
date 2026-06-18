@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, Sparkles, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import InfinityGlow from "@/components/landing/InfinityGlow";
+import AmbiencePanel from "@/components/AmbiencePanel";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -42,8 +43,9 @@ export default function CheckIn() {
 
     if (result) {
         return (
-            <main data-testid="checkin-result" className="min-h-screen bg-bg text-ink font-sans">
-                <section className="max-w-2xl mx-auto px-6 py-24">
+            <main data-testid="checkin-result" className="min-h-screen bg-bg text-ink font-sans relative">
+                <AmbiencePanel latestEq={result.eq} />
+                <section className="relative z-10 max-w-2xl mx-auto px-6 py-24">
                     <div className="flex items-center gap-3 mb-12">
                         <InfinityGlow size={36} />
                         <span className="font-display text-xl">Let It Go <span className="gradient-text text-sm font-sans align-top">AI</span></span>
