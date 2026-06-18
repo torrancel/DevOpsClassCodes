@@ -1,45 +1,37 @@
-# Let It Go AI — Landing Page PRD
+# Let It Go AI — PRD (running)
 
-## Problem Statement
-"Build a landing page: ai emotional intelligence os first of its kind"
-Brand: **Let It Go AI** — Emotional Intelligence Operating System.
+## What the app is
+"Let It Go AI" — an Emotional Intelligence Operating System. Brand: dark cosmic, infinity-glow logo, gradient blue→violet→pink. Founder-led brand voice.
 
-## Architecture
-- Frontend: React 19 + Tailwind + Shadcn + framer-motion + sonner + axios
-- Backend: FastAPI + Motor (MongoDB) + Resend transactional email
-- Fonts: Instrument Serif (display) + Space Grotesk (sans)
-- Palette: #050208 bg, gradient blue #5E8BFF → violet #8A4DFF → pink #FF6FD3
-- Logo: customer-assets.emergentagent.com (rendered in hero)
-- Audience capture: module-level useSyncExternalStore singleton (audienceStore.js)
+## Surfaces shipped
+### Marketing (public)
+- `/` main landing with 13 sections (nav, hero, marquee, problem, 4-pillar modules, demo, wearable, use-cases, testimonials, manifesto, 4-tier pricing, FAQ, CTA, footer)
+- Profession landings: `/doctors`, `/attorneys`, `/teachers`, `/managers` (each with stressors, modules, compliance, 3-tier pricing, testimonial, FAQ, CTA)
+- 12-language i18n on the main landing's nav/hero/pricing/CTA/footer + founding badge (other surfaces still EN; translator script written and rerunnable)
+- Founding-member specials with live counters per audience
+- Apple Watch / Wear OS section + platform capture (apple/android) flowing into the waitlist
 
-## Implemented (Dec 2025)
-- Sticky glass nav + mobile menu
-- Hero with brand logo, gradient text, mood-keyword subline
-- Editorial marquee (AWARE · RELEASE · GROW · TRANSFORM)
-- Problem section w/ stats + aurora wash
-- 4-pillar bento (Aware/Release/Grow/Transform)
-- Live demo mockup w/ 6 signals (Calm, Focus, Stress, Anxiety, Depression, Warmth) + pulse + AI suggestion
-- Use Cases (Kids, Individual, Team, Professional) — Professional shows 4 specialist sub-cards (Doctors, Attorneys, Teachers, Managers)
-- Staggered testimonials grid
-- Editorial manifesto
-- 4-tier pricing (Kids $6, Individual $14, Team $9 highlighted, Professional $39) + enterprise note
-- FAQ accordion (6 items)
-- **Waitlist (LIVE)**: POST /api/waitlist persists to MongoDB + sends tailored Resend confirmation email; GET /api/waitlist/count
-- **Audience capture (LIVE)**: Pricing CTAs and Professional sub-cards set the global audience; CTA shows chip picker + helper text; submission posts audience to backend; email subject/body tailored ("Welcome to the Kids beta", "Welcome to the Doctors mode beta", etc.)
-- Massive editorial footer with gradient 'let it go.' wordmark
+### Product (authenticated)
+- **/app** dashboard — EQ tile (composite score), 30-day Recharts trend, recent check-ins, user picture/name, logout
+- **/app/check-in** — 6 mood sliders (calm/focus/stress/anxiety/depression/warmth) + reflection textarea + AI co-regulation suggestion screen
+- **Auth**: Emergent-managed Google sign-in (no key required). Session cookie httpOnly + Bearer header both accepted.
+- **AI**: Claude `claude-sonnet-4-6` via emergentintegrations using the universal Emergent LLM key. In-brand fallback if LLM fails.
 
-## Testing
-- iteration_1, iteration_2, iteration_3, iteration_4 — all pass
-- iteration_4: 11/11 backend pytest, all frontend audience flows verified
+### Admin
+- `/admin/analytics` — bearer-token-gated dashboard (KPIs, by-audience bar, by-source donut, 30-day line, ranking table, redacted recent signups)
 
-## Backlog
-- P1: Verify a real domain at resend.com/domains so emails reach addresses other than torrancel42@gmail.com
-- P1: SEO meta + OG image using Let It Go logo
-- P1: Analytics (Plausible/PostHog) + UTM capture on CTAs
-- P2: Admin endpoint to list/export waitlist entries (CSV)
-- P2: Localize copy
-- P2: Add interactive emotion demo in hero (type → pulse responds)
+## Integrations
+- Resend (transactional waitlist confirmation, tailored per audience + platform)
+- Emergent Google OAuth
+- Emergent LLM (Claude) for both check-in suggestions and one-off locale translation
+- MongoDB collections: users, user_sessions, checkins, waitlist, status_checks
 
-## Operational Notes
-- RESEND_API_KEY lives in /app/backend/.env (rotate before public deploy)
-- Resend test mode: only delivers to verified owner (torrancel42@gmail.com); other recipients are persisted with email_sent=false. Verify a domain to lift this.
+## Test reports
+iteration_1..9 in /app/test_reports — iteration_9 is the auth+checkins MVP run (17/17 backend pass, all frontend flows pass).
+
+## Remaining backlog (P1/P2)
+- **i18n**: Translate Modules · Demo · Wearable · Use Cases · Testimonials · Manifesto · FAQ · Marquee + 4 profession pages + /admin (en.json was expanded with all keys; translator was running in background last seen — verify locale files include the new keys and re-run `python3 /app/scripts/translate_locales.py` if missing)
+- Localized confirmation emails (capture user's language on POST /api/waitlist)
+- Verify a real sending domain at resend.com/domains so confirmation emails reach all recipients (not just torrancel42@gmail.com)
+- Mongo unique index on user_sessions.session_token (test agent noted)
+- Optional Stripe pre-order flow (founding-rank gamification)
