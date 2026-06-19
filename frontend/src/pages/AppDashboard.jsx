@@ -5,8 +5,11 @@ import { motion } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { Plus, LogOut, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBeta } from "@/contexts/BetaContext";
 import InfinityGlow from "@/components/landing/InfinityGlow";
 import AmbiencePanel from "@/components/AmbiencePanel";
+import BetaBadge from "@/components/beta/BetaBadge";
+import BetaFeedbackWidget from "@/components/beta/BetaFeedbackWidget";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SIGNALS = ["calm", "focus", "stress", "anxiety", "depression", "warmth"];
@@ -14,6 +17,7 @@ const COLORS = { calm: "#5E8BFF", focus: "#8A4DFF", stress: "#FF8A5C", anxiety: 
 
 export default function AppDashboard() {
     const { user, logout } = useAuth();
+    const { betaStatus } = useBeta();
     const navigate = useNavigate();
     const [checkins, setCheckins] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -47,6 +51,9 @@ export default function AppDashboard() {
                         <span className="font-display text-lg tracking-tight">
                             Let It Go <span className="gradient-text font-sans text-xs align-top">AI</span>
                         </span>
+                        {betaStatus?.is_beta_tester && (
+                            <BetaBadge joinedAt={betaStatus.joined_at} />
+                        )}
                     </Link>
                     <div className="flex items-center gap-3">
                         {user?.picture && (
@@ -200,6 +207,7 @@ export default function AppDashboard() {
                 </div>
             </section>
             </div>
+            {betaStatus?.is_beta_tester && <BetaFeedbackWidget />}
         </main>
     );
 }

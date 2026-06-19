@@ -385,6 +385,8 @@ class AuthUser(BaseModel):
     email: EmailStr
     name: str
     picture: Optional[str] = None
+    is_beta_tester: bool = False
+    beta_joined_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -406,6 +408,8 @@ async def _resolve_user_from_token(token: str) -> Optional[AuthUser]:
         return None
     if isinstance(user_doc.get("created_at"), str):
         user_doc["created_at"] = datetime.fromisoformat(user_doc["created_at"])
+    if isinstance(user_doc.get("beta_joined_at"), str):
+        user_doc["beta_joined_at"] = datetime.fromisoformat(user_doc["beta_joined_at"])
     return AuthUser(**user_doc)
 
 
@@ -607,5 +611,345 @@ async def latest_checkin(user: AuthUser = Depends(require_user)):
     if isinstance(doc.get("created_at"), str):
         doc["created_at"] = datetime.fromisoformat(doc["created_at"])
     return {"latest": CheckIn(**doc).model_dump()}
+
+
+# ---------- Beta program ----------
+import secrets
+
+
+def _new_beta_code() -> str:
+    """6-char human-friendly code: no 0/O/1/I/L confusion."""
+    alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
+    return "".join(secrets.choice(alphabet) for _ in range(6))
+
+
+class BetaApplyPayload(BaseModel):
+    email: EmailStr
+    name: str
+    role: Optional[str] = None  # e.g. "doctor", "teacher", "individual"
+    why: Optional[str] = None  # free-form motivation
+    referrer: Optional[str] = None  # tracking source
+
+
+class BetaApplication(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    email: EmailStr
+    name: str
+    role: Optional[str] = None
+    why: Optional[str] = None
+    referrer: Optional[str] = None
+    status: str = "pending"  # pending | approved | denied
+    created_at: datetime
+    decided_at: Optional[datetime] = None
+    code: Optional[str] = None
+
+
+class BetaRedeemPayload(BaseModel):
+    code: str
+
+
+class BetaFeedbackPayload(BaseModel):
+    rating: Optional[int] = None  # 1-5
+    category: Optional[str] = None  # bug | idea | praise | other
+    message: str
+
+
+class BetaFeedback(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    user_id: str
+    email: EmailStr
+    rating: Optional[int] = None
+    category: Optional[str] = None
+    message: str
+    created_at: datetime
+
+
+class BetaCodeCreatePayload(BaseModel):
+    count: int = 1  # how many codes to mint
+    max_uses: int = 1  # uses per code
+    label: Optional[str] = None  # admin label (e.g. "doctors-cohort-1")
+
+
+async def _send_beta_invite_email(to_email: str, name: str, code: str) -> bool:
+    """Send the beta-access invite email via Resend."""
+    if not resend.api_key:
+        logger.warning("Resend API key not set — skipping beta invite email.")
+        return False
+    redeem_url = "https://page-launch-106.preview.emergentagent.com/beta/redeem"
+    html = f"""
+    <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
+      <div style="max-width:560px;margin:0 auto;padding:48px 32px;">
+        <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#a48fd6;margin:0 0 24px 0;">You're in · Beta access</p>
+        <h1 style="font-family:Georgia,serif;font-size:36px;line-height:1.1;color:#fff;margin:0 0 24px 0;">
+          welcome, <em style="background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;">{name.split(' ')[0] if name else 'friend'}</em>.
+        </h1>
+        <p style="font-size:16px;line-height:1.6;color:#c9c1de;">
+          Let It Go is now open for you. This is a quiet, intentional beta — please use it gently, tell us what surprises you, and feel free to log out for days at a time.
+        </p>
+        <div style="margin:40px 0;padding:24px;background:rgba(138,77,255,0.08);border:1px solid rgba(138,77,255,0.3);border-radius:16px;text-align:center;">
+          <p style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#a48fd6;margin:0 0 8px 0;">Your beta code</p>
+          <p style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:28px;letter-spacing:0.2em;color:#fff;margin:0;">{code}</p>
+        </div>
+        <p style="font-size:14px;color:#c9c1de;">
+          To activate: sign in with Google, then paste the code on the redemption screen.
+        </p>
+        <p style="margin:32px 0;">
+          <a href="{redeem_url}" style="display:inline-block;padding:14px 28px;background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);color:#fff;text-decoration:none;border-radius:999px;font-size:14px;font-weight:500;">Redeem your code →</a>
+        </p>
+        <p style="font-size:12px;color:#7a6f95;margin-top:48px;">
+          One code, one seat. If you didn't apply for the beta, please ignore this email.<br/>
+          — Let It Go AI · made with quiet attention
+        </p>
+      </div>
+    </body></html>
+    """
+    try:
+        params = {
+            "from": f"{SENDER_NAME} <{SENDER_EMAIL}>",
+            "to": [to_email],
+            "subject": f"you're in — beta code {code}",
+            "html": html,
+        }
+        result = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Sent beta invite to {to_email} code={code} id={result.get('id')}")
+        return True
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Resend beta invite failed for {to_email}: {e}")
+        return False
+
+
+# ----- Public + authenticated endpoints -----
+
+@api_router.post("/beta/apply")
+async def beta_apply(payload: BetaApplyPayload):
+    """Public form — anyone can apply to the beta."""
+    existing = await db.beta_applications.find_one({"email": payload.email}, {"_id": 0})
+    if existing:
+        return {"ok": True, "status": existing.get("status", "pending"), "already_applied": True}
+    doc = {
+        "id": str(uuid.uuid4()),
+        "email": payload.email,
+        "name": payload.name,
+        "role": payload.role,
+        "why": payload.why,
+        "referrer": payload.referrer,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "decided_at": None,
+        "code": None,
+    }
+    await db.beta_applications.insert_one(doc)
+    return {"ok": True, "status": "pending", "already_applied": False}
+
+
+@api_router.get("/beta/status")
+async def beta_status(user: AuthUser = Depends(require_user)):
+    """Authenticated: am I a beta tester? Also report whether I have a pending application."""
+    app_doc = await db.beta_applications.find_one({"email": user.email}, {"_id": 0})
+    return {
+        "is_beta_tester": bool(user.is_beta_tester),
+        "joined_at": user.beta_joined_at.isoformat() if user.beta_joined_at else None,
+        "application": (
+            {"status": app_doc.get("status"), "created_at": app_doc.get("created_at")}
+            if app_doc else None
+        ),
+    }
+
+
+@api_router.post("/beta/redeem")
+async def beta_redeem(payload: BetaRedeemPayload, user: AuthUser = Depends(require_user)):
+    """Authenticated user redeems a code → flips is_beta_tester on user doc."""
+    code = payload.code.strip().upper()
+    if user.is_beta_tester:
+        return {"ok": True, "already_beta": True}
+    code_doc = await db.beta_codes.find_one({"code": code}, {"_id": 0})
+    if not code_doc:
+        raise HTTPException(status_code=404, detail="Code not found.")
+    if code_doc.get("uses", 0) >= code_doc.get("max_uses", 1):
+        raise HTTPException(status_code=410, detail="Code already fully redeemed.")
+    now_iso = datetime.now(timezone.utc).isoformat()
+    await db.users.update_one(
+        {"user_id": user.user_id},
+        {"$set": {"is_beta_tester": True, "beta_joined_at": now_iso, "beta_code_used": code}},
+    )
+    await db.beta_codes.update_one(
+        {"code": code},
+        {
+            "$inc": {"uses": 1},
+            "$push": {"redeemed_by": {"user_id": user.user_id, "email": user.email, "at": now_iso}},
+        },
+    )
+    # If they had a pending application, mark it approved retroactively.
+    await db.beta_applications.update_one(
+        {"email": user.email, "status": "pending"},
+        {"$set": {"status": "approved", "decided_at": now_iso, "code": code}},
+    )
+    return {"ok": True, "is_beta_tester": True}
+
+
+@api_router.post("/beta/feedback")
+async def beta_feedback(payload: BetaFeedbackPayload, user: AuthUser = Depends(require_user)):
+    """Authenticated beta tester submits feedback."""
+    if not user.is_beta_tester:
+        raise HTTPException(status_code=403, detail="Beta access required.")
+    if not payload.message.strip():
+        raise HTTPException(status_code=400, detail="Message required.")
+    doc = {
+        "id": str(uuid.uuid4()),
+        "user_id": user.user_id,
+        "email": user.email,
+        "rating": payload.rating,
+        "category": payload.category,
+        "message": payload.message.strip()[:4000],
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.beta_feedback.insert_one(doc)
+    return {"ok": True, "id": doc["id"]}
+
+
+# ----- Admin endpoints -----
+
+@api_router.post("/admin/beta/codes")
+async def admin_beta_codes_create(
+    payload: BetaCodeCreatePayload,
+    authorization: Optional[str] = Header(default=None),
+):
+    """Mint N beta codes."""
+    _check_admin(authorization)
+    if payload.count < 1 or payload.count > 200:
+        raise HTTPException(status_code=400, detail="count must be 1..200")
+    out = []
+    for _ in range(payload.count):
+        # Avoid the (extremely unlikely) collision
+        for _ in range(5):
+            code = _new_beta_code()
+            existing = await db.beta_codes.find_one({"code": code}, {"_id": 0})
+            if not existing:
+                break
+        doc = {
+            "code": code,
+            "label": payload.label,
+            "max_uses": payload.max_uses,
+            "uses": 0,
+            "redeemed_by": [],
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        await db.beta_codes.insert_one(doc)
+        out.append({"code": code, "max_uses": payload.max_uses, "label": payload.label})
+    return {"ok": True, "codes": out}
+
+
+@api_router.get("/admin/beta/codes")
+async def admin_beta_codes_list(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    rows = await db.beta_codes.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return {"codes": rows}
+
+
+@api_router.get("/admin/beta/applications")
+async def admin_beta_applications(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    rows = await db.beta_applications.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    pending = sum(1 for r in rows if r.get("status") == "pending")
+    return {"applications": rows, "pending": pending, "total": len(rows)}
+
+
+@api_router.post("/admin/beta/applications/{app_id}/approve")
+async def admin_beta_approve(app_id: str, authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    app_doc = await db.beta_applications.find_one({"id": app_id}, {"_id": 0})
+    if not app_doc:
+        raise HTTPException(status_code=404, detail="Application not found.")
+    code = _new_beta_code()
+    now_iso = datetime.now(timezone.utc).isoformat()
+    await db.beta_codes.insert_one({
+        "code": code,
+        "label": f"app:{app_id}",
+        "max_uses": 1,
+        "uses": 0,
+        "redeemed_by": [],
+        "created_at": now_iso,
+    })
+    await db.beta_applications.update_one(
+        {"id": app_id},
+        {"$set": {"status": "approved", "decided_at": now_iso, "code": code}},
+    )
+    sent = await _send_beta_invite_email(app_doc["email"], app_doc.get("name", ""), code)
+    return {"ok": True, "code": code, "email_sent": sent}
+
+
+@api_router.post("/admin/beta/applications/{app_id}/deny")
+async def admin_beta_deny(app_id: str, authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    res = await db.beta_applications.update_one(
+        {"id": app_id},
+        {"$set": {"status": "denied", "decided_at": datetime.now(timezone.utc).isoformat()}},
+    )
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Application not found.")
+    return {"ok": True}
+
+
+class AdminInvitePayload(BaseModel):
+    email: EmailStr
+    name: Optional[str] = "friend"
+    label: Optional[str] = None
+
+
+@api_router.post("/admin/beta/invite")
+async def admin_beta_invite(payload: AdminInvitePayload, authorization: Optional[str] = Header(default=None)):
+    """Hand-pick a beta tester (e.g. from the waitlist) — mints code + sends email."""
+    _check_admin(authorization)
+    code = _new_beta_code()
+    now_iso = datetime.now(timezone.utc).isoformat()
+    await db.beta_codes.insert_one({
+        "code": code,
+        "label": payload.label or f"invite:{payload.email}",
+        "max_uses": 1,
+        "uses": 0,
+        "redeemed_by": [],
+        "created_at": now_iso,
+    })
+    sent = await _send_beta_invite_email(payload.email, payload.name or "friend", code)
+    return {"ok": True, "code": code, "email_sent": sent}
+
+
+@api_router.get("/admin/beta/feedback")
+async def admin_beta_feedback(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    rows = await db.beta_feedback.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return {"feedback": rows, "total": len(rows)}
+
+
+@api_router.get("/admin/beta/stats")
+async def admin_beta_stats(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    total_codes = await db.beta_codes.count_documents({})
+    redeemed_codes = await db.beta_codes.count_documents({"uses": {"$gte": 1}})
+    total_testers = await db.users.count_documents({"is_beta_tester": True})
+    total_apps = await db.beta_applications.count_documents({})
+    pending_apps = await db.beta_applications.count_documents({"status": "pending"})
+    approved_apps = await db.beta_applications.count_documents({"status": "approved"})
+    total_feedback = await db.beta_feedback.count_documents({})
+    by_cat = [
+        {"category": r["_id"] or "other", "count": r["count"]}
+        for r in await db.beta_feedback.aggregate([
+            {"$group": {"_id": "$category", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+        ]).to_list(20)
+    ]
+    return {
+        "total_codes": total_codes,
+        "redeemed_codes": redeemed_codes,
+        "total_testers": total_testers,
+        "applications_total": total_apps,
+        "applications_pending": pending_apps,
+        "applications_approved": approved_apps,
+        "feedback_total": total_feedback,
+        "feedback_by_category": by_cat,
+    }
+
 
 app.include_router(api_router)

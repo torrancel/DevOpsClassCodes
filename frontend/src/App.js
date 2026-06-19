@@ -3,6 +3,7 @@ import "@/i18n";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { BetaProvider } from "@/contexts/BetaContext";
 import { AmbienceProvider } from "@/contexts/AmbienceContext";
 import Landing from "@/pages/Landing";
 import DoctorsLanding from "@/pages/DoctorsLanding";
@@ -10,10 +11,14 @@ import AttorneysLanding from "@/pages/AttorneysLanding";
 import TeachersLanding from "@/pages/TeachersLanding";
 import ManagersLanding from "@/pages/ManagersLanding";
 import AdminAnalytics from "@/pages/AdminAnalytics";
+import AdminBeta from "@/pages/AdminBeta";
 import AuthCallback from "@/pages/AuthCallback";
 import AppDashboard from "@/pages/AppDashboard";
 import CheckIn from "@/pages/CheckIn";
+import BetaLanding from "@/pages/BetaLanding";
+import BetaRedeem from "@/pages/BetaRedeem";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import BetaGate from "@/components/beta/BetaGate";
 
 function AppRouter() {
     const location = useLocation();
@@ -28,12 +33,17 @@ function AppRouter() {
             <Route path="/attorneys" element={<AttorneysLanding />} />
             <Route path="/teachers" element={<TeachersLanding />} />
             <Route path="/managers" element={<ManagersLanding />} />
+            <Route path="/beta" element={<BetaLanding />} />
+            <Route path="/beta/redeem" element={<BetaRedeem />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
+            <Route path="/admin/beta" element={<AdminBeta />} />
             <Route
                 path="/app"
                 element={
                     <ProtectedRoute>
-                        <AppDashboard />
+                        <BetaGate>
+                            <AppDashboard />
+                        </BetaGate>
                     </ProtectedRoute>
                 }
             />
@@ -41,7 +51,9 @@ function AppRouter() {
                 path="/app/check-in"
                 element={
                     <ProtectedRoute>
-                        <CheckIn />
+                        <BetaGate>
+                            <CheckIn />
+                        </BetaGate>
                     </ProtectedRoute>
                 }
             />
@@ -54,9 +66,11 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <AuthProvider>
-                    <AmbienceProvider>
-                        <AppRouter />
-                    </AmbienceProvider>
+                    <BetaProvider>
+                        <AmbienceProvider>
+                            <AppRouter />
+                        </AmbienceProvider>
+                    </BetaProvider>
                 </AuthProvider>
             </BrowserRouter>
             <Toaster
