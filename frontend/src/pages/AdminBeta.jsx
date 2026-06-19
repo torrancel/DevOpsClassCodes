@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import { ChevronLeft, KeyRound, Mail, Check, X, Copy, Sparkles } from "lucide-react";
+import { ChevronLeft, KeyRound, Mail, Check, X, Copy, Sparkles, Users, Send } from "lucide-react";
 import InfinityGlow from "@/components/landing/InfinityGlow";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -15,6 +15,12 @@ export default function AdminBeta() {
     const [apps, setApps] = useState([]);
     const [codes, setCodes] = useState([]);
     const [feedback, setFeedback] = useState([]);
+    const [candidates, setCandidates] = useState([]);
+    const [candStats, setCandStats] = useState({ total: 0, invited: 0, uninvited: 0 });
+    const [audienceFilter, setAudienceFilter] = useState("all");
+    const [selected, setSelected] = useState(new Set());
+    const [bulkLabel, setBulkLabel] = useState("");
+    const [bulkSending, setBulkSending] = useState(false);
     const [loading, setLoading] = useState(false);
     const [mintCount, setMintCount] = useState(5);
     const [mintLabel, setMintLabel] = useState("");
@@ -27,16 +33,23 @@ export default function AdminBeta() {
         if (!token) return;
         setLoading(true);
         try {
-            const [s, a, c, f] = await Promise.all([
+            const [s, a, c, f, w] = await Promise.all([
                 axios.get(`${API}/admin/beta/stats`, { headers }),
                 axios.get(`${API}/admin/beta/applications`, { headers }),
                 axios.get(`${API}/admin/beta/codes`, { headers }),
                 axios.get(`${API}/admin/beta/feedback`, { headers }),
+                axios.get(`${API}/admin/beta/waitlist-candidates`, { headers }),
             ]);
             setStats(s.data);
             setApps(a.data.applications || []);
             setCodes(c.data.codes || []);
             setFeedback(f.data.feedback || []);
+            setCandidates(w.data.candidates || []);
+            setCandStats({
+                total: w.data.total || 0,
+                invited: w.data.invited || 0,
+                uninvited: w.data.uninvited || 0,
+            });
         } catch (e) {
             if (e?.response?.status === 401 || e?.response?.status === 403) {
                 sessionStorage.removeItem(TOKEN_KEY);
@@ -124,6 +137,72 @@ export default function AdminBeta() {
             toast.success("Copied to clipboard.");
         } catch {
             // ignore
+        }
+    };
+
+    // ----- Bulk-invite-from-waitlist helpers -----
+    const audiencesAvailable = useMemo(() => {
+        const set = new Set();
+        candidates.forEach((c) => c.audience && set.add(c.audience));
+        return ["all", ...Array.from(set).sort()];
+    }, [candidates]);
+
+    const visibleCandidates = useMemo(() => {
+        if (audienceFilter === "all") return candidates;
+        return candidates.filter((c) => (c.audience || "—") === audienceFilter);
+    }, [candidates, audienceFilter]);
+
+    const toggleOne = (email) => {
+        setSelected((prev) => {
+            const next = new Set(prev);
+            if (next.has(email)) next.delete(email);
+            else next.add(email);
+            return next;
+        });
+    };
+
+    const selectAllUninvited = () => {
+        const uninvitedVisible = visibleCandidates.filter((c) => !c.invited_at).map((c) => c.email);
+        setSelected(new Set(uninvitedVisible));
+    };
+
+    const clearSelection = () => setSelected(new Set());
+
+    const sendBulkInvites = async () => {
+        const emails = Array.from(selected);
+        if (emails.length === 0) {
+            toast.error("Pick at least one waitlist member.");
+            return;
+        }
+        if (emails.length > 200) {
+            toast.error("Max 200 per batch — narrow your selection.");
+            return;
+        }
+        if (!window.confirm(`Send beta invites to ${emails.length} waitlist members?`)) return;
+        setBulkSending(true);
+        try {
+            const { data } = await axios.post(
+                `${API}/admin/beta/bulk-invite-waitlist`,
+                { emails, label: bulkLabel || "bulk-invite" },
+                { headers }
+            );
+            const minted = data.minted ?? 0;
+            const sent = data.emails_sent ?? 0;
+            const skipped = data.results?.filter((r) => r.skipped).length ?? 0;
+            const errors = data.results?.filter((r) => !r.ok).length ?? 0;
+            toast.success(`${minted} codes minted · ${sent} emails sent`, {
+                description:
+                    `${skipped} already invited · ${errors} failed` +
+                    (sent < minted ? ` · check Resend config` : ""),
+            });
+            setSelected(new Set());
+            setBulkLabel("");
+            fetchAll();
+        } catch (e) {
+            const msg = e?.response?.data?.detail || "Bulk invite failed.";
+            toast.error(msg);
+        } finally {
+            setBulkSending(false);
         }
     };
 
@@ -276,6 +355,137 @@ export default function AdminBeta() {
                             </button>
                         </div>
                     </div>
+                </div>
+
+                {/* Pick from waitlist (bulk invite) */}
+                <div data-testid="admin-beta-waitlist-picker" className="gradient-border p-6">
+                    <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+                        <div className="flex items-center gap-2">
+                            <Users size={14} className="text-blue" />
+                            <h2 className="font-display text-xl">Pick from waitlist</h2>
+                            <span className="text-xs text-ink-soft ml-2">
+                                {candStats.uninvited} uninvited · {candStats.invited} invited · {candStats.total} total
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <select
+                                value={audienceFilter}
+                                onChange={(e) => setAudienceFilter(e.target.value)}
+                                data-testid="admin-beta-waitlist-audience-filter"
+                                className="rounded-2xl bg-white/[0.04] border border-white/15 text-ink px-3 py-2 text-xs outline-none focus:border-violet/60"
+                            >
+                                {audiencesAvailable.map((a) => (
+                                    <option key={a} value={a} className="bg-bg">
+                                        {a === "all" ? "All audiences" : a}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                onClick={selectAllUninvited}
+                                data-testid="admin-beta-select-all-uninvited"
+                                className="rounded-full bg-white/5 hover:bg-white/10 text-ink px-3 py-1.5 text-xs"
+                            >
+                                Select all uninvited
+                            </button>
+                            <button
+                                onClick={clearSelection}
+                                data-testid="admin-beta-clear-selection"
+                                className="rounded-full bg-white/5 hover:bg-white/10 text-ink-soft px-3 py-1.5 text-xs"
+                            >
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Selection action bar */}
+                    <div className="flex items-center justify-between flex-wrap gap-3 mb-4 p-3 rounded-2xl bg-white/[0.03] border border-white/10">
+                        <span className="text-sm text-ink-soft" data-testid="admin-beta-selection-count">
+                            <span className="font-display text-ink text-xl mr-1">{selected.size}</span>
+                            selected
+                        </span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <input
+                                type="text"
+                                placeholder="Cohort label (e.g. cohort-01)"
+                                value={bulkLabel}
+                                onChange={(e) => setBulkLabel(e.target.value)}
+                                data-testid="admin-beta-bulk-label"
+                                className="rounded-2xl bg-white/[0.04] border border-white/15 text-ink px-3 py-2 text-xs outline-none focus:border-violet/60 w-48"
+                            />
+                            <button
+                                onClick={sendBulkInvites}
+                                disabled={selected.size === 0 || bulkSending}
+                                data-testid="admin-beta-bulk-invite-submit"
+                                className="btn-glow inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-4 py-2 text-xs font-medium disabled:opacity-50"
+                            >
+                                <Send size={12} />
+                                {bulkSending ? "Sending…" : `Invite ${selected.size || ""}`.trim()}
+                            </button>
+                        </div>
+                    </div>
+
+                    {visibleCandidates.length === 0 ? (
+                        <p className="text-sm text-ink-soft">No waitlist members{audienceFilter !== "all" ? ` in audience "${audienceFilter}"` : ""}.</p>
+                    ) : (
+                        <div className="overflow-x-auto max-h-[420px] rounded-2xl border border-white/10">
+                            <table className="w-full text-sm">
+                                <thead className="bg-white/[0.03] text-ink-soft text-xs uppercase tracking-[0.18em] sticky top-0">
+                                    <tr>
+                                        <th className="px-3 py-3 text-left w-8"></th>
+                                        <th className="px-3 py-3 text-left">Email</th>
+                                        <th className="px-3 py-3 text-left">Audience</th>
+                                        <th className="px-3 py-3 text-left">Joined</th>
+                                        <th className="px-3 py-3 text-left">Invited</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {visibleCandidates.map((c) => {
+                                        const isInvited = !!c.invited_at;
+                                        const isChecked = selected.has(c.email);
+                                        return (
+                                            <tr
+                                                key={c.email}
+                                                onClick={() => !isInvited && toggleOne(c.email)}
+                                                data-testid={`admin-beta-cand-${c.email}`}
+                                                className={`border-t border-white/5 cursor-pointer transition-colors ${
+                                                    isInvited ? "opacity-60 cursor-not-allowed" : "hover:bg-white/[0.03]"
+                                                } ${isChecked ? "bg-violet/10" : ""}`}
+                                            >
+                                                <td className="px-3 py-2.5">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={isChecked}
+                                                        disabled={isInvited}
+                                                        onChange={() => toggleOne(c.email)}
+                                                        data-testid={`admin-beta-cand-check-${c.email}`}
+                                                        className="w-4 h-4 accent-violet cursor-pointer"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    />
+                                                </td>
+                                                <td className="px-3 py-2.5 font-mono text-[13px]">{c.email}</td>
+                                                <td className="px-3 py-2.5 text-ink-soft">
+                                                    {c.audience || "—"}
+                                                    {c.platform ? ` · ${c.platform}` : ""}
+                                                </td>
+                                                <td className="px-3 py-2.5 text-ink-soft whitespace-nowrap">
+                                                    {c.created_at?.slice(0, 10)}
+                                                </td>
+                                                <td className="px-3 py-2.5">
+                                                    {isInvited ? (
+                                                        <span className="text-[10px] uppercase tracking-[0.2em] text-blue inline-flex items-center gap-1">
+                                                            <Check size={11} /> {c.code}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-xs text-ink-soft">—</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
 
                 {/* Applications */}

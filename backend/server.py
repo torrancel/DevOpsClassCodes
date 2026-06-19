@@ -952,4 +952,78 @@ async def admin_beta_stats(authorization: Optional[str] = Header(default=None)):
     }
 
 
+@api_router.get("/admin/beta/waitlist-candidates")
+async def admin_beta_waitlist_candidates(authorization: Optional[str] = Header(default=None)):
+    """List waitlist members with their invite status, sorted by founding-rank (created_at)."""
+    _check_admin(authorization)
+    rows = await db.waitlist.find({}, {"_id": 0}).sort("created_at", 1).to_list(2000)
+    out = []
+    for r in rows:
+        out.append({
+            "email": r.get("email"),
+            "audience": r.get("audience"),
+            "platform": r.get("platform"),
+            "source": r.get("source"),
+            "created_at": (
+                r["created_at"].isoformat() if isinstance(r.get("created_at"), datetime) else r.get("created_at")
+            ),
+            "invited_at": r.get("beta_invited_at"),
+            "code": r.get("beta_code"),
+        })
+    invited = sum(1 for r in out if r["invited_at"])
+    return {"candidates": out, "total": len(out), "invited": invited, "uninvited": len(out) - invited}
+
+
+class BulkInvitePayload(BaseModel):
+    emails: List[EmailStr]
+    label: Optional[str] = "bulk-invite"
+
+
+@api_router.post("/admin/beta/bulk-invite-waitlist")
+async def admin_beta_bulk_invite(payload: BulkInvitePayload, authorization: Optional[str] = Header(default=None)):
+    """Mint a fresh code + send invite email + mark each waitlist entry as invited.
+
+    Skips emails already invited (idempotent). Returns per-email outcome.
+    """
+    _check_admin(authorization)
+    if not payload.emails:
+        raise HTTPException(status_code=400, detail="emails list required")
+    if len(payload.emails) > 200:
+        raise HTTPException(status_code=400, detail="max 200 per batch")
+
+    results = []
+    now_iso = datetime.now(timezone.utc).isoformat()
+    for email in payload.emails:
+        wl = await db.waitlist.find_one({"email": email}, {"_id": 0})
+        if not wl:
+            results.append({"email": email, "ok": False, "reason": "not on waitlist"})
+            continue
+        if wl.get("beta_invited_at"):
+            results.append({
+                "email": email, "ok": True, "skipped": True,
+                "code": wl.get("beta_code"), "email_sent": False,
+                "reason": "already invited",
+            })
+            continue
+        code = _new_beta_code()
+        await db.beta_codes.insert_one({
+            "code": code,
+            "label": payload.label or "bulk-invite",
+            "max_uses": 1,
+            "uses": 0,
+            "redeemed_by": [],
+            "created_at": now_iso,
+        })
+        sent = await _send_beta_invite_email(email, (wl.get("name") or "").strip() or "friend", code)
+        await db.waitlist.update_one(
+            {"email": email},
+            {"$set": {"beta_invited_at": now_iso, "beta_code": code, "beta_email_sent": sent}},
+        )
+        results.append({"email": email, "ok": True, "code": code, "email_sent": sent})
+
+    minted = sum(1 for r in results if r.get("code") and not r.get("skipped"))
+    sent = sum(1 for r in results if r.get("email_sent"))
+    return {"results": results, "minted": minted, "emails_sent": sent, "total": len(results)}
+
+
 app.include_router(api_router)
