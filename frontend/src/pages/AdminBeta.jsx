@@ -176,7 +176,7 @@ export default function AdminBeta() {
                                 sessionStorage.removeItem(TOKEN_KEY);
                                 setToken("");
                             }}
-                            data-testid="admin-beta-logout"
+                            data-testid="admin-beta-lock"
                             className="text-xs uppercase tracking-[0.2em] text-ink-soft hover:text-ink"
                         >
                             Lock

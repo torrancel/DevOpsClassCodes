@@ -5,47 +5,65 @@
 
 ## Surfaces shipped
 ### Marketing (public)
-- `/` main landing with 13 sections (nav, hero, marquee, problem, 4-pillar modules, demo, wearable, use-cases, testimonials, manifesto, 4-tier pricing, FAQ, CTA, footer) — **all sections i18n-driven**
-- Profession landings: `/doctors`, `/attorneys`, `/teachers`, `/managers` — **fully i18n-driven via `t("profession.<slug>.*")`** (icon-only configs in professionConfigs.js)
+- `/` main landing — 13 i18n sections (nav, hero, marquee, problem, modules, demo, wearable, use-cases, testimonials, manifesto, pricing, FAQ, CTA, footer)
+- Profession landings: `/doctors`, `/attorneys`, `/teachers`, `/managers` — fully i18n via `t("profession.<slug>.*")`
+- `/beta` — beta program landing + apply form (public)
 - 12-language i18n with auto-RTL for Arabic; localStorage key `letitgo_lang`
 - Founding-member specials with live counters per audience
-- Apple Watch / Wear OS section + platform capture (apple/android) flowing into the waitlist
+- Apple Watch / Wear OS section + platform capture
+- Waitlist + Resend confirmation emails
 
 ### Product (authenticated)
-- **/app** dashboard — EQ tile (composite score), 30-day Recharts trend, recent check-ins, user picture/name, logout
-- **/app/check-in** — 6 mood sliders + reflection textarea + AI co-regulation suggestion screen
-- **/app** ambience panel — procedural Web Audio (rain 0.32, ocean 0.42 + LFO, forest 0.28, breath) + color-mood overlays
-- **Auth**: Emergent-managed Google sign-in (no key required). Session cookie httpOnly + Bearer header both accepted.
-- **AI**: Claude `claude-sonnet-4-5` via emergentintegrations using the universal Emergent LLM key.
+- `/app` dashboard — EQ tile, 30-day Recharts trend, recent check-ins, user picture/name, logout; gated by BetaGate
+- `/app/check-in` — 6 mood sliders + reflection textarea + AI co-regulation (Claude Sonnet 4.5)
+- Ambience panel — procedural Web Audio (rain 0.32, ocean 0.42 + LFO, forest 0.28, breath) + color-mood overlays
+- Auth: Emergent-managed Google sign-in
+- BETA badge in header + floating feedback widget (visible only to beta testers)
+
+### Beta program (Feb 2026)
+- `/beta` public apply form (email/name/role/why) → `beta_applications` collection
+- `/beta/redeem` → POST /api/beta/redeem flips `is_beta_tester=true` on user record
+- BetaGate wraps /app and /app/check-in — non-beta users see redeem/apply CTA
+- Floating feedback widget on /app submits to `beta_feedback`
+- `/admin/beta` (bearer-token gated) — mint codes, hand-pick invite by email, approve/deny applications, list codes/feedback, KPI stats
+- Resend HTML email on admin approve + admin invite with the 6-char code
 
 ### Admin
-- `/admin/analytics` — bearer-token-gated dashboard (KPIs, by-audience bar, by-source donut, 30-day line, ranking table, redacted recent signups)
+- `/admin/analytics` — KPIs, audience/source charts, recent signups
+- `/admin/beta` — beta cohort control room
 
 ## Integrations
-- Resend (transactional waitlist confirmation, tailored per audience + platform)
+- Resend (transactional waitlist confirmation + beta invite/approval emails)
 - Emergent Google OAuth
 - Emergent LLM (Claude Sonnet 4.5) for check-in suggestions + locale translation
-- MongoDB collections: users, user_sessions, checkins, waitlist, status_checks
+- MongoDB collections: users, user_sessions, checkins, waitlist, beta_codes, beta_applications, beta_feedback
 
 ## i18n status (Feb 2026)
-- **Fully translated** (18/18 sections): en, ar, de, es, fr, it, pt-BR
-- **Partially translated** (hero/marquee/problem/manifesto/etc complete; profession + admin fall back to English): hi, ja, ko, ru, zh-CN
-- Blocked by: Emergent LLM key budget exceeded ($11.46 / $11.40). User must top up to translate remaining `profession` + `admin` sections for the 5 partial locales.
-- Translator script `/app/scripts/translate_locales.py` now handles string vs dict leaves separately, validates output type, has 90s timeout + 3 retries + sequential per-locale processing + incremental writes.
-- Footer link arrays (`linksPlatform`, `linksCompany`, `linksLegal`) hand-translated for all 11 non-EN locales.
+- Fully translated (18/18 sections): en, ar, de, es, fr, it, pt-BR
+- Partially translated (hero/marquee/etc done; profession + admin fall back to English): hi, ja, ko, ru, zh-CN
+- Blocked by Emergent LLM key budget. Top up + rerun `python3 /app/scripts/translate_locales.py hi ja ko ru zh-CN`
 
 ## Test reports
-iteration_1..11 in /app/test_reports. iteration_11 found malformed `{src:translation}` leaves in ar/de — fixed via flatten pass + improved translator. AR doctors page verified rendering with RTL + clean CTAs.
+iterations 1–12 in /app/test_reports. iter_12 (beta program): 18/18 new backend tests pass, 25/25 waitlist regression pass, 100% frontend across 8 routes, zero console errors.
 
 ## Remaining backlog
 ### P1
-- Resume translation for hi/ja/ko/ru/zh-CN profession + admin sections once LLM budget is topped up (run `python3 /app/scripts/translate_locales.py hi ja ko ru zh-CN`)
-- Localized confirmation emails (capture user's language on POST /api/waitlist)
-- Verify a real sending domain at resend.com/domains so confirmation emails reach all recipients
+- Top up Emergent LLM budget → run translator for hi/ja/ko/ru/zh-CN
+- Manually verify ambient audio quality via real Google login on /app
+- Localized confirmation/beta-invite emails (capture user's lng on apply, branch templates)
 
 ### P2
-- Mongo unique index on user_sessions.session_token
-- Per-state ambience memory (recall audio params when EQ drops)
-- Automated cron emails for check-in reminders
-- Optional Stripe pre-order flow (founding-rank gamification)
-- Add `missingKeyHandler` to i18n.js so internal i18next warnings never leak to UI
+- Split `server.py` (956 lines) into `routes/beta.py`, `routes/admin_beta.py`, `routes/auth.py`, `routes/checkins.py`, `routes/waitlist.py`
+- Mongo unique index on user_sessions.session_token + beta_codes.code
+- Per-state ambience memory
+- Cron reminder emails for check-ins
+- i18n keys for /beta + /beta/redeem + /admin/beta surfaces
+- Stripe pre-order for founding rank
+- `missingKeyHandler` in i18n.js
+
+## Files of note (Feb 2026 beta build)
+- /app/backend/server.py — beta endpoints lines ~400–650
+- /app/frontend/src/contexts/BetaContext.jsx
+- /app/frontend/src/components/beta/{BetaGate,BetaBadge,BetaFeedbackWidget}.jsx
+- /app/frontend/src/pages/{BetaLanding,BetaRedeem,AdminBeta}.jsx
+- /app/backend/tests/test_beta.py (testing-agent-generated regression)
