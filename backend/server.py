@@ -5,6 +5,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import asyncio
 import logging
+import smtplib
+import ssl
+from email.message import EmailMessage
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional, Dict, Any
@@ -22,9 +25,11 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Resend setup
+# Email transport: Gmail SMTP (primary) with Resend fallback.
+GMAIL_USER = os.environ.get('GMAIL_USER', '')
+GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '').replace(' ', '')  # spaces in app passwords are decorative
 resend.api_key = os.environ.get('RESEND_API_KEY', '')
-SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL') or GMAIL_USER or 'onboarding@resend.dev'
 SENDER_NAME = os.environ.get('SENDER_NAME', 'Let It Go AI')
 ADMIN_TOKEN = os.environ.get('ADMIN_TOKEN', '')
 
@@ -175,24 +180,66 @@ def _render_email_html(audience: Optional[str], platform: Optional[str] = None) 
     return subject, html
 
 
-async def _send_confirmation_email(to_email: str, audience: Optional[str], platform: Optional[str] = None) -> bool:
+async def _send_email(to_email: str, subject: str, html: str) -> bool:
+    """Unified transactional sender.
+
+    Tries Gmail SMTP first (uses GMAIL_USER / GMAIL_APP_PASSWORD).
+    Falls back to Resend if Gmail is not configured or the SMTP send fails.
+    Returns True if anything succeeded.
+    """
+    # Gmail SMTP path
+    if GMAIL_USER and GMAIL_APP_PASSWORD:
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"] = f"{SENDER_NAME} <{GMAIL_USER}>"
+        msg["To"] = to_email
+        # Plain-text fallback for non-HTML clients
+        msg.set_content("This email is best viewed in an HTML-capable client.")
+        msg.add_alternative(html, subtype="html")
+
+        def _smtp_send():
+            context = ssl.create_default_context()
+            with smtplib.SMTP("smtp.gmail.com", 587, timeout=20) as server:
+                server.starttls(context=context)
+                server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+                server.send_message(msg)
+
+        try:
+            await asyncio.to_thread(_smtp_send)
+            logger.info(f"Sent via Gmail SMTP → {to_email}")
+            return True
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f"Gmail SMTP auth failed for {GMAIL_USER}: {e}. Check GMAIL_APP_PASSWORD (must be a 16-char app password, not the regular password).")
+        except Exception as e:  # noqa: BLE001
+            logger.error(f"Gmail SMTP send failed for {to_email}: {e}")
+
+    # Resend fallback
     if not resend.api_key:
-        logger.warning("RESEND_API_KEY missing — skipping email send.")
+        logger.warning(f"No working email transport for {to_email} (no Gmail, no Resend).")
         return False
-    subject, html = _render_email_html(audience, platform)
-    params = {
-        "from": f"{SENDER_NAME} <{SENDER_EMAIL}>",
-        "to": [to_email],
-        "subject": subject,
-        "html": html,
-    }
     try:
-        result = await asyncio.to_thread(resend.Emails.send, params)
-        logger.info(f"Sent waitlist email to {to_email} (audience={audience}, platform={platform}) id={result.get('id')}")
+        result = await asyncio.to_thread(
+            resend.Emails.send,
+            {
+                "from": f"{SENDER_NAME} <{SENDER_EMAIL}>",
+                "to": [to_email],
+                "subject": subject,
+                "html": html,
+            },
+        )
+        logger.info(f"Sent via Resend → {to_email} id={result.get('id')}")
         return True
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         logger.error(f"Resend send failed for {to_email}: {e}")
         return False
+
+
+async def _send_confirmation_email(to_email: str, audience: Optional[str], platform: Optional[str] = None) -> bool:
+    subject, html = _render_email_html(audience, platform)
+    sent = await _send_email(to_email, subject, html)
+    if sent:
+        logger.info(f"Confirmation queued for {to_email} (audience={audience}, platform={platform})")
+    return sent
 
 
 @api_router.post("/waitlist", response_model=WaitlistEntry)
@@ -673,17 +720,15 @@ class BetaCodeCreatePayload(BaseModel):
 
 
 async def _send_beta_invite_email(to_email: str, name: str, code: str) -> bool:
-    """Send the beta-access invite email via Resend."""
-    if not resend.api_key:
-        logger.warning("Resend API key not set — skipping beta invite email.")
-        return False
+    """Send the beta-access invite email via the unified transport (Gmail SMTP → Resend)."""
     redeem_url = "https://page-launch-106.preview.emergentagent.com/beta/redeem"
+    first_name = (name.split(" ")[0] if name else "friend") or "friend"
     html = f"""
     <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
       <div style="max-width:560px;margin:0 auto;padding:48px 32px;">
         <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#a48fd6;margin:0 0 24px 0;">You're in · Beta access</p>
         <h1 style="font-family:Georgia,serif;font-size:36px;line-height:1.1;color:#fff;margin:0 0 24px 0;">
-          welcome, <em style="background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;">{name.split(' ')[0] if name else 'friend'}</em>.
+          welcome, <em style="background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;">{first_name}</em>.
         </h1>
         <p style="font-size:16px;line-height:1.6;color:#c9c1de;">
           Let It Go is now open for you. This is a quiet, intentional beta — please use it gently, tell us what surprises you, and feel free to log out for days at a time.
@@ -705,19 +750,10 @@ async def _send_beta_invite_email(to_email: str, name: str, code: str) -> bool:
       </div>
     </body></html>
     """
-    try:
-        params = {
-            "from": f"{SENDER_NAME} <{SENDER_EMAIL}>",
-            "to": [to_email],
-            "subject": f"you're in — beta code {code}",
-            "html": html,
-        }
-        result = await asyncio.to_thread(resend.Emails.send, params)
-        logger.info(f"Sent beta invite to {to_email} code={code} id={result.get('id')}")
-        return True
-    except Exception as e:  # noqa: BLE001
-        logger.error(f"Resend beta invite failed for {to_email}: {e}")
-        return False
+    sent = await _send_email(to_email, f"you're in — beta code {code}", html)
+    if sent:
+        logger.info(f"Beta invite queued for {to_email} code={code}")
+    return sent
 
 
 # ----- Public + authenticated endpoints -----
