@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ArrowUpRight, Heart } from "lucide-react";
 import InfinityGlow from "@/components/landing/InfinityGlow";
+import ShareButtons from "@/components/share/ShareButtons";
 
 /**
  * /founder — long-form founder letter from Torrance Lillie.
@@ -284,6 +285,20 @@ export default function FounderStory() {
                             Torrance Lillie
                         </p>
                         <span className="text-xs uppercase tracking-[0.25em] text-ink-soft">Founder</span>
+                    </motion.div>
+
+                    {/* Share buttons */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7 }}
+                    >
+                        <ShareButtons
+                            title="Why I Built Let It Go AI"
+                            summary="Torrance Lillie's founder letter behind Let It Go AI — the world's first Emotional Intelligence Operating System."
+                            quote="In 2022, my life fell apart. I built the thing I wish I'd had."
+                        />
                     </motion.div>
                 </div>
             </article>
