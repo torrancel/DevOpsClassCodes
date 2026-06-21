@@ -1,9 +1,10 @@
-import { Check } from "lucide-react";
+import { Check, X, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 import { setAudience } from "./audienceStore";
 import FoundingBadge, { foundingPrice } from "./FoundingBadge";
 
@@ -18,18 +19,19 @@ const TIERS = [
 
 export default function Pricing() {
     const { t } = useTranslation();
+    const { user } = useAuth();
     const [loadingTier, setLoadingTier] = useState(null);
+    const [emailPrompt, setEmailPrompt] = useState(null); // { tier } when modal is open
+    const [email, setEmail] = useState("");
 
-    const startCheckout = async (tier) => {
+    const launchCheckout = async (tier, emailOverride) => {
         setLoadingTier(tier.slug);
         setAudience(tier.slug);
         try {
             const origin = typeof window !== "undefined" ? window.location.origin : "";
-            const { data } = await axios.post(
-                `${API}/payments/checkout/session`,
-                { package_id: tier.package, origin_url: origin },
-                { withCredentials: true }
-            );
+            const body = { package_id: tier.package, origin_url: origin };
+            if (emailOverride) body.email = emailOverride;
+            const { data } = await axios.post(`${API}/payments/checkout/session`, body, { withCredentials: true });
             if (data?.url) {
                 window.location.href = data.url;
             } else {
@@ -41,6 +43,28 @@ export default function Pricing() {
             toast.error(msg);
             setLoadingTier(null);
         }
+    };
+
+    const startCheckout = (tier) => {
+        // Logged-in users: backend already has their email
+        if (user?.email) {
+            launchCheckout(tier);
+            return;
+        }
+        // Anonymous: collect email so we can email a receipt + reconcile entitlement at signup
+        setEmail("");
+        setEmailPrompt({ tier });
+    };
+
+    const submitEmailPrompt = (e) => {
+        e.preventDefault();
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+            toast.error("Drop a valid email so we can send your receipt.");
+            return;
+        }
+        const tier = emailPrompt.tier;
+        setEmailPrompt(null);
+        launchCheckout(tier, email.trim().toLowerCase());
     };
 
     return (
@@ -153,6 +177,58 @@ export default function Pricing() {
                 {t("pricing.enterpriseNote")}
                 <a href="#cta" className="link-underline ml-2 text-ink">{t("common.talkToFounders")} →</a>
             </p>
+
+            {/* Email-prompt modal for anonymous checkout */}
+            {emailPrompt && (
+                <div
+                    data-testid="pricing-email-modal"
+                    className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-bg/80 backdrop-blur-sm px-4"
+                    onClick={(e) => e.target === e.currentTarget && setEmailPrompt(null)}
+                >
+                    <form
+                        onSubmit={submitEmailPrompt}
+                        className="relative w-full md:max-w-md bg-bg-soft border border-white/15 rounded-t-3xl md:rounded-3xl p-7 md:p-8 space-y-5"
+                    >
+                        <button
+                            type="button"
+                            onClick={() => setEmailPrompt(null)}
+                            data-testid="pricing-email-modal-close"
+                            aria-label="Close"
+                            className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-ink-soft hover:text-ink hover:bg-white/5 transition-colors"
+                        >
+                            <X size={16} />
+                        </button>
+                        <div>
+                            <p className="text-[10px] uppercase tracking-[0.3em] gradient-text mb-2">One step before checkout</p>
+                            <h3 className="font-display text-2xl md:text-3xl tracking-tight">
+                                Where should we send your <em className="gradient-text">receipt</em>?
+                            </h3>
+                            <p className="mt-2 text-sm text-ink-soft">
+                                We&rsquo;ll lock your founding seat to this email so you can sign in later.
+                            </p>
+                        </div>
+                        <div className="relative">
+                            <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-violet" />
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                autoFocus
+                                placeholder="you@quietmail.com"
+                                data-testid="pricing-email-modal-input"
+                                className="w-full rounded-full bg-white/[0.06] border border-white/15 text-ink placeholder:text-ink-soft/60 pl-11 pr-5 py-3.5 outline-none focus:bg-white/[0.1] focus:border-violet/60 transition-colors"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            data-testid="pricing-email-modal-submit"
+                            className="btn-glow w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue via-violet to-pink text-white px-6 py-3.5 text-sm font-medium transition-all"
+                        >
+                            Continue to checkout
+                        </button>
+                    </form>
+                </div>
+            )}
         </section>
     );
 }
