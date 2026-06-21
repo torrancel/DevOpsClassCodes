@@ -1062,4 +1062,303 @@ async def admin_beta_bulk_invite(payload: BulkInvitePayload, authorization: Opti
     return {"results": results, "minted": minted, "emails_sent": sent, "total": len(results)}
 
 
+# ---------- Stripe Checkout (one-time + subscription) ----------
+from emergentintegrations.payments.stripe.checkout import (
+    StripeCheckout,
+    CheckoutSessionRequest,
+)
+
+STRIPE_API_KEY = os.environ.get("STRIPE_API_KEY", "")
+
+# Server-defined packages. NEVER trust client-provided amounts.
+# Founding-lifetime prices are roughly 50% discount on 12-mo equivalent.
+PACKAGES: Dict[str, Dict[str, Any]] = {
+    # ---- One-time founding lifetime ----
+    "kids_founding": {
+        "amount": 99.0, "currency": "usd", "mode": "lifetime",
+        "tier": "kids", "label": "Kids · Founding Lifetime",
+    },
+    "individual_founding": {
+        "amount": 199.0, "currency": "usd", "mode": "lifetime",
+        "tier": "individual", "label": "Individual · Founding Lifetime",
+    },
+    "team_founding": {
+        "amount": 399.0, "currency": "usd", "mode": "lifetime",
+        "tier": "team", "label": "Team · Founding Lifetime (per seat)",
+    },
+    "professional_founding": {
+        "amount": 899.0, "currency": "usd", "mode": "lifetime",
+        "tier": "professional", "label": "Professional · Founding Lifetime",
+    },
+    # ---- Monthly founding (one-time charge — first month locked-in price) ----
+    "individual_monthly": {
+        "amount": 7.0, "currency": "usd", "mode": "monthly",
+        "tier": "individual", "label": "Individual · Founding Monthly",
+    },
+    "professional_monthly": {
+        "amount": 20.0, "currency": "usd", "mode": "monthly",
+        "tier": "professional", "label": "Professional · Founding Monthly",
+    },
+    # ---- Annual founding ----
+    "individual_annual": {
+        "amount": 70.0, "currency": "usd", "mode": "annual",
+        "tier": "individual", "label": "Individual · Founding Annual",
+    },
+    "professional_annual": {
+        "amount": 200.0, "currency": "usd", "mode": "annual",
+        "tier": "professional", "label": "Professional · Founding Annual",
+    },
+    # ---- Beta-cohort upgrade ----
+    "beta_upgrade": {
+        "amount": 49.0, "currency": "usd", "mode": "beta_upgrade",
+        "tier": "beta", "label": "Beta · Lock founding pricing",
+    },
+}
+
+
+class CreateCheckoutPayload(BaseModel):
+    package_id: str
+    origin_url: str  # frontend's window.location.origin, used to build success/cancel URLs
+    email: Optional[EmailStr] = None  # optional pre-fill if not logged in
+
+
+def _stripe(http_request: Request) -> StripeCheckout:
+    if not STRIPE_API_KEY:
+        raise HTTPException(status_code=503, detail="Stripe is not configured.")
+    host_url = str(http_request.base_url).rstrip("/")
+    webhook_url = f"{host_url}/api/webhook/stripe"
+    return StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
+
+
+async def _send_receipt_email(to_email: str, package_label: str, amount: float, currency: str, session_id: str) -> bool:
+    redeem_url = "https://page-launch-106.preview.emergentagent.com/beta/redeem"
+    amount_fmt = f"${amount:,.2f}"
+    html = f"""
+    <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
+      <div style="max-width:560px;margin:0 auto;padding:48px 32px;">
+        <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#a48fd6;margin:0 0 24px 0;">Receipt · Founding member</p>
+        <h1 style="font-family:Georgia,serif;font-size:36px;line-height:1.1;color:#fff;margin:0 0 24px 0;">
+          you&rsquo;re <em style="background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;">in</em>.
+        </h1>
+        <p style="font-size:16px;line-height:1.6;color:#c9c1de;">
+          Thank you for becoming a founding member of Let It Go AI. Your founding pricing is now locked for life — even when public pricing rises, yours stays where it is today.
+        </p>
+        <div style="margin:32px 0;padding:24px;background:rgba(138,77,255,0.08);border:1px solid rgba(138,77,255,0.3);border-radius:16px;">
+          <p style="margin:0 0 10px 0;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#a48fd6;">{package_label}</p>
+          <p style="margin:0;font-family:Georgia,serif;font-size:28px;color:#fff;">{amount_fmt} <span style="font-size:12px;color:#a48fd6;text-transform:uppercase;letter-spacing:0.2em;">{currency.upper()}</span></p>
+        </div>
+        <p style="font-size:14px;color:#c9c1de;">
+          Your account has been unlocked. Sign in with Google to enter:
+        </p>
+        <p style="margin:24px 0;">
+          <a href="{redeem_url}" style="display:inline-block;padding:14px 28px;background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);color:#fff;text-decoration:none;border-radius:999px;font-size:14px;font-weight:500;">Enter Let It Go AI →</a>
+        </p>
+        <p style="font-size:11px;color:#7a6f95;margin-top:48px;">
+          Stripe session: <code>{session_id}</code><br/>
+          Need help? Reply to this email.<br/>
+          — Let It Go AI · made with quiet attention
+        </p>
+      </div>
+    </body></html>
+    """
+    return await _send_email(to_email, f"you're in — receipt for {package_label}", html)
+
+
+async def _finalize_payment(session_id: str, http_request: Request) -> Dict[str, Any]:
+    """Idempotently flip the user/transaction record to paid + send a receipt.
+
+    Returns a snapshot suitable for the frontend status poller.
+    """
+    tx = await db.payment_transactions.find_one({"session_id": session_id}, {"_id": 0})
+    if not tx:
+        raise HTTPException(status_code=404, detail="Unknown checkout session.")
+
+    # Already finalized? Return current snapshot (idempotent).
+    if tx.get("payment_status") == "paid" and tx.get("finalized"):
+        return {
+            "status": tx.get("status"),
+            "payment_status": "paid",
+            "amount": tx.get("amount"),
+            "currency": tx.get("currency"),
+            "package_id": tx.get("package_id"),
+            "metadata": tx.get("metadata", {}),
+            "finalized": True,
+        }
+
+    # Ask Stripe for the latest status
+    status_resp = await _stripe(http_request).get_checkout_status(session_id)
+    amount = (status_resp.amount_total or 0) / 100.0
+    update = {
+        "status": status_resp.status,
+        "payment_status": status_resp.payment_status,
+        "amount_actual": amount,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+    finalized = False
+    if status_resp.payment_status == "paid" and not tx.get("finalized"):
+        # Flip user + send receipt — once.
+        update["finalized"] = True
+        finalized = True
+        email = tx.get("email")
+        user_id = tx.get("user_id")
+        pkg = PACKAGES.get(tx["package_id"], {})
+        now_iso = datetime.now(timezone.utc).isoformat()
+
+        if user_id:
+            await db.users.update_one(
+                {"user_id": user_id},
+                {"$set": {
+                    "is_paid": True,
+                    "is_beta_tester": True,  # paid users skip the beta gate
+                    "plan_tier": pkg.get("tier"),
+                    "plan_mode": pkg.get("mode"),
+                    "beta_joined_at": now_iso,
+                    "paid_at": now_iso,
+                }},
+            )
+        # Even if no user_id yet, store the entitlement keyed to email so it can be reconciled on first login.
+        if email:
+            await db.paid_entitlements.update_one(
+                {"email": email},
+                {"$set": {
+                    "email": email,
+                    "plan_tier": pkg.get("tier"),
+                    "plan_mode": pkg.get("mode"),
+                    "session_id": session_id,
+                    "amount": amount,
+                    "paid_at": now_iso,
+                }},
+                upsert=True,
+            )
+            label = pkg.get("label", tx.get("package_id"))
+            sent = await _send_receipt_email(email, label, amount, status_resp.currency, session_id)
+            update["receipt_sent"] = sent
+
+    await db.payment_transactions.update_one({"session_id": session_id}, {"$set": update})
+
+    return {
+        "status": status_resp.status,
+        "payment_status": status_resp.payment_status,
+        "amount": amount,
+        "currency": status_resp.currency,
+        "package_id": tx.get("package_id"),
+        "metadata": status_resp.metadata or {},
+        "finalized": finalized or bool(tx.get("finalized")),
+    }
+
+
+@api_router.get("/payments/packages")
+async def list_packages():
+    """Public list of purchasable packages (no secret data leaks)."""
+    return {
+        "packages": [
+            {"id": pid, **{k: v for k, v in p.items() if k != "internal"}}
+            for pid, p in PACKAGES.items()
+        ]
+    }
+
+
+@api_router.post("/payments/checkout/session")
+async def create_checkout_session(
+    payload: CreateCheckoutPayload,
+    http_request: Request,
+    authorization: Optional[str] = Header(default=None),
+    session_token: Optional[str] = Cookie(default=None, alias="session_token"),
+):
+    if payload.package_id not in PACKAGES:
+        raise HTTPException(status_code=400, detail="Unknown package.")
+    pkg = PACKAGES[payload.package_id]
+
+    # Resolve user (optional — anonymous checkout allowed)
+    user: Optional[AuthUser] = None
+    token = session_token
+    if not token and authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ", 1)[1].strip()
+    if token:
+        user = await _resolve_user_from_token(token)
+
+    customer_email = (user.email if user else payload.email) or None
+
+    origin = payload.origin_url.rstrip("/")
+    success_url = f"{origin}/pricing/success?session_id={{CHECKOUT_SESSION_ID}}"
+    cancel_url = f"{origin}/#pricing"
+
+    metadata = {
+        "package_id": payload.package_id,
+        "tier": pkg.get("tier", ""),
+        "mode": pkg.get("mode", ""),
+        "user_id": (user.user_id if user else ""),
+        "email": customer_email or "",
+    }
+
+    checkout_req = CheckoutSessionRequest(
+        amount=float(pkg["amount"]),
+        currency=pkg["currency"],
+        success_url=success_url,
+        cancel_url=cancel_url,
+        metadata=metadata,
+    )
+
+    session = await _stripe(http_request).create_checkout_session(checkout_req)
+
+    await db.payment_transactions.insert_one({
+        "session_id": session.session_id,
+        "package_id": payload.package_id,
+        "amount": float(pkg["amount"]),
+        "currency": pkg["currency"],
+        "tier": pkg.get("tier"),
+        "mode": pkg.get("mode"),
+        "user_id": user.user_id if user else None,
+        "email": customer_email,
+        "status": "initiated",
+        "payment_status": "unpaid",
+        "metadata": metadata,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "finalized": False,
+    })
+
+    return {"url": session.url, "session_id": session.session_id}
+
+
+@api_router.get("/payments/checkout/status/{session_id}")
+async def checkout_status(session_id: str, http_request: Request):
+    return await _finalize_payment(session_id, http_request)
+
+
+@api_router.post("/webhook/stripe")
+async def stripe_webhook(http_request: Request):
+    body = await http_request.body()
+    sig = http_request.headers.get("Stripe-Signature", "")
+    try:
+        event = await _stripe(http_request).handle_webhook(body, sig)
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Stripe webhook signature/parse failed: {e}")
+        raise HTTPException(status_code=400, detail="Invalid webhook payload.")
+
+    logger.info(f"Stripe webhook event={event.event_type} session={event.session_id}")
+
+    # Idempotent guard: skip if we've already recorded this event id.
+    if event.event_id:
+        seen = await db.payment_webhook_events.find_one({"event_id": event.event_id}, {"_id": 0})
+        if seen:
+            return {"ok": True, "duplicate": True}
+        await db.payment_webhook_events.insert_one({
+            "event_id": event.event_id,
+            "event_type": event.event_type,
+            "session_id": event.session_id,
+            "received_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+    # For paid checkouts, drive the same finalize path the frontend poller uses.
+    if event.payment_status == "paid" and event.session_id:
+        try:
+            await _finalize_payment(event.session_id, http_request)
+        except HTTPException as e:
+            logger.warning(f"Webhook finalize for {event.session_id} failed: {e.detail}")
+
+    return {"ok": True}
+
+
 app.include_router(api_router)

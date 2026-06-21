@@ -1,0 +1,35 @@
+{
+  "summary": "Completed end-to-end verification of the new Stripe payments integration. Backend: 13/13 contract tests PASS in /app/backend/tests/test_payments.py covering GET /api/payments/packages (all 9 expected ids + amounts: kids 99, individual 199, team 399, professional 899, individual_monthly 7, professional_monthly 20, individual_annual 70, professional_annual 200, beta_upgrade 49; shape: id/amount/currency/mode/tier/label), POST /api/payments/checkout/session (anon success returns {url, session_id} pointing to checkout.stripe.com; 400 on unknown package_id with 'Unknown package.'; 422 on invalid email; 422 on missing origin_url), GET /api/payments/checkout/status/{id} (404 on unknown session; correct shape {status, payment_status, amount, currency, package_id, metadata, finalized} on real unpaid session; idempotent — finalized stable between back-to-back calls), POST /api/webhook/stripe (400 on missing Stripe-Signature and on invalid signature). Direct MongoDB inspection confirmed payment_transactions row persisted with amount=199.0, currency=usd, tier=individual, mode=lifetime, user_id=null (anonymous), email captured, payment_status=unpaid, finalized=false (status flips initiated→open after first Stripe poll, which is correct). Regression: 18/18 beta tests + 24/25 waitlist tests pass. The 1 failing waitlist test is PRE-EXISTING and unrelated to Stripe (asserts email_sent=False for non-owner email, but Resend is now actually delivering — stale assumption, not a Stripe regression). Frontend: pricing-section + all 4 cta+waitlist testids present (kids/individual/team/professional). Click pricing-cta-individual → POST /api/payments/checkout/session 200 → window.location.href navigates to checkout.stripe.com/c/pay/cs_test_... (verified live). Waitlist sublink pricing-waitlist-individual → navigates to /#cta. /pricing/success?session_id=cs_fake_invalid_xyz shows pricing-success-polling state with 'quiet moment' headline (text length 120 chars). /beta, /admin/beta, /founder all still render.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_payments.py",
+    "/app/test_reports/pytest/pytest_payments_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py is now ~1365 lines — well past the 700-line guideline. The new ~300-line Stripe block should be moved to /app/backend/routes/payments.py alongside the existing beta block split suggested in iteration_12. PACKAGES dict can live in /app/backend/config/packages.py.",
+    "PACKAGES amounts are correctly server-side only and the client cannot inject an arbitrary amount (verified — unknown package_id rejected with 400). Good security posture.",
+    "_finalize_payment is correctly idempotent: checks tx.finalized before flipping user.is_paid/is_beta_tester and before calling _send_receipt_email. The 'set finalized=true' update + 'paid_entitlements upsert' are not in a single mongo transaction, so a crash between them could leave entitlement set without user.is_paid flipped — acceptable for current scale but flag for future hardening.",
+    "Hard-coded redeem_url in _send_receipt_email ('https://page-launch-106.preview.emergentagent.com/beta/redeem') — should be derived from a FRONTEND_URL env var so it works in prod without code changes.",
+    "STRIPE_API_KEY uses os.environ.get('STRIPE_API_KEY', '') with empty-string default; the _stripe() helper correctly 503s if missing. Good — but consider failing at startup if missing in production.",
+    "Webhook handler correctly validates signature (verified — 400 on missing AND on bad sig) and dedupes by event_id. Good.",
+    "POST /api/payments/checkout/session accepts EmailStr — verified 422 on bad email. Good Pydantic guard.",
+    "No unit test could be written for the real paid-flow (test_idempotency double-flip) without a manual Stripe test-card walk-through; contract-level idempotency on the polling endpoint shape was verified instead, per spec."
+  ],
+  "updated_files": ["/app/backend/tests/test_payments.py"],
+  "success_rate": {"backend": "100% (13/13 new Stripe tests + 18/18 beta regression + 24/25 waitlist — 1 unrelated stale assertion)", "frontend": "100% on all 5 targeted flows"},
+  "test_credentials": "Admin token verified working. STRIPE_API_KEY=sk_test_emergent confirmed live — produced real cs_test_... session URLs at checkout.stripe.com.",
+  "seed_data_creation": "Created 3 payment_transactions rows (all package_id=individual_founding, amount=199.0, payment_status=unpaid) tagged with TEST_pay_anon@example.com. Created 1 waitlist row (TEST_pay_reg_*@example.com, audience=individual). Created 1 beta_applications row (TEST_pay_betareg_*). No paid_entitlements / user flips since no real card was completed.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Full Stripe contract coverage is in /app/backend/tests/test_payments.py — reuse as regression. The happy-path (real paid checkout → user.is_paid=true → receipt email → /pricing/success shows pricing-success-paid) cannot be tested autonomously; it requires manually completing checkout.stripe.com with test card 4242 4242 4242 4242 and then verifying (a) GET /api/payments/checkout/status/{sid} returns finalized=true twice in a row, (b) db.users for that user has is_paid=true and is_beta_tester=true and plan_tier/plan_mode set, (c) db.paid_entitlements has the row keyed by email, (d) _send_receipt_email was triggered (check Resend logs / inbox). The unrelated waitlist test_create_valid_with_known_audience now fails because Resend is actually delivering for non-owner addresses — main agent should update the assertion to email_sent=True or remove the assertion (it's a stale assumption from when SMTP only delivered to owner).",
+  "rca of the issue": "No bugs in the Stripe integration. The single failing waitlist test (test_create_valid_with_known_audience) asserts email_sent=False for non-owner addresses; this assumption was true when only Gmail SMTP was active (owner-only), but with Resend fallback now configured, non-owner addresses DO get delivered (email_sent=True is correct). This is a stale test, not a Stripe regression."
+}

@@ -1,18 +1,47 @@
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
 import { setAudience } from "./audienceStore";
 import FoundingBadge, { foundingPrice } from "./FoundingBadge";
 
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
 const TIERS = [
-    { slug: "kids",         price: "$6",  cadenceKey: "common.child",         accent: false },
-    { slug: "individual",   price: "$14", cadenceKey: "common.month",         accent: false },
-    { slug: "team",         price: "$9",  cadenceKey: "common.perUser",       accent: true  },
-    { slug: "professional", price: "$39", cadenceKey: "common.month",         accent: false },
+    { slug: "kids",         price: "$6",  cadenceKey: "common.child",   accent: false, package: "kids_founding" },
+    { slug: "individual",   price: "$14", cadenceKey: "common.month",   accent: false, package: "individual_founding" },
+    { slug: "team",         price: "$9",  cadenceKey: "common.perUser", accent: true,  package: "team_founding" },
+    { slug: "professional", price: "$39", cadenceKey: "common.month",   accent: false, package: "professional_founding" },
 ];
 
 export default function Pricing() {
     const { t } = useTranslation();
+    const [loadingTier, setLoadingTier] = useState(null);
+
+    const startCheckout = async (tier) => {
+        setLoadingTier(tier.slug);
+        setAudience(tier.slug);
+        try {
+            const origin = typeof window !== "undefined" ? window.location.origin : "";
+            const { data } = await axios.post(
+                `${API}/payments/checkout/session`,
+                { package_id: tier.package, origin_url: origin },
+                { withCredentials: true }
+            );
+            if (data?.url) {
+                window.location.href = data.url;
+            } else {
+                toast.error("Couldn't open checkout. Try again in a moment.");
+                setLoadingTier(null);
+            }
+        } catch (err) {
+            const msg = err?.response?.data?.detail || "Checkout failed.";
+            toast.error(msg);
+            setLoadingTier(null);
+        }
+    };
 
     return (
         <section
@@ -87,17 +116,26 @@ export default function Pricing() {
                                 </li>
                             ))}
                         </ul>
-                        <a
-                            href="#cta"
-                            onClick={() => setAudience(tier.slug)}
+                        <button
+                            type="button"
+                            onClick={() => startCheckout(tier)}
+                            disabled={loadingTier === tier.slug}
                             data-testid={`pricing-cta-${tier.slug}`}
-                            className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
+                            className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-all active:scale-[0.98] disabled:opacity-60 ${
                                 tier.accent
                                     ? "btn-glow bg-gradient-to-r from-blue via-violet to-pink text-white"
                                     : "border border-white/15 text-ink hover:bg-white/5"
                             }`}
                         >
-                            {t(`pricing.${tier.slug}.cta`)}
+                            {loadingTier === tier.slug ? "Opening checkout…" : t(`pricing.${tier.slug}.cta`)}
+                        </button>
+                        <a
+                            href="#cta"
+                            onClick={() => setAudience(tier.slug)}
+                            data-testid={`pricing-waitlist-${tier.slug}`}
+                            className="mt-3 text-[10px] uppercase tracking-[0.25em] text-ink-soft hover:text-ink text-center link-underline"
+                        >
+                            Or apply for the beta →
                         </a>
                         <FoundingBadge
                             audience={tier.slug}
