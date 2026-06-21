@@ -17,6 +17,7 @@ import AppDashboard from "@/pages/AppDashboard";
 import CheckIn from "@/pages/CheckIn";
 import BetaLanding from "@/pages/BetaLanding";
 import BetaRedeem from "@/pages/BetaRedeem";
+import FounderStory from "@/pages/FounderStory";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BetaGate from "@/components/beta/BetaGate";
 
@@ -35,6 +36,7 @@ function AppRouter() {
             <Route path="/managers" element={<ManagersLanding />} />
             <Route path="/beta" element={<BetaLanding />} />
             <Route path="/beta/redeem" element={<BetaRedeem />} />
+            <Route path="/founder" element={<FounderStory />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/beta" element={<AdminBeta />} />
             <Route

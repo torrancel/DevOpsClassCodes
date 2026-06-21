@@ -8,6 +8,7 @@
 - `/` main landing — 13 i18n sections
 - `/doctors`, `/attorneys`, `/teachers`, `/managers` — i18n-driven via `t("profession.<slug>.*")`
 - `/beta` — beta program landing + apply form (public)
+- `/founder` — Torrance Lillie's founder letter (long-form, hard-coded English; ready for i18n later)
 - 12-language i18n with auto-RTL for Arabic; localStorage key `letitgo_lang`
 - Founding-member specials + Apple/Wear OS capture
 - Waitlist + Resend confirmation emails

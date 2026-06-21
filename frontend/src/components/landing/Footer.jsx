@@ -1,12 +1,22 @@
 import InfinityGlow from "./InfinityGlow";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+// Resolve known link labels (by COLUMN + INDEX, locale-stable) to real routes.
+// Anything not listed here falls through to a plain anchor with href="#".
+const ROUTES_BY_COL = {
+    platform: {},
+    // Company: first item is always "Manifesto/Founder", route to /founder.
+    company: { 0: "/founder" },
+    legal: {},
+};
 
 export default function Footer() {
     const { t } = useTranslation();
     const COLS = [
-        { title: t("footer.platform"), links: t("footer.linksPlatform", { returnObjects: true }) },
-        { title: t("footer.company"),  links: t("footer.linksCompany",  { returnObjects: true }) },
-        { title: t("footer.legal"),    links: t("footer.linksLegal",    { returnObjects: true }) },
+        { key: "platform", title: t("footer.platform"), links: t("footer.linksPlatform", { returnObjects: true }) },
+        { key: "company",  title: t("footer.company"),  links: t("footer.linksCompany",  { returnObjects: true }) },
+        { key: "legal",    title: t("footer.legal"),    links: t("footer.linksLegal",    { returnObjects: true }) },
     ];
     return (
         <footer
@@ -32,17 +42,31 @@ export default function Footer() {
                             {c.title}
                         </p>
                         <ul className="space-y-3">
-                            {c.links.map((l) => (
-                                <li key={l}>
-                                    <a
-                                        href="#"
-                                        data-testid={`footer-link-${l.toLowerCase().replace(/\s+/g, "-")}`}
-                                        className="link-underline text-sm text-ink-soft hover:text-ink"
-                                    >
-                                        {l}
-                                    </a>
-                                </li>
-                            ))}
+                            {c.links.map((l, i) => {
+                                const route = ROUTES_BY_COL[c.key]?.[i];
+                                const testId = `footer-link-${l.toLowerCase().replace(/\s+/g, "-")}`;
+                                return (
+                                    <li key={l}>
+                                        {route ? (
+                                            <Link
+                                                to={route}
+                                                data-testid={testId}
+                                                className="link-underline text-sm text-ink-soft hover:text-ink"
+                                            >
+                                                {l}
+                                            </Link>
+                                        ) : (
+                                            <a
+                                                href="#"
+                                                data-testid={testId}
+                                                className="link-underline text-sm text-ink-soft hover:text-ink"
+                                            >
+                                                {l}
+                                            </a>
+                                        )}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 ))}

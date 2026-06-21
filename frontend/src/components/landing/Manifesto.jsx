@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Manifesto() {
@@ -43,6 +45,17 @@ export default function Manifesto() {
                         {t("manifesto.signature")}
                     </p>
                     <div className="w-10 h-px bg-gradient-to-r from-transparent via-pink to-transparent"></div>
+                </div>
+
+                <div className="mt-10 flex justify-center">
+                    <Link
+                        to="/founder"
+                        data-testid="manifesto-founder-link"
+                        className="group inline-flex items-center gap-2 text-sm text-ink-soft hover:text-ink transition-colors"
+                    >
+                        <span className="link-underline">Read the founder&rsquo;s letter</span>
+                        <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Link>
                 </div>
             </motion.div>
         </section>
