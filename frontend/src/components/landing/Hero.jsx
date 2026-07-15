@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 const LOGO_URL =
-    "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/sl9ndszy_IMG_1175.png";
+    "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/k5vu09cg_IMG_1872.webp";
 
 export default function Hero() {
     const { t } = useTranslation();
@@ -91,33 +91,15 @@ export default function Hero() {
                 className="mt-20 md:mt-28 grid grid-cols-12 gap-4 md:gap-6"
             >
                 <div className="col-span-12 md:col-span-7 relative h-[360px] md:h-[520px] gradient-border overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center p-6 md:p-8">
                         <img
                             src={LOGO_URL}
-                            alt="Let It Go AI"
-                            className="w-[78%] h-auto animate-drift"
+                            alt="Let It Go AI · Emotional Intelligence Ecosystem"
+                            className="max-w-full max-h-full w-auto h-auto object-contain animate-drift"
                             style={{
                                 filter: "drop-shadow(0 0 80px rgba(138,77,255,0.4))",
-                                WebkitMaskImage:
-                                    "linear-gradient(to bottom, black 0%, black 55%, transparent 68%)",
-                                maskImage:
-                                    "linear-gradient(to bottom, black 0%, black 55%, transparent 68%)",
                             }}
                         />
-                    </div>
-                    {/* Fresh brand line — anchored to the container's bottom, over the masked area */}
-                    <div
-                        data-testid="hero-brand-line"
-                        className="absolute left-0 right-0 bottom-24 md:bottom-32 pointer-events-none px-6 text-center"
-                    >
-                        <p className="font-display tracking-[0.32em] text-lg md:text-2xl">
-                            <span className="text-ink">LET IT GO</span>
-                            <span className="gradient-text ml-3">AI</span>
-                        </p>
-                        <p className="mt-3 text-[10px] md:text-[12px] tracking-[0.35em] text-ink-soft uppercase">
-                            Emotional Intelligence{" "}
-                            <span className="gradient-text">Ecosystem</span>
-                        </p>
                     </div>
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                         <div>
