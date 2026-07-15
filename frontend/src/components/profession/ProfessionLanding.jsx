@@ -94,9 +94,7 @@ export default function ProfessionLanding({ slug }) {
                     >
                         <ChevronLeft size={18} className="text-ink-soft group-hover:text-ink transition-colors" />
                         <InfinityGlow size={32} />
-                        <span className="font-display text-xl tracking-tight text-ink">
-                            Let It Go <span className="gradient-text font-sans text-sm font-medium align-top">AI</span>
-                        </span>
+                        <span className="flex flex-col leading-none"><span className="font-display text-xl tracking-tight text-ink">Let It Go <span className="gradient-text font-sans text-sm font-medium align-top">AI</span></span><span className="text-[8px] md:text-[9px] tracking-[0.35em] gradient-text uppercase mt-1">Emotional Intelligence Ecosystem</span></span>
                     </Link>
                     <a
                         href={`#${slug}-cta`}

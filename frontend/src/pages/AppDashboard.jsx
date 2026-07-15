@@ -48,9 +48,7 @@ export default function AppDashboard() {
                 <div className="px-6 md:px-12 lg:px-20 py-4 flex items-center justify-between">
                     <Link to="/app" className="flex items-center gap-3">
                         <InfinityGlow size={28} />
-                        <span className="font-display text-lg tracking-tight">
-                            Let It Go <span className="gradient-text font-sans text-xs align-top">AI</span>
-                        </span>
+                        <span className="flex flex-col leading-none"><span className="font-display text-lg tracking-tight">Let It Go <span className="gradient-text font-sans text-xs align-top">AI</span></span><span className="text-[8px] md:text-[9px] tracking-[0.35em] gradient-text uppercase mt-1">Emotional Intelligence Ecosystem</span></span>
                         {betaStatus?.is_beta_tester && (
                             <BetaBadge joinedAt={betaStatus.joined_at} />
                         )}

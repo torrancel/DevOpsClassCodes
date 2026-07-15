@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 const LOGO_URL =
-    "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/k5vu09cg_IMG_1872.webp";
+    "https://customer-assets.emergentagent.com/job_page-launch-106/artifacts/q8y05ejf_9BE94B81-D5AF-4928-B7DD-12C3BE65695D.png";
 
 export default function Hero() {
     const { t } = useTranslation();

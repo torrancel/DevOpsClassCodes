@@ -37,9 +37,7 @@ export default function Navigation() {
             <nav className="px-6 md:px-12 lg:px-20 py-5 flex items-center justify-between">
                 <a href="#top" data-testid="nav-brand" className="flex items-center gap-3 group">
                     <InfinityGlow size={36} />
-                    <span className="font-display text-2xl tracking-tight text-ink">
-                        Let It Go <span className="gradient-text font-sans text-base font-medium align-top">AI</span>
-                    </span>
+                    <span className="flex flex-col leading-none"><span className="font-display text-2xl tracking-tight text-ink">Let It Go <span className="gradient-text font-sans text-base font-medium align-top">AI</span></span><span className="text-[8px] md:text-[9px] tracking-[0.35em] gradient-text uppercase mt-1">Emotional Intelligence Ecosystem</span></span>
                 </a>
 
                 <ul className="hidden md:flex items-center gap-10">

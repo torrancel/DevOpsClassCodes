@@ -242,9 +242,7 @@ export default function AdminBeta() {
                     <Link to="/" className="flex items-center gap-3 group">
                         <ChevronLeft size={16} className="text-ink-soft group-hover:text-ink" />
                         <InfinityGlow size={26} />
-                        <span className="font-display text-lg tracking-tight">
-                            Let It Go <span className="gradient-text font-sans text-xs align-top">AI</span>
-                        </span>
+                        <span className="flex flex-col leading-none"><span className="font-display text-lg tracking-tight">Let It Go <span className="gradient-text font-sans text-xs align-top">AI</span></span><span className="text-[8px] md:text-[9px] tracking-[0.35em] gradient-text uppercase mt-1">Emotional Intelligence Ecosystem</span></span>
                     </Link>
                     <div className="flex items-center gap-3">
                         <Link to="/admin/analytics" className="text-xs uppercase tracking-[0.2em] text-ink-soft hover:text-ink">
