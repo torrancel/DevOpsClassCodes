@@ -98,8 +98,26 @@ export default function Hero() {
                             className="w-[78%] h-auto animate-drift"
                             style={{
                                 filter: "drop-shadow(0 0 80px rgba(138,77,255,0.4))",
+                                WebkitMaskImage:
+                                    "linear-gradient(to bottom, black 0%, black 55%, transparent 68%)",
+                                maskImage:
+                                    "linear-gradient(to bottom, black 0%, black 55%, transparent 68%)",
                             }}
                         />
+                    </div>
+                    {/* Fresh brand line — anchored to the container's bottom, over the masked area */}
+                    <div
+                        data-testid="hero-brand-line"
+                        className="absolute left-0 right-0 bottom-24 md:bottom-32 pointer-events-none px-6 text-center"
+                    >
+                        <p className="font-display tracking-[0.32em] text-lg md:text-2xl">
+                            <span className="text-ink">LET IT GO</span>
+                            <span className="gradient-text ml-3">AI</span>
+                        </p>
+                        <p className="mt-3 text-[10px] md:text-[12px] tracking-[0.35em] text-ink-soft uppercase">
+                            Emotional Intelligence{" "}
+                            <span className="gradient-text">Ecosystem</span>
+                        </p>
                     </div>
                     <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                         <div>

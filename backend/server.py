@@ -134,7 +134,7 @@ def _render_email_html(audience: Optional[str], platform: Optional[str] = None) 
     else:
         subject = "Welcome to the Let It Go beta — quietly saved"
         opener = (
-            "You're on the list. A quiet operating system for the inner life "
+            "You're on the list. A quiet ecosystem for the inner life "
             "is being built — and your seat is saved."
         )
 

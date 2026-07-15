@@ -1,7 +1,7 @@
 # Let It Go AI — PRD (running)
 
 ## What the app is
-"Let It Go AI" — an Emotional Intelligence Operating System. Brand: dark cosmic, infinity-glow logo, gradient blue→violet→pink. Founder-led brand voice.
+"Let It Go AI" — an **Emotional Intelligence Ecosystem** (rebranded Feb 2026 from "Operating System"). Brand: dark cosmic, infinity-glow logo, gradient blue→violet→pink. Founder-led brand voice.
 
 ## Surfaces shipped
 ### Marketing (public)

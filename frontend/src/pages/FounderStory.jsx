@@ -186,7 +186,7 @@ export default function FounderStory() {
                         <p>Let It Go AI was born from that question.</p>
                         <p>
                             We are building the world&rsquo;s first <span className="text-ink">Emotional
-                            Intelligence Operating System</span> — an intelligent companion designed to help
+                            Intelligence Ecosystem</span> — an intelligent companion designed to help
                             people recognize stress, anxiety, emotional overload, and negative thought
                             patterns before they take control.
                         </p>
@@ -296,7 +296,7 @@ export default function FounderStory() {
                     >
                         <ShareButtons
                             title="Why I Built Let It Go AI"
-                            summary="Torrance Lillie's founder letter behind Let It Go AI — the world's first Emotional Intelligence Operating System."
+                            summary="Torrance Lillie's founder letter behind Let It Go AI — the world's first Emotional Intelligence Ecosystem."
                             quote="In 2022, my life fell apart. I built the thing I wish I'd had."
                         />
                     </motion.div>

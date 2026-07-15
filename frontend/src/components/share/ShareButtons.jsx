@@ -9,7 +9,7 @@ import { toast } from "sonner";
 export default function ShareButtons({
     url,
     title = "Why I Built Let It Go AI",
-    summary = "Founder letter from Torrance Lillie — the world's first Emotional Intelligence Operating System.",
+    summary = "Founder letter from Torrance Lillie — the world's first Emotional Intelligence Ecosystem.",
     quote = "In 2022, my life fell apart. I built the thing I wish I'd had.",
 }) {
     const [copied, setCopied] = useState(false);

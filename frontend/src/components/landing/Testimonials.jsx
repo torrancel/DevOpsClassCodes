@@ -17,7 +17,7 @@ const QUOTES = [
         role: "Engineering lead · Fintech",
     },
     {
-        text: "I expected a wellness toy. I got an operating system for being a person.",
+        text: "I expected a wellness toy. I got an ecosystem for being a person.",
         name: "Maxim Aldana",
         role: "Founder · early adopter",
     },
