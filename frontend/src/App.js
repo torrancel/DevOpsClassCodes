@@ -19,6 +19,7 @@ import BetaLanding from "@/pages/BetaLanding";
 import BetaRedeem from "@/pages/BetaRedeem";
 import FounderStory from "@/pages/FounderStory";
 import PricingSuccess from "@/pages/PricingSuccess";
+import Ecosystem from "@/pages/Ecosystem";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BetaGate from "@/components/beta/BetaGate";
 
@@ -39,6 +40,7 @@ function AppRouter() {
             <Route path="/beta/redeem" element={<BetaRedeem />} />
             <Route path="/founder" element={<FounderStory />} />
             <Route path="/pricing/success" element={<PricingSuccess />} />
+            <Route path="/ecosystem" element={<Ecosystem />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/beta" element={<AdminBeta />} />
             <Route

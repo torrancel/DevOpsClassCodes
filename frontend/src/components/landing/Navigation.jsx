@@ -19,6 +19,7 @@ export default function Navigation() {
 
     const links = [
         { key: "pillars", label: t("nav.pillars"), href: "#pillars" },
+        { key: "ecosystem", label: t("nav.ecosystem"), href: "/ecosystem" },
         { key: "experience", label: t("nav.experience"), href: "#experience" },
         { key: "wearable", label: t("nav.wearable"), href: "#wearable" },
         { key: "pricing", label: t("nav.pricing"), href: "#pricing" },

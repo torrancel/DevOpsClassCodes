@@ -1,6 +1,7 @@
 {
     "nav": {
         "pillars": "Pillars",
+        "ecosystem": "Ecosystem",
         "experience": "Experience",
         "wearable": "Wearable",
         "pricing": "Pricing",
@@ -52,7 +53,7 @@
         "headlineGradient": "letting go",
         "headlinePost": ".",
         "aware": {
-            "title": "Aware",
+            "title": "Understand",
             "text": "Multimodal sensing — voice prosody, language, micro-context, optional biometrics — distilled into a quiet, continuous read of where you actually are."
         },
         "release": {
@@ -310,7 +311,7 @@
         "company": "Company",
         "legal": "Legal",
         "copyright": "Made with quiet attention.",
-        "linksPlatform": ["Aware", "Release", "Grow", "Transform", "Agent SDK"],
+        "linksPlatform": ["Understand", "Release", "Grow", "Transform", "Agent SDK"],
         "linksCompany": ["Manifesto", "Research", "Careers", "Press", "Contact"],
         "linksLegal": ["Privacy", "Security", "Terms", "Data Ethics", "Consent Charter"]
     },

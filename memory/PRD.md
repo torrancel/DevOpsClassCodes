@@ -5,10 +5,11 @@
 
 ## Surfaces shipped
 ### Marketing (public)
-- `/` main landing — 13 i18n sections
+- `/` main landing — 13 i18n sections; nav now includes **Ecosystem** link
 - `/doctors`, `/attorneys`, `/teachers`, `/managers` — i18n-driven via `t("profession.<slug>.*")`
 - `/beta` — beta program landing + apply form (public)
-- `/founder` — Torrance Lillie's founder letter with share buttons (Twitter/X, LinkedIn, Email, Copy-link with native mobile share)
+- `/founder` — Torrance Lillie's founder letter with share buttons
+- `/ecosystem` — full ecosystem experience matching the brand infographic: mission hero, 4 pillars (Understand/Release/Grow/Transform), 6 ecosystem surfaces (Mobile/Ring/Watch/Vehicles/Enterprise/Cloud), 5-phase roadmap (Foundation 2024 · Expansion 2024-25 · Wearables 2025-26 · Mobility 2026-27 · Ecosystem Scale 2027+), 5 tech pillars, "One ecosystem. Every moment. Better you." closing band
 - `/pricing/success` — Stripe Checkout return page with polling-based payment confirmation
 - 12-language i18n with auto-RTL for Arabic; localStorage key `letitgo_lang`
 - Founding-member specials + Apple/Wear OS capture
