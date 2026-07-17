@@ -57,15 +57,15 @@ export default function BrandLogo({
                 loading="eager"
                 decoding="async"
             />
-            <span className="flex flex-col leading-none">
+            <span className="flex flex-col leading-none min-w-0">
                 <span
-                    className="text-[15px] md:text-base font-semibold tracking-[0.02em] text-lg-ink"
+                    className="text-[15px] md:text-base font-semibold tracking-[0.02em] text-lg-ink whitespace-nowrap"
                     style={{ letterSpacing: "0.06em" }}
                 >
                     LET IT GO <span className="lg-gradient-text">AI</span>
                 </span>
                 <span
-                    className="text-[9px] md:text-[10px] tracking-[0.28em] text-lg-ink-muted uppercase mt-1"
+                    className="text-[9px] md:text-[10px] tracking-[0.22em] text-lg-ink-muted uppercase mt-1 whitespace-nowrap hidden sm:inline-block"
                 >
                     Emotional Intelligence Ecosystem
                 </span>

@@ -124,31 +124,36 @@ export default function HeroV2() {
                           })}
                     className="mt-24 md:mt-28 relative"
                 >
-                    <div className="relative mx-auto max-w-[960px] px-2 md:px-4">
-                        <LaptopFrame url="letitgo.ai/app" float={!reduce}>
-                            <MvpDashboardMock />
-                        </LaptopFrame>
+                    <div className="relative mx-auto max-w-[1120px] px-2">
+                        <div className="grid grid-cols-12 items-center gap-4 lg:gap-8">
+                            {/* Ring — left column, only on lg+ */}
+                            <div className="hidden lg:flex col-span-2 justify-center">
+                                <WearablePlaceholder
+                                    kind="ring"
+                                    label="Smart Ring"
+                                    status="Long-Term Vision"
+                                    tone="magenta"
+                                    reduce={reduce}
+                                />
+                            </div>
 
-                        {/* Apple Watch placeholder — right */}
-                        <div className="hidden md:block absolute -right-4 lg:-right-16 bottom-[-30px] lg:bottom-[-20px]">
-                            <WearablePlaceholder
-                                kind="watch"
-                                label="Apple Watch"
-                                status="Under Development"
-                                tone="violet"
-                                reduce={reduce}
-                            />
-                        </div>
+                            {/* Laptop — full width on <lg, 8 cols on lg+ */}
+                            <div className="col-span-12 lg:col-span-8">
+                                <LaptopFrame url="letitgo.ai/app" float={!reduce}>
+                                    <MvpDashboardMock />
+                                </LaptopFrame>
+                            </div>
 
-                        {/* Smart Ring placeholder — left */}
-                        <div className="hidden md:block absolute -left-4 lg:-left-14 bottom-[10px]">
-                            <WearablePlaceholder
-                                kind="ring"
-                                label="Smart Ring"
-                                status="Long-Term Vision"
-                                tone="magenta"
-                                reduce={reduce}
-                            />
+                            {/* Watch — right column, only on lg+ */}
+                            <div className="hidden lg:flex col-span-2 justify-center">
+                                <WearablePlaceholder
+                                    kind="watch"
+                                    label="Apple Watch"
+                                    status="Under Development"
+                                    tone="violet"
+                                    reduce={reduce}
+                                />
+                            </div>
                         </div>
                     </div>
                 </motion.div>
@@ -209,19 +214,19 @@ export default function HeroV2() {
 /** Simplified MVP dashboard mock for inside the laptop frame. */
 function MvpDashboardMock() {
     return (
-        <div className="w-full h-full p-4 md:p-6 flex gap-4 md:gap-5 text-lg-ink">
+        <div className="w-full h-full p-3 sm:p-4 md:p-6 flex gap-3 sm:gap-4 md:gap-5 text-lg-ink overflow-hidden">
             {/* Left column */}
-            <div className="flex-1 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                    <div>
+            <div className="flex-1 flex flex-col gap-3 sm:gap-4 min-w-0">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
                         <p className="text-[9px] uppercase tracking-[0.3em] text-lg-ink-muted">
                             Dashboard
                         </p>
-                        <p className="mt-1 text-sm font-semibold text-lg-ink">
+                        <p className="mt-1 text-sm font-semibold text-lg-ink truncate">
                             Good evening, Torrance
                         </p>
                     </div>
-                    <span className="text-[9px] text-lg-ink-muted uppercase tracking-[0.25em]">
+                    <span className="text-[9px] text-lg-ink-muted uppercase tracking-[0.25em] whitespace-nowrap shrink-0">
                         Day 27
                     </span>
                 </div>
@@ -301,7 +306,7 @@ function MvpDashboardMock() {
             </div>
 
             {/* Right column */}
-            <div className="flex-1 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-3 sm:gap-4 min-w-0">
                 <div className="lg-panel rounded-2xl p-4 flex-1">
                     <p className="text-[9px] uppercase tracking-[0.3em] text-lg-ink-muted mb-3">
                         Recent check-ins
@@ -395,7 +400,7 @@ function WearablePlaceholder({ kind, label, status, tone, reduce }) {
             </div>
 
             <div
-                className={`relative ${reduce ? "" : "lg-float"} `}
+                className="relative"
                 style={{ filter: `drop-shadow(0 0 40px ${glow})` }}
             >
                 {kind === "watch" ? <WatchSvg /> : <RingSvg />}
