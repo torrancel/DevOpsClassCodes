@@ -326,6 +326,61 @@ html, body {
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Accessibility: smooth anchor scroll + focus rings + reduced-motion
+   Applies globally (anchor-nav is harmless outside .lg-root).
+   ───────────────────────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+}
+
+/* Focus visibility — scoped to landing to avoid touching MVP styles */
+.lg-root a:focus-visible,
+.lg-root button:focus-visible,
+.lg-root [role="button"]:focus-visible,
+.lg-root input:focus-visible,
+.lg-root [tabindex="0"]:focus-visible {
+    outline: 2px solid var(--lg-cyan);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* Nav link — animated underline on hover + focus */
+.lg-nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 4px 2px;
+}
+.lg-nav-link::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #21D4FD, #8B4DFF, #FF3CAC);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 320ms ease;
+}
+.lg-nav-link:hover::after,
+.lg-nav-link:focus-visible::after {
+    transform: scaleX(1);
+}
+
+/* Reduced motion — disable non-essential animation across the DS */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .lg-float,
+    .lg-pulse-dot::before {
+        animation: none !important;
+    }
+    .lg-nav-link::after {
+        transition: none !important;
+    }
+}
+
 @layer base {
     :root {
         --background: 270 50% 3%;

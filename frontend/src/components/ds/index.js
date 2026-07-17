@@ -6,5 +6,6 @@ export { default as GlassCard } from "./GlassCard";
 export { default as PrimaryButton } from "./PrimaryButton";
 export { default as SecondaryButton } from "./SecondaryButton";
 export { default as DeviceFrame } from "./DeviceFrame";
+export { default as LaptopFrame } from "./LaptopFrame";
 export { default as RoadmapCard } from "./RoadmapCard";
 export { default as FeatureCard } from "./FeatureCard";
