@@ -1,11 +1,21 @@
 # Let It Go AI — PRD (running)
 
 ## What the app is
-"Let It Go AI" — an **Emotional Intelligence Ecosystem** (rebranded Feb 2026 from "Operating System"). Brand: dark cosmic, infinity-glow logo, gradient blue→violet→pink. Founder-led brand voice.
+"Let It Go AI" — an **Emotional Intelligence Ecosystem** (rebranded Feb 2026 from "Operating System"). Brand: matte-black cinematic (as of Feb 2026 v2), cyan→blue→violet→magenta gradient system. Founder-led brand voice.
+
+**Tagline**: *One Ecosystem. Every Moment. Better You.*
+
+## Design System (Feb 2026)
+Premium design system introduced. Tokens: `#050507` bg · `#F7F7FA` ink · cyan `#21D4FD` · blue `#356BFF` · violet `#8B4DFF` · magenta `#FF3CAC`. Reusable primitives at `/app/frontend/src/components/ds/`:
+- `BrandLogo`, `Section`, `GradientHeadline`, `StatusBadge`, `GlassCard`, `PrimaryButton`, `SecondaryButton`, `DeviceFrame`, `RoadmapCard`, `FeatureCard`
+- Utility classes in `/app/frontend/src/index.css`: `.lg-root`, `.lg-gradient-text`, `.lg-panel`, `.lg-btn-primary`, `.lg-ambient`, `.lg-h1/h2/h3`, `.lg-grid-bg`
+- System sans-serif stack (SF Pro Display fallback). Marketing landing wrapped in `.lg-root` so MVP pages remain unaffected.
 
 ## Surfaces shipped
 ### Marketing (public)
-- `/` main landing — 13 i18n sections; nav now includes **Ecosystem** link
+- `/` main landing — REDESIGNED Feb 2026 with premium DS. 9-section flow: Nav → Hero (huge tagline + phone mock + floating callouts) → 4-Pillar Features → Device Showcase → Audiences (+ Specialist strip) → Roadmap teaser → Pricing (glass cards, Stripe wired) → FAQ → CTA (waitlist form) → Footer (with "let it go." mega mark).
+- Legacy landing preserved at `/app/frontend/src/pages/LandingLegacy.jsx` (not routed — reusable backup)
+- Landing sections in `/app/frontend/src/components/landing-v2/`: NavigationV2, HeroV2, FeaturesV2, DeviceShowcase, AudiencesV2, RoadmapV2, PricingV2, FAQV2, CTAV2, FooterV2
 - `/doctors`, `/attorneys`, `/teachers`, `/managers` — i18n-driven via `t("profession.<slug>.*")`
 - `/beta` — beta program landing + apply form (public)
 - `/founder` — Torrance Lillie's founder letter with share buttons

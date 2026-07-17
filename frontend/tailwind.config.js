@@ -24,6 +24,17 @@ module.exports = {
                 pink: '#FF6FD3',
                 blue: '#5E8BFF',
                 orange: '#FF8A5C',
+                /* Let It Go — premium landing palette */
+                lg: {
+                    bg: '#050507',
+                    ink: '#F7F7FA',
+                    'ink-soft': '#A7A7B5',
+                    'ink-muted': '#737382',
+                    cyan: '#21D4FD',
+                    blue: '#356BFF',
+                    violet: '#8B4DFF',
+                    magenta: '#FF3CAC',
+                },
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },

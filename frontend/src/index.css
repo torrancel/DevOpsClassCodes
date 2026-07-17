@@ -156,6 +156,176 @@ html, body {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+/* ─────────────────────────────────────────────────────────────
+   LET IT GO — Premium Design System (marketing landing only)
+   Tokens & utilities. Scoped by className; does not affect MVP pages.
+   ───────────────────────────────────────────────────────────── */
+:root {
+    --lg-bg: #050507;
+    --lg-ink: #F7F7FA;
+    --lg-ink-soft: #A7A7B5;
+    --lg-ink-muted: #737382;
+    --lg-cyan: #21D4FD;
+    --lg-blue: #356BFF;
+    --lg-violet: #8B4DFF;
+    --lg-magenta: #FF3CAC;
+    --lg-panel: rgba(255, 255, 255, 0.055);
+    --lg-panel-border: rgba(255, 255, 255, 0.10);
+    --lg-font: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "Segoe UI Variable Display", "Segoe UI", Roboto, "Helvetica Neue",
+        Arial, sans-serif;
+    --lg-font-tight: -0.03em;
+}
+
+/* Root wrapper for the new landing page */
+.lg-root {
+    background: var(--lg-bg);
+    color: var(--lg-ink);
+    font-family: var(--lg-font);
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.lg-root ::selection { background: rgba(139, 77, 255, 0.5); color: #fff; }
+
+/* Gradient headline — cyan → blue → violet → magenta */
+.lg-gradient-text {
+    background: linear-gradient(105deg, #21D4FD 0%, #356BFF 28%, #8B4DFF 62%, #FF3CAC 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Prevent descender clipping on Safari */
+    padding-bottom: 0.08em;
+}
+
+/* Glass panel — refined, generous blur */
+.lg-panel {
+    background: var(--lg-panel);
+    border: 1px solid var(--lg-panel-border);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border-radius: 24px;
+}
+.lg-panel-lg { border-radius: 32px; }
+.lg-panel-hover {
+    transition: border-color 400ms ease, background-color 400ms ease, transform 400ms ease;
+}
+.lg-panel-hover:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.075);
+    transform: translateY(-2px);
+}
+
+/* Primary button */
+.lg-btn-primary {
+    background: linear-gradient(105deg, #356BFF 0%, #8B4DFF 55%, #FF3CAC 100%);
+    color: #fff;
+    box-shadow:
+        0 14px 44px -10px rgba(139, 77, 255, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transition: transform 200ms ease, box-shadow 300ms ease, filter 300ms ease;
+}
+.lg-btn-primary:hover {
+    filter: brightness(1.08);
+    box-shadow:
+        0 20px 60px -10px rgba(139, 77, 255, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.lg-btn-primary:active { transform: scale(0.985); }
+
+/* Secondary button — subtle glass */
+.lg-btn-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--lg-ink);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: background-color 300ms ease, border-color 300ms ease, transform 200ms ease;
+}
+.lg-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.22);
+}
+.lg-btn-secondary:active { transform: scale(0.985); }
+
+/* Ambient glow — soft, single-source */
+.lg-ambient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 55% 42% at 50% 0%, rgba(53, 107, 255, 0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 38% at 20% 30%, rgba(33, 212, 253, 0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 45% 40% at 80% 40%, rgba(255, 60, 172, 0.14) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 45% at 50% 100%, rgba(139, 77, 255, 0.20) 0%, transparent 70%);
+}
+
+/* Hairline divider — subtle, gradient */
+.lg-hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
+
+/* Status dot pulse */
+@keyframes lg-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(33, 212, 253, 0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(33, 212, 253, 0); }
+}
+.lg-pulse-dot::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--lg-cyan);
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: lg-pulse 2.4s ease-out infinite;
+}
+
+/* Slow drift for hero device */
+@keyframes lg-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(0.3deg); }
+}
+.lg-float { animation: lg-float 8s ease-in-out infinite; }
+
+/* Type scale utilities — Apple-keynote large */
+.lg-h1 {
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+}
+.lg-h2 {
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+}
+.lg-h3 {
+    font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+}
+.lg-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Marquee background — soft grid, cinematic */
+.lg-grid-bg {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+}
+
 @layer base {
     :root {
         --background: 270 50% 3%;

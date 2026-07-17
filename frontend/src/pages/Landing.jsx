@@ -1,35 +1,44 @@
-import Navigation from "@/components/landing/Navigation";
-import Hero from "@/components/landing/Hero";
-import Marquee from "@/components/landing/Marquee";
-import Problem from "@/components/landing/Problem";
-import Modules from "@/components/landing/Modules";
-import Demo from "@/components/landing/Demo";
-import Wearable from "@/components/landing/Wearable";
-import UseCases from "@/components/landing/UseCases";
-import Testimonials from "@/components/landing/Testimonials";
-import Manifesto from "@/components/landing/Manifesto";
-import Pricing from "@/components/landing/Pricing";
-import FAQ from "@/components/landing/FAQ";
-import CTA from "@/components/landing/CTA";
-import Footer from "@/components/landing/Footer";
+/**
+ * Landing — premium marketing page for Let It Go AI.
+ *
+ * Design system: /app/frontend/src/components/ds
+ * Sections:      /app/frontend/src/components/landing-v2
+ *
+ * The previous landing composition is preserved verbatim in
+ *   /app/frontend/src/pages/LandingLegacy.jsx
+ * for reference / rollback (no public route wired to it).
+ *
+ * All MVP routes, backend contracts, waitlist / Stripe /
+ * auth flows remain untouched — this file only composes the
+ * public marketing surface.
+ */
+import NavigationV2 from "@/components/landing-v2/NavigationV2";
+import HeroV2 from "@/components/landing-v2/HeroV2";
+import FeaturesV2 from "@/components/landing-v2/FeaturesV2";
+import DeviceShowcase from "@/components/landing-v2/DeviceShowcase";
+import AudiencesV2 from "@/components/landing-v2/AudiencesV2";
+import RoadmapV2 from "@/components/landing-v2/RoadmapV2";
+import PricingV2 from "@/components/landing-v2/PricingV2";
+import FAQV2 from "@/components/landing-v2/FAQV2";
+import CTAV2 from "@/components/landing-v2/CTAV2";
+import FooterV2 from "@/components/landing-v2/FooterV2";
 
 export default function Landing() {
     return (
-        <main data-testid="landing-page" className="font-sans bg-bg text-ink">
-            <Navigation />
-            <Hero />
-            <Marquee />
-            <Problem />
-            <Modules />
-            <Demo />
-            <Wearable />
-            <UseCases />
-            <Testimonials />
-            <Manifesto />
-            <Pricing />
-            <FAQ />
-            <CTA />
-            <Footer />
+        <main
+            data-testid="landing-page"
+            className="lg-root min-h-screen overflow-x-hidden"
+        >
+            <NavigationV2 />
+            <HeroV2 />
+            <FeaturesV2 />
+            <DeviceShowcase />
+            <AudiencesV2 />
+            <RoadmapV2 />
+            <PricingV2 />
+            <FAQV2 />
+            <CTAV2 />
+            <FooterV2 />
         </main>
     );
 }
