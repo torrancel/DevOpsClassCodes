@@ -8,6 +8,7 @@ import {
     PrimaryButton,
     GlassCard,
 } from "@/components/ds";
+import { track, EVENTS } from "@/lib/analytics";
 
 /**
  * WorkingProductV2 — "A Working Product, Not Just a Concept."
@@ -150,6 +151,7 @@ export default function WorkingProductV2() {
                     <PrimaryButton
                         as="a"
                         href="/app"
+                        onClick={() => track(EVENTS.PRODUCT_DEMO_CLICK, { view: active })}
                         data-testid="product-demo-cta"
                         size="lg"
                     >

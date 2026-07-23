@@ -25,31 +25,33 @@ import FounderSectionV2 from "@/components/landing-v2/FounderSectionV2";
 import InvestorSectionV2 from "@/components/landing-v2/InvestorSectionV2";
 import PricingV2 from "@/components/landing-v2/PricingV2";
 import FAQV2 from "@/components/landing-v2/FAQV2";
-import CTAV2 from "@/components/landing-v2/CTAV2";
 import ClosingCTAV2 from "@/components/landing-v2/ClosingCTAV2";
 import FooterV2 from "@/components/landing-v2/FooterV2";
+import { LandingModalProvider } from "@/components/landing-v2/LandingModalContext";
 
 export default function Landing() {
     return (
-        <main
-            data-testid="landing-page"
-            className="lg-root min-h-screen overflow-x-hidden"
-        >
-            <NavigationV2 />
-            <HeroV2 />
-            <TimelineV2 />
-            <WorkingProductV2 />
-            <SignalToSupportV2 />
-            <FeaturesV2 />
-            <DeviceShowcase />
-            <AudiencesV2 />
-            <EcosystemRoadmapV2 />
-            <FounderSectionV2 />
-            <InvestorSectionV2 />
-            <PricingV2 />
-            <FAQV2 />
-            <ClosingCTAV2 />
-            <FooterV2 />
-        </main>
+        <LandingModalProvider>
+            <main
+                data-testid="landing-page"
+                className="lg-root min-h-screen overflow-x-hidden"
+            >
+                <NavigationV2 />
+                <HeroV2 />
+                <TimelineV2 />
+                <WorkingProductV2 />
+                <SignalToSupportV2 />
+                <FeaturesV2 />
+                <DeviceShowcase />
+                <AudiencesV2 />
+                <EcosystemRoadmapV2 />
+                <FounderSectionV2 />
+                <InvestorSectionV2 />
+                <PricingV2 />
+                <FAQV2 />
+                <ClosingCTAV2 />
+                <FooterV2 />
+            </main>
+        </LandingModalProvider>
     );
 }

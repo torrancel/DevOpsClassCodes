@@ -11,6 +11,7 @@ import {
     PrimaryButton,
     SecondaryButton,
 } from "@/components/ds";
+import { track, EVENTS } from "@/lib/analytics";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -260,6 +261,10 @@ function InvestorForm({ reduce }) {
                 submitted_after_ms,
             });
             if (data?.success) {
+                track(EVENTS.INVESTOR_INQUIRY, {
+                    investor_type: form.investor_type,
+                    has_org: Boolean(form.organization.trim()),
+                });
                 setState("success");
                 setForm({
                     name: "",

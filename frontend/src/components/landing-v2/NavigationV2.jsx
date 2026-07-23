@@ -2,8 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import LanguageSwitcher from "@/components/landing/LanguageSwitcher";
 import { BrandLogo, PrimaryButton } from "@/components/ds";
-
-const INVESTOR_MAILTO = "mailto:founders@letitgo.ai?subject=Investor%20Inquiry";
+import { useLandingModal } from "@/components/landing-v2/LandingModalContext";
 
 const LINKS = [
     { key: "product", label: "Product", href: "#pillars" },
@@ -16,6 +15,7 @@ const LINKS = [
 export default function NavigationV2() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
+    const modal = useLandingModal();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 16);
@@ -76,8 +76,7 @@ export default function NavigationV2() {
                 <div className="hidden lg:flex items-center gap-3">
                     <LanguageSwitcher />
                     <PrimaryButton
-                        as="a"
-                        href="#cta"
+                        onClick={() => modal.open("early-access")}
                         data-testid="nav-cta-button"
                         size="sm"
                         icon={null}
@@ -127,9 +126,10 @@ export default function NavigationV2() {
                         ))}
                         <li className="pt-4">
                             <PrimaryButton
-                                as="a"
-                                href="#cta"
-                                onClick={closeMenu}
+                                onClick={() => {
+                                    closeMenu();
+                                    modal.open("early-access");
+                                }}
                                 className="w-full"
                                 data-testid="nav-mobile-cta"
                                 icon={null}

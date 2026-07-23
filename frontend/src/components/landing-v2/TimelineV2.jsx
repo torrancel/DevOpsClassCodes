@@ -7,6 +7,7 @@ import {
     PrimaryButton,
     StatusBadge,
 } from "@/components/ds";
+import { track, EVENTS } from "@/lib/analytics";
 
 /**
  * TimelineV2 — "Built for Today. Designed for Tomorrow."
@@ -149,6 +150,7 @@ export default function TimelineV2() {
                         <PrimaryButton
                             as="a"
                             href="/app"
+                            onClick={() => track(EVENTS.HERO_MVP_CLICK, { source: "timeline" })}
                             data-testid="timeline-today-cta"
                             size="md"
                             className="w-full"

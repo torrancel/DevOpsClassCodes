@@ -6,6 +6,7 @@ import {
     PrimaryButton,
     SecondaryButton,
 } from "@/components/ds";
+import { useLandingModal } from "@/components/landing-v2/LandingModalContext";
 
 /**
  * ClosingCTAV2 — final cinematic call to action.
@@ -14,6 +15,7 @@ import {
  */
 export default function ClosingCTAV2() {
     const reduce = useReducedMotion();
+    const modal = useLandingModal();
     const anim = (delay = 0) =>
         reduce
             ? { initial: false }
@@ -91,8 +93,7 @@ export default function ClosingCTAV2() {
                     className="mt-14 flex flex-wrap items-center justify-center gap-3"
                 >
                     <PrimaryButton
-                        as="a"
-                        href="/beta"
+                        onClick={() => modal.open("early-access")}
                         data-testid="closing-early-access"
                         size="lg"
                     >
@@ -110,8 +111,7 @@ export default function ClosingCTAV2() {
                     </SecondaryButton>
 
                     <SecondaryButton
-                        as="a"
-                        href="mailto:partners@letitgo.ai?subject=Partnership%20Inquiry"
+                        onClick={() => modal.open("partnership")}
                         data-testid="closing-partner"
                         size="lg"
                         icon={<Handshake size={15} />}

@@ -8,6 +8,7 @@ import {
     LaptopFrame,
     GlassCard,
 } from "@/components/ds";
+import { track, EVENTS } from "@/lib/analytics";
 
 const INVESTOR_MAILTO = "#investors";
 
@@ -97,6 +98,7 @@ export default function HeroV2() {
                     <PrimaryButton
                         as="a"
                         href="/app"
+                        onClick={() => track(EVENTS.HERO_MVP_CLICK, { source: "hero" })}
                         data-testid="hero-primary-cta"
                         size="lg"
                     >
