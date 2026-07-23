@@ -1,97 +1,92 @@
 import { Link } from "react-router-dom";
 import { BrandLogo } from "@/components/ds";
 
-const COLS = [
-    {
-        title: "Ecosystem",
-        links: [
-            { label: "Pillars", href: "#pillars" },
-            { label: "Experience", href: "#experience" },
-            { label: "Audiences", href: "#audiences" },
-            { label: "Roadmap", to: "/ecosystem" },
-            { label: "Pricing", href: "#pricing" },
-        ],
-    },
-    {
-        title: "Company",
-        links: [
-            { label: "Founder Story", to: "/founder" },
-            { label: "Beta Program", to: "/beta" },
-            { label: "Manifesto", href: "#cta" },
-            { label: "Contact", href: "mailto:founders@letitgo.ai" },
-        ],
-    },
-    {
-        title: "Legal",
-        links: [
-            { label: "Privacy", href: "#" },
-            { label: "Terms", href: "#" },
-            { label: "Security", href: "#" },
-        ],
-    },
+/**
+ * FooterV2 — brand block + link groups + dynamic copyright.
+ * Compact grid on desktop, stacked on mobile.
+ */
+
+const LINKS = [
+    { label: "Product", href: "#pillars" },
+    { label: "Technology", href: "#experience" },
+    { label: "Roadmap", href: "#roadmap" },
+    { label: "Founder", href: "#founder" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Contact", href: "mailto:hello@letitgo.ai" },
 ];
 
 export default function FooterV2() {
+    const year = new Date().getFullYear();
+
     return (
         <footer
             data-testid="footer-section"
-            className="relative px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12"
+            className="relative px-6 md:px-12 lg:px-20 pt-20 md:pt-28 pb-10"
         >
             <div className="lg-hairline absolute top-0 left-0 right-0" />
 
             <div className="mx-auto max-w-[1400px]">
-                <div className="grid grid-cols-12 gap-8 mb-20">
-                    <div className="col-span-12 md:col-span-5">
-                        <BrandLogo size={32} showWordmark />
-                        <p className="mt-8 text-lg text-lg-ink-soft max-w-md leading-relaxed">
-                            One ecosystem. Every moment.{" "}
-                            <span className="lg-gradient-text italic">
-                                Better you.
-                            </span>
+                {/* Brand + link row */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 mb-16 md:mb-20">
+                    <div className="md:col-span-5">
+                        <BrandLogo size={34} showWordmark />
+                        <p className="mt-6 text-[13px] uppercase tracking-[0.32em] lg-gradient-text font-medium">
+                            Emotional Intelligence Ecosystem
+                        </p>
+                        <p
+                            data-testid="footer-tagline"
+                            className="mt-6 text-lg-ink text-xl md:text-2xl italic tracking-[-0.015em] font-normal max-w-md leading-snug"
+                        >
+                            One Ecosystem. Every Moment.{" "}
+                            <span className="lg-gradient-text">Better You.</span>
                         </p>
                     </div>
 
-                    {COLS.map((c) => (
-                        <div key={c.title} className="col-span-6 md:col-span-2">
-                            <p className="lg-eyebrow lg-gradient-text mb-5">
-                                {c.title}
-                            </p>
-                            <ul className="space-y-3.5">
-                                {c.links.map((l) => {
-                                    const testId = `footer-link-${l.label
-                                        .toLowerCase()
-                                        .replace(/\s+/g, "-")}`;
+                    <div className="md:col-span-7">
+                        <p className="lg-eyebrow text-lg-ink-muted mb-6">
+                            Explore
+                        </p>
+                        <ul
+                            data-testid="footer-links"
+                            className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-4"
+                        >
+                            {LINKS.map((l) => {
+                                const testId = `footer-link-${l.label
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "-")}`;
+                                const isRoute = l.href.startsWith("/");
+                                if (isRoute) {
                                     return (
                                         <li key={l.label}>
-                                            {l.to ? (
-                                                <Link
-                                                    to={l.to}
-                                                    data-testid={testId}
-                                                    className="text-[14px] text-lg-ink-soft hover:text-lg-ink transition-colors"
-                                                >
-                                                    {l.label}
-                                                </Link>
-                                            ) : (
-                                                <a
-                                                    href={l.href}
-                                                    data-testid={testId}
-                                                    className="text-[14px] text-lg-ink-soft hover:text-lg-ink transition-colors"
-                                                >
-                                                    {l.label}
-                                                </a>
-                                            )}
+                                            <Link
+                                                to={l.href}
+                                                data-testid={testId}
+                                                className="text-[15px] text-lg-ink-soft hover:text-lg-ink transition-colors inline-block"
+                                            >
+                                                {l.label}
+                                            </Link>
                                         </li>
                                     );
-                                })}
-                            </ul>
-                        </div>
-                    ))}
-
-                    <div className="col-span-12 md:col-span-1"></div>
+                                }
+                                return (
+                                    <li key={l.label}>
+                                        <a
+                                            href={l.href}
+                                            data-testid={testId}
+                                            className="text-[15px] text-lg-ink-soft hover:text-lg-ink transition-colors inline-block"
+                                        >
+                                            {l.label}
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 </div>
 
-                {/* Massive brand mark */}
-                <div className="relative pt-12 overflow-hidden">
+                {/* Mega brand mark */}
+                <div className="relative pt-10 overflow-hidden">
                     <div className="lg-hairline absolute top-0 left-0 right-0" />
                     <h3
                         aria-hidden="true"
@@ -105,10 +100,11 @@ export default function FooterV2() {
                     </h3>
                 </div>
 
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-8 text-xs text-lg-ink-muted">
-                    <p>
-                        © {new Date().getFullYear()} Let It Go AI · Emotional
-                        Intelligence Ecosystem. All rights, and all feelings, reserved.
+                {/* Copyright + socials */}
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-6 text-xs text-lg-ink-muted">
+                    <p data-testid="footer-copyright">
+                        © {year} Let It Go AI · Emotional Intelligence Ecosystem.
+                        All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
                         <a

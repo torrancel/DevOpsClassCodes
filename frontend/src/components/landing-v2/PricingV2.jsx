@@ -262,7 +262,7 @@ export default function PricingV2() {
                                         </SecondaryButton>
                                     )}
                                     <a
-                                        href="#cta"
+                                        href="/beta"
                                         onClick={() => setAudience(tier.slug)}
                                         data-testid={`pricing-waitlist-${tier.slug}`}
                                         className="block text-center text-[10.5px] uppercase tracking-[0.25em] text-lg-ink-muted hover:text-lg-ink transition-colors"
