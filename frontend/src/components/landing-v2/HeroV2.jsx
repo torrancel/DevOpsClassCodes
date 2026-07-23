@@ -9,7 +9,7 @@ import {
     GlassCard,
 } from "@/components/ds";
 
-const INVESTOR_MAILTO = "mailto:founders@letitgo.ai?subject=Investor%20Information";
+const INVESTOR_MAILTO = "#investors";
 
 const STATUS_BAND = [
     {

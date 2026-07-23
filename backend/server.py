@@ -399,6 +399,116 @@ async def admin_analytics(authorization: Optional[str] = Header(default=None)):
     }
 
 
+# ---------- Investor inquiries ----------
+INVESTOR_TYPES = {"vc", "angel", "family_office", "strategic", "advisor", "other"}
+
+
+class InvestorInquiryCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    email: EmailStr
+    organization: Optional[str] = Field(default=None, max_length=200)
+    investor_type: str = Field(min_length=1, max_length=32)
+    message: str = Field(min_length=1, max_length=5000)
+    # Anti-spam: honeypot (must be empty) + client-side dwell time in ms.
+    website: Optional[str] = Field(default=None, max_length=500)
+    submitted_after_ms: Optional[int] = Field(default=0, ge=0)
+
+
+class InvestorInquiry(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    name: str
+    email: EmailStr
+    organization: Optional[str] = None
+    investor_type: str
+    message: str
+    ip: Optional[str] = None
+    user_agent: Optional[str] = None
+    submitted_at: datetime
+    status: str = "new"
+
+
+@api_router.post("/investor-inquiries")
+async def create_investor_inquiry(payload: InvestorInquiryCreate, request: Request):
+    # Honeypot — bots fill hidden fields. Silently accept to avoid tipping them off.
+    if payload.website:
+        return {"success": True, "id": "spam-filtered"}
+
+    # Dwell-time check — bots submit near-instantly.
+    if (payload.submitted_after_ms or 0) < 2000:
+        raise HTTPException(status_code=400, detail="Please take a moment before submitting.")
+
+    itype = (payload.investor_type or "").strip().lower().replace(" ", "_")
+    if itype not in INVESTOR_TYPES:
+        itype = "other"
+
+    # Naive per-IP rate limit — max 3 inquiries per hour per IP
+    ip = request.client.host if request.client else None
+    if ip:
+        an_hour_ago = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
+        recent_count = await db.investor_inquiries.count_documents({
+            "ip": ip,
+            "submitted_at": {"$gte": an_hour_ago},
+        })
+        if recent_count >= 3:
+            raise HTTPException(status_code=429, detail="Too many submissions. Please try again later.")
+
+    inquiry = InvestorInquiry(
+        id=str(uuid.uuid4()),
+        name=payload.name.strip()[:200],
+        email=payload.email.lower(),
+        organization=((payload.organization or "").strip()[:200] or None),
+        investor_type=itype,
+        message=payload.message.strip()[:5000],
+        ip=ip,
+        user_agent=(request.headers.get("user-agent") or "")[:500],
+        submitted_at=datetime.now(timezone.utc),
+        status="new",
+    )
+
+    doc = inquiry.model_dump()
+    doc["submitted_at"] = doc["submitted_at"].isoformat()
+    await db.investor_inquiries.insert_one(doc)
+
+    # Notify founder via email (best-effort — never block the response).
+    try:
+        founder_to = os.environ.get('FOUNDER_INBOX') or GMAIL_USER or SENDER_EMAIL
+        if founder_to and GMAIL_USER and GMAIL_APP_PASSWORD:
+            msg = EmailMessage()
+            msg["Subject"] = f"[Investor Inquiry] {inquiry.name} — {itype}"
+            msg["From"] = f"{SENDER_NAME} <{SENDER_EMAIL}>"
+            msg["To"] = founder_to
+            msg["Reply-To"] = inquiry.email
+            body_lines = [
+                f"Name: {inquiry.name}",
+                f"Email: {inquiry.email}",
+                f"Organization: {inquiry.organization or '—'}",
+                f"Investor type: {itype}",
+                "",
+                "Message:",
+                inquiry.message,
+                "",
+                f"Submitted: {inquiry.submitted_at.isoformat()}",
+                f"IP: {ip or '—'}",
+            ]
+            msg.set_content("\n".join(body_lines))
+            ctx = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx, timeout=10) as s:
+                s.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+                s.send_message(msg)
+    except Exception as e:
+        logging.warning("Investor inquiry email notification failed: %s", e)
+
+    return {"success": True, "id": inquiry.id}
+
+
+@api_router.get("/admin/investor-inquiries")
+async def list_investor_inquiries(authorization: Optional[str] = Header(default=None)):
+    _check_admin(authorization)
+    docs = await db.investor_inquiries.find({}, {"_id": 0}).sort("submitted_at", -1).to_list(500)
+    return {"count": len(docs), "inquiries": docs}
+
+
 # Include the router in the main app — MOVED to end of file so all @api_router decorators register first
 
 app.add_middleware(

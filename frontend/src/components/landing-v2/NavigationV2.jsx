@@ -9,8 +9,8 @@ const LINKS = [
     { key: "product", label: "Product", href: "#pillars" },
     { key: "technology", label: "Technology", href: "#experience" },
     { key: "roadmap", label: "Roadmap", href: "#roadmap" },
-    { key: "founder", label: "Founder", href: "/founder" },
-    { key: "investors", label: "Investors", href: INVESTOR_MAILTO },
+    { key: "founder", label: "Founder", href: "#founder" },
+    { key: "investors", label: "Investors", href: "#investors" },
 ];
 
 export default function NavigationV2() {

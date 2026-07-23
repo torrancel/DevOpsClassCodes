@@ -22,6 +22,7 @@ import DeviceShowcase from "@/components/landing-v2/DeviceShowcase";
 import AudiencesV2 from "@/components/landing-v2/AudiencesV2";
 import EcosystemRoadmapV2 from "@/components/landing-v2/EcosystemRoadmapV2";
 import FounderSectionV2 from "@/components/landing-v2/FounderSectionV2";
+import InvestorSectionV2 from "@/components/landing-v2/InvestorSectionV2";
 import PricingV2 from "@/components/landing-v2/PricingV2";
 import FAQV2 from "@/components/landing-v2/FAQV2";
 import CTAV2 from "@/components/landing-v2/CTAV2";
@@ -43,6 +44,7 @@ export default function Landing() {
             <AudiencesV2 />
             <EcosystemRoadmapV2 />
             <FounderSectionV2 />
+            <InvestorSectionV2 />
             <PricingV2 />
             <FAQV2 />
             <CTAV2 />
