@@ -1,0 +1,53 @@
+{
+  "summary": "Full pre-launch audit of the Let It Go AI landing page (route /). Backend: 11/11 investor-inquiries tests PASS in /app/backend/tests/test_investor_inquiries.py — covers validation (name/email/message required, invalid email 422, dwell-time <2000ms → 400, honeypot silently accepted with id='spam-filtered', unknown investor_type normalised to 'other'), admin readback (401 no-auth, 403 wrong token, full flow create→admin-list→match), and per-IP rate limit (429 after 3+ inquiries — verified live in playwright run). Frontend: all 15 landing sections render, all required data-testids present, all CTAs wire correctly. Nav CTA opens landing-modal-early-access, Escape closes, valid email submits → landing-modal-success. Hero primary-cta href=/app, secondary-cta href=#investors. Timeline-today-cta href=/app. Product-demo-cta href=/app. All 4 WorkingProduct tabs (dashboard/checkin/regulation/insights) clickable. Investor-form empty-submit shows 3 inline errors (name/email/message), honeypot field at x=-9871 tabIndex=-1 (off-screen + unreachable), rate limit fires after 3+ (verified). Closing partner button opens landing-modal-partnership with name/email/org/message fields, submits successfully. Mobile hamburger toggles aria-expanded correctly, all 5 links + CTA visible, tap-a-link closes menu, Escape closes menu. Responsive: NO horizontal overflow at 1440/1024/768/430/390/320. H1 count = 1. Footer copyright shows '© 2026 Let It Go AI...' (dynamic year). PortraitPlaceholder shows initials TL. WorkingProduct metrics band is hidden. Roadmap phases use LIVE/IN DEVELOPMENT/PLANNED/LONG-TERM VISION with no dates. Safety disclaimer + 'Only the Functional Web MVP is available today' copy verified in DOM. Skip-to-content link present. Stripe checkout session creation still returns real cs_test_... URLs. Preserved routes /app, /app/check-in, /admin/analytics, /admin/beta, /beta all return 200.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/waitlist (partnership mode)", "issue": "LandingModal in partnership mode collects name/organization/message but /app/frontend/src/components/landing-v2/LandingModal.jsx only forwards {email, audience:null, source:'partnership'} — the name/org/message the user typed are DISCARDED. The founder will only see the email address and source tag in the waitlist collection. If those fields are meant to be captured (the review spec implies they should be), either wire them into the payload as application_data:{name,organization,message} or route partnership submissions to /api/investor-inquiries (with investor_type='strategic')."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Partnership modal → /api/waitlist", "issue": "name/organization/message fields are collected but never posted — see backend_issues.minor above. Success UI still shows because the {email, source:'partnership'} payload succeeds on the waitlist endpoint, masking the data loss.", "affected_selectors": ["landing-modal-name", "landing-modal-organization", "landing-modal-message"]}
+    ],
+    "design_issues": [
+      {"screen": "/ (all breakpoints)", "issues": ["public/index.html is missing og:title, og:description, og:image, and twitter:card meta tags — the review spec required all four for social-share previews. Only <title> and <link rel=canonical> are present.", "public/index.html meta description still reads 'A product of emergent.sh' — should be a Let It Go AI-specific description (this is what search engines and link-preview cards will show)."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_investor_inquiries.py",
+    "/app/test_reports/pytest/investor_results.xml"
+  ],
+  "action_items": [
+    "Add og:title, og:description, og:image, twitter:card, twitter:title, twitter:description, twitter:image meta tags to /app/frontend/public/index.html.",
+    "Replace the stale <meta name=\"description\" content=\"A product of emergent.sh\" /> with the real product description (e.g., the same copy used for og:description).",
+    "Decide the intent for the Partnership modal: either (a) actually POST name/organization/message to a partnership-aware endpoint, or (b) remove those fields from the modal to match what the backend receives. Currently users type into fields whose content is silently discarded."
+  ],
+  "critical_code_review_comments": [
+    "server.py is now ~1475 lines — well past the 700-line guideline. The Stripe block (~300 lines) and beta block (~300 lines) should each move to /app/backend/routes/*.py.",
+    "InvestorSectionV2.jsx honeypot implementation is textbook — visually hidden via absolute positioning at left:-10000px, aria-hidden, tabIndex=-1, autocomplete=off. Confirmed at runtime.",
+    "Per-IP rate limit on /api/investor-inquiries uses request.client.host which, behind Kubernetes ingress, may or may not resolve to the real client IP. In this environment it does resolve to a single test-runner IP (verified — 3+ POSTs from playwright triggered 429). Consider trusting X-Forwarded-For header for real-client-IP-based rate limiting in production.",
+    "LandingModal partnership mode drops user-typed name/organization/message on the floor — see action_items.",
+    "SEO gap: index.html is missing all Open Graph and Twitter Card meta tags — see action_items.",
+    "index.html PostHog init block is now placed cleanly INSIDE <body> before </body> (no leaked JS after </html>). Verified.",
+    "Sitemap.xml correctly includes / entry (priority 1.0) plus /founder, /ecosystem, /beta, /doctors, /attorneys, /teachers, /managers. robots.txt reachable at 200.",
+    "One h1 only on the landing page — verified via document.querySelectorAll('h1').length === 1.",
+    "The Section wrapper appears to guarantee overflow-x-hidden at the top level — 6/6 viewports pass the body.scrollWidth <= viewport.width check.",
+    "PortraitPlaceholder in FounderSectionV2 uses initials 'TL' rendered as SVG — no stock photo. Verified.",
+    "WorkingProductV2 METRICS = {betaUsers:null, sessionsCompleted:null, returningUsers:null} — [data-testid=\"product-metrics\"] does not render (verified via querySelector). Good — gate stays closed until real numbers land."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_investor_inquiries.py"
+  ],
+  "success_rate": {
+    "backend": "100% (11/11 investor-inquiries tests + 13/13 payments regression previously green + 18/18 beta regression previously green)",
+    "frontend": "100% on all 14 targeted flows (nav, modals, hero CTAs, timeline CTA, product tabs, investor form, closing CTAs, mobile menu, responsive at 6 widths, footer dynamic year, h1 count, skip-to-content, trust copy, preserved routes)"
+  },
+  "test_credentials": "ADMIN_TOKEN verified working via /api/admin/investor-inquiries. No user login required for landing audit.",
+  "seed_data_creation": "Created ~9 rows in db.investor_inquiries with email prefix test_inv_* / test_invsubmit_* / rl_* / TEST_FLOW_* (test data — safe to purge). Created 2 rows in db.waitlist for the early-access + partnership landing-modal submissions with test_landing_early@example.com and test_partner_*@example.com. Created 1 payment_transactions row for TEST_landing_pricing@example.com (unpaid, session_id=cs_test_a1DXAq...).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Reuse /app/backend/tests/test_investor_inquiries.py for regression. NOTE: the rate-limit test intentionally fires 4 inquiries in quick succession, which trips the 3-per-hour cap for the test-runner IP — subsequent playwright investor-form submissions from the same run will get 429 for ~1 hour. To retest the investor form UI success state, either wait ~60 min OR temporarily bump the cap in server.py:449. All other flows are IP-independent and can be retested immediately. The two remaining action items (SEO meta tags + partnership modal payload) are frontend-only text/wire changes; main agent can self-verify by (a) grepping index.html for og: / twitter: and (b) checking Network tab payload on partnership modal submit.",
+  "rca of the issue": "1) SEO gap RCA — public/index.html was updated with <title> and canonical link during the redesign, but the corresponding og:*/twitter:* meta tag additions were never committed. The review checklist required these for social previews. Fix: add 7 meta tags before </head>. 2) Partnership-modal data-loss RCA — LandingModal.jsx line 122-126 constructs the payload as {email, audience, source} only. When mode==='partnership', form.name, form.organization, form.message are read into local state but never included in the axios.post body. Fix: either extend the waitlist endpoint to accept application_data and thread it through, or route partnership submits to /api/investor-inquiries with investor_type='strategic'. Reproduction: open landing → click 'Partner With Us' at closing CTA → fill all 4 fields → submit → inspect Network POST /api/waitlist body — you will see only email/audience/source, no name/organization/message."
+}

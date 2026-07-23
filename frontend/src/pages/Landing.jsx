@@ -32,6 +32,13 @@ import { LandingModalProvider } from "@/components/landing-v2/LandingModalContex
 export default function Landing() {
     return (
         <LandingModalProvider>
+            <a
+                href="#top"
+                data-testid="skip-to-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-lg-ink focus:text-lg-bg focus:text-sm focus:font-semibold"
+            >
+                Skip to content
+            </a>
             <main
                 data-testid="landing-page"
                 className="lg-root min-h-screen overflow-x-hidden"
