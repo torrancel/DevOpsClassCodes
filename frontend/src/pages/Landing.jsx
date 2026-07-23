@@ -16,6 +16,7 @@ import NavigationV2 from "@/components/landing-v2/NavigationV2";
 import HeroV2 from "@/components/landing-v2/HeroV2";
 import TimelineV2 from "@/components/landing-v2/TimelineV2";
 import WorkingProductV2 from "@/components/landing-v2/WorkingProductV2";
+import SignalToSupportV2 from "@/components/landing-v2/SignalToSupportV2";
 import FeaturesV2 from "@/components/landing-v2/FeaturesV2";
 import DeviceShowcase from "@/components/landing-v2/DeviceShowcase";
 import AudiencesV2 from "@/components/landing-v2/AudiencesV2";
@@ -35,6 +36,7 @@ export default function Landing() {
             <HeroV2 />
             <TimelineV2 />
             <WorkingProductV2 />
+            <SignalToSupportV2 />
             <FeaturesV2 />
             <DeviceShowcase />
             <AudiencesV2 />
