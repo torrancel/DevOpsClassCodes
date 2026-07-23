@@ -20,7 +20,7 @@ import SignalToSupportV2 from "@/components/landing-v2/SignalToSupportV2";
 import FeaturesV2 from "@/components/landing-v2/FeaturesV2";
 import DeviceShowcase from "@/components/landing-v2/DeviceShowcase";
 import AudiencesV2 from "@/components/landing-v2/AudiencesV2";
-import RoadmapV2 from "@/components/landing-v2/RoadmapV2";
+import EcosystemRoadmapV2 from "@/components/landing-v2/EcosystemRoadmapV2";
 import PricingV2 from "@/components/landing-v2/PricingV2";
 import FAQV2 from "@/components/landing-v2/FAQV2";
 import CTAV2 from "@/components/landing-v2/CTAV2";
@@ -40,7 +40,7 @@ export default function Landing() {
             <FeaturesV2 />
             <DeviceShowcase />
             <AudiencesV2 />
-            <RoadmapV2 />
+            <EcosystemRoadmapV2 />
             <PricingV2 />
             <FAQV2 />
             <CTAV2 />
