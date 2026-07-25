@@ -1,0 +1,32 @@
+{
+  "summary": "Focused re-test of 3 fixes from iteration_14 + early-access regression. All 4 checks PASS.",
+  "verifications": {
+    "FIX_1_partnership_capture": {
+      "status": "PASS",
+      "evidence": "E2E via Playwright: clicked closing-partner -> landing-modal-partnership opened -> filled name/email/org/message -> landing-modal-success rendered. Mongo doc for qa-partner@example.com contains source='partnership' and application_data={name:'QA Partner', organization:'Acme Health', message:'Verifying capture'}."
+    },
+    "FIX_2_meta_tags": {
+      "status": "PASS",
+      "evidence": "curl of index.html confirms og:type=website, og:url, og:title, og:description, og:image, twitter:card=summary_large_image, twitter:title, twitter:description, twitter:image, and <link rel='canonical' href='https://letitgo.ai/'>."
+    },
+    "FIX_3_meta_description": {
+      "status": "PASS",
+      "evidence": "<meta name='description'> = 'Let It Go AI — the first Emotional Intelligence Ecosystem. Sense the moment, release the weight, grow the pattern, transform the day.' — no reference to 'A product of emergent.sh'."
+    },
+    "REGRESSION_early_access": {
+      "status": "PASS",
+      "evidence": "POST /api/waitlist with {email, audience:'individual', source:'early_access'} returns 200 and DB doc has application_data=null (no leak from partnership-only field)."
+    }
+  },
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "Created and cleaned up qa-partner@example.com and qa-earlyaccess@example.com waitlist docs.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All 3 iteration_14 fixes verified. Partnership modal properly attaches application_data, meta tags/canonical present, description no longer references emergent.sh, and early_access flow does not attach application_data."
+}

@@ -124,6 +124,15 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                 audience: mode === "early-access" ? form.audience : null,
                 source: cfg.source,
             };
+            // Partnership mode captures additional structured fields so the
+            // founder actually sees the user's name/org/message in the admin view.
+            if (mode === "partnership") {
+                payload.application_data = {
+                    name: form.name.trim(),
+                    organization: form.organization.trim(),
+                    message: form.message.trim(),
+                };
+            }
             await axios.post(`${API}/waitlist`, payload);
 
             // Fire analytics — includes contextual metadata for segmentation.

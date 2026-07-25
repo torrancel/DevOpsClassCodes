@@ -94,6 +94,7 @@ class WaitlistCreate(BaseModel):
     audience: Optional[str] = None
     platform: Optional[str] = None  # 'apple' | 'android' (only meaningful when audience='watch')
     source: Optional[str] = None  # e.g. "hero", "pricing", "cta"
+    application_data: Optional[Dict[str, Any]] = None  # extra structured fields (e.g. partnership submissions)
 
 
 class WaitlistEntry(BaseModel):
@@ -103,6 +104,7 @@ class WaitlistEntry(BaseModel):
     audience: Optional[str] = None
     platform: Optional[str] = None
     source: Optional[str] = None
+    application_data: Optional[Dict[str, Any]] = None
     created_at: datetime
     email_sent: bool = False
 
@@ -272,6 +274,7 @@ async def create_waitlist_entry(payload: WaitlistCreate):
         audience=audience,
         platform=platform,
         source=payload.source,
+        application_data=payload.application_data,
         created_at=now,
         email_sent=False,
     )
