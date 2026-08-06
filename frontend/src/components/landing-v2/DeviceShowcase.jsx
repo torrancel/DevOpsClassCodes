@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Section, GradientHeadline, DeviceFrame, StatusBadge } from "@/components/ds";
 
 /**
@@ -6,6 +7,7 @@ import { Section, GradientHeadline, DeviceFrame, StatusBadge } from "@/component
  * Anchor: #experience
  */
 export default function DeviceShowcase() {
+    const { t } = useTranslation();
     return (
         <Section id="experience" size="lg" className="overflow-hidden">
             <div aria-hidden="true" className="lg-ambient opacity-70" />
@@ -14,35 +16,24 @@ export default function DeviceShowcase() {
                 {/* Copy */}
                 <div className="lg:col-span-5 order-2 lg:order-1">
                     <StatusBadge tone="cyan" className="mb-8">
-                        The Experience
+                        {t("v2Landing.device.eyebrow")}
                     </StatusBadge>
                     <GradientHeadline as="h2" size="lg">
-                        A calm interface.
+                        {t("v2Landing.device.headlinePre")}
                         <br />
-                        <span className="lg-gradient-text italic">An intuitive</span>
+                        <span className="lg-gradient-text italic">{t("v2Landing.device.headlineGradient")}</span>
                         <br />
-                        companion.
+                        {t("v2Landing.device.headlinePost")}
                     </GradientHeadline>
                     <p className="mt-8 text-lg text-lg-ink-soft leading-relaxed">
-                        Six sliders, one honest sentence, thirty seconds. That&apos;s
-                        the entire daily check-in. What happens next is quiet, ambient, and
-                        entirely yours.
+                        {t("v2Landing.device.sub")}
                     </p>
 
                     <ul className="mt-10 space-y-5">
                         {[
-                            {
-                                k: "Sub-30-second check-in",
-                                d: "Zero friction, twice a day. On watch, phone, or room.",
-                            },
-                            {
-                                k: "AI co-regulation on-demand",
-                                d: "Personalised breath, sound, or spoken reframe.",
-                            },
-                            {
-                                k: "30-day growth trend",
-                                d: "Legible EQ trajectory — never a dashboard, always a story.",
-                            },
+                            { k: t("v2Landing.device.f1k"), d: t("v2Landing.device.f1d") },
+                            { k: t("v2Landing.device.f2k"), d: t("v2Landing.device.f2d") },
+                            { k: t("v2Landing.device.f3k"), d: t("v2Landing.device.f3d") },
                         ].map((f) => (
                             <li key={f.k} className="flex items-start gap-4">
                                 <span className="mt-2 inline-block h-px w-8 bg-gradient-to-r from-lg-cyan via-lg-violet to-lg-magenta" />

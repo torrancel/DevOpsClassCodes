@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
     Users,
     User,
@@ -12,62 +13,57 @@ import {
 } from "lucide-react";
 import { Section, GradientHeadline, GlassCard, StatusBadge } from "@/components/ds";
 
-const AUDIENCES = [
-    {
-        key: "kids",
-        label: "Kids & Families",
-        body:
-            "Big feelings become tiny practices. Age-tuned prompts, guardian-safe telemetry, and one shared moment a day.",
-        icon: <Users size={20} className="text-lg-cyan" />,
-        accent: "cyan",
-    },
-    {
-        key: "individual",
-        label: "Individuals",
-        body:
-            "Your quiet operating system for feelings. Sense the moment, release the weight, grow the pattern.",
-        icon: <User size={20} className="text-lg-blue" />,
-        accent: "blue",
-    },
-    {
-        key: "team",
-        label: "Teams",
-        body:
-            "Team emotional weather in one glance. Aggregate never identifies — protects mental privacy while surfacing risk.",
-        icon: <Building2 size={20} className="text-lg-violet" />,
-        accent: "violet",
-    },
-    {
-        key: "professional",
-        label: "Professionals",
-        body:
-            "Between clients, between rounds, between arguments — micro-resets tuned to your specialty.",
-        icon: <Briefcase size={20} className="text-lg-magenta" />,
-        accent: "magenta",
-    },
-];
-
 const SPECIALISTS = [
-    { slug: "doctors", label: "Doctors", icon: Stethoscope },
-    { slug: "attorneys", label: "Attorneys", icon: Scale },
-    { slug: "teachers", label: "Teachers", icon: GraduationCap },
-    { slug: "managers", label: "Managers", icon: Briefcase },
+    { slug: "doctors", i18n: "doctors", icon: Stethoscope },
+    { slug: "attorneys", i18n: "attorneys", icon: Scale },
+    { slug: "teachers", i18n: "teachers", icon: GraduationCap },
+    { slug: "managers", i18n: "managers", icon: Briefcase },
 ];
 
 export default function AudiencesV2() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+    const AUDIENCES = [
+        {
+            key: "kids",
+            label: t("v2Landing.audiences.kidsLabel"),
+            body: t("v2Landing.audiences.kidsBody"),
+            icon: <Users size={20} className="text-lg-cyan" />,
+            accent: "cyan",
+        },
+        {
+            key: "individual",
+            label: t("v2Landing.audiences.individualLabel"),
+            body: t("v2Landing.audiences.individualBody"),
+            icon: <User size={20} className="text-lg-blue" />,
+            accent: "blue",
+        },
+        {
+            key: "team",
+            label: t("v2Landing.audiences.teamLabel"),
+            body: t("v2Landing.audiences.teamBody"),
+            icon: <Building2 size={20} className="text-lg-violet" />,
+            accent: "violet",
+        },
+        {
+            key: "professional",
+            label: t("v2Landing.audiences.professionalLabel"),
+            body: t("v2Landing.audiences.professionalBody"),
+            icon: <Briefcase size={20} className="text-lg-magenta" />,
+            accent: "magenta",
+        },
+    ];
 
     return (
         <Section id="audiences" size="lg">
             <div className="mb-16 md:mb-20 max-w-3xl">
                 <StatusBadge tone="magenta" className="mb-8">
-                    Built for humans, everywhere
+                    {t("v2Landing.audiences.eyebrow")}
                 </StatusBadge>
                 <GradientHeadline as="h2" size="lg">
-                    Same ecosystem.
+                    {t("v2Landing.audiences.headlinePre")}
                     <br />
-                    <span className="lg-gradient-text italic">Different</span> {" "}
-                    interior seasons.
+                    <span className="lg-gradient-text italic">{t("v2Landing.audiences.headlineGradient")}</span> {t("v2Landing.audiences.headlinePost")}
                 </GradientHeadline>
             </div>
 
@@ -114,7 +110,7 @@ export default function AudiencesV2() {
             {/* Specialist strip */}
             <div className="mt-16 md:mt-20">
                 <p className="lg-eyebrow text-lg-ink-muted mb-6">
-                    Specialist Modes
+                    {t("v2Landing.audiences.specialistLabel")}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     {SPECIALISTS.map((s) => {
@@ -139,7 +135,7 @@ export default function AudiencesV2() {
                                             strokeWidth={1.5}
                                         />
                                         <span className="text-[14px] font-medium text-lg-ink tracking-[-0.005em]">
-                                            {s.label}
+                                            {t(`v2Landing.audiences.${s.i18n}`)}
                                         </span>
                                     </div>
                                     <ArrowUpRight

@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Check, Circle, Sparkles } from "lucide-react";
 import {
     Section,
@@ -15,44 +16,24 @@ import { track, EVENTS } from "@/lib/analytics";
  * Cards 2 & 3 explicitly label items as not currently available.
  */
 
-const TODAY = {
-    label: "Available Now",
-    title: "Functional Web MVP",
-    items: [
-        "AI-guided emotional wellness experience",
-        "Daily mood check-ins",
-        "Guided breathing and mindfulness",
-        "Personal growth dashboard",
-        "Secure cloud-based application",
-    ],
-};
-
-const NEXT = {
-    label: "In Development",
-    title: "The Next Product Layer",
-    items: [
-        "Apple Watch companion",
-        "Deeper personalization",
-        "Adaptive insights",
-        "Closed beta testing",
-        "User analytics",
-    ],
-};
-
-const FUTURE = {
-    label: "Future Roadmap",
-    title: "Connected Emotional Intelligence",
-    items: [
-        "AI smart ring",
-        "Enterprise platform",
-        "Healthcare partnerships",
-        "Connected mobility",
-        "Developer APIs",
-    ],
-};
-
 export default function TimelineV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
+    const TODAY = {
+        label: t("v2Landing.timeline.today.label"),
+        title: t("v2Landing.timeline.today.title"),
+        items: t("v2Landing.timeline.today.items", { returnObjects: true }),
+    };
+    const NEXT = {
+        label: t("v2Landing.timeline.next.label"),
+        title: t("v2Landing.timeline.next.title"),
+        items: t("v2Landing.timeline.next.items", { returnObjects: true }),
+    };
+    const FUTURE = {
+        label: t("v2Landing.timeline.future.label"),
+        title: t("v2Landing.timeline.future.title"),
+        items: t("v2Landing.timeline.future.items", { returnObjects: true }),
+    };
     const anim = (delay = 0) =>
         reduce
             ? { initial: false, animate: undefined }
@@ -67,19 +48,18 @@ export default function TimelineV2() {
         <Section id="timeline" size="lg" data-testid="timeline-section">
             <div className="mb-14 md:mb-20 max-w-3xl">
                 <StatusBadge tone="cyan" className="mb-8">
-                    Product Timeline
+                    {t("v2Landing.timeline.eyebrow")}
                 </StatusBadge>
                 <GradientHeadline as="h2" size="lg" data-testid="timeline-headline">
-                    Built for Today.
+                    {t("v2Landing.timeline.headlinePre")}
                     <br />
                     <span className="lg-gradient-text italic">
-                        Designed for Tomorrow
+                        {t("v2Landing.timeline.headlineGradient")}
                     </span>
-                    .
+                    {t("v2Landing.timeline.headlinePost")}
                 </GradientHeadline>
                 <p className="mt-8 text-lg text-lg-ink-soft max-w-2xl leading-relaxed">
-                    A grounded present. A visible horizon. What ships today, what is
-                    being built next, and where the ecosystem is heading.
+                    {t("v2Landing.timeline.sub")}
                 </p>
             </div>
 
@@ -155,7 +135,7 @@ export default function TimelineV2() {
                             size="md"
                             className="w-full"
                         >
-                            Explore the MVP
+                            {t("v2Landing.timeline.today.cta")}
                         </PrimaryButton>
                     </GlassCard>
                 </motion.div>
@@ -184,7 +164,7 @@ export default function TimelineV2() {
                         </ul>
 
                         <p className="text-[11px] uppercase tracking-[0.22em] text-lg-ink-muted border-t border-white/[0.06] pt-5">
-                            Not currently available · In active build
+                            {t("v2Landing.timeline.next.footnote")}
                         </p>
                     </GlassCard>
                 </motion.div>
@@ -218,7 +198,7 @@ export default function TimelineV2() {
                         </ul>
 
                         <p className="text-[11px] uppercase tracking-[0.22em] text-lg-ink-muted border-t border-white/[0.06] pt-5">
-                            Conceptual · Multi-year vision, not shipping today
+                            {t("v2Landing.timeline.future.footnote")}
                         </p>
                     </GlassCard>
                 </motion.div>
@@ -230,9 +210,7 @@ export default function TimelineV2() {
                 className="mt-10 md:mt-14 text-xs text-lg-ink-muted max-w-3xl leading-relaxed"
             >
                 <Sparkles size={11} className="inline-block mr-1.5 -mt-0.5 text-lg-ink-soft" strokeWidth={1.5} />
-                Only the Functional Web MVP is available today. Apple Watch, AI smart
-                ring, healthcare, enterprise, mobility integrations, and developer APIs
-                are aspirational and not yet shipping.
+                {t("v2Landing.timeline.disclaimer")}
             </p>
         </Section>
     );

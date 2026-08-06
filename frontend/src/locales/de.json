@@ -775,5 +775,455 @@
       "investors": "Investoren",
       "requestAccess": "Frühzeitigen Zugang anfordern"
     }
+  },
+  "v2Landing": {
+    "hero": {
+      "eyebrow": "Funktionales MVP Heute Verfügbar",
+      "headlinePre": "Die Emotionale-Intelligenz-Schicht für das",
+      "headlineGradient": "Alltägliche Leben",
+      "headlinePost": ".",
+      "sub": "Let It Go AI ist eine KI-gestützte Plattform für emotionales Wohlbefinden, die Menschen dabei hilft, Muster zu verstehen, Stress zu regulieren und gesündere tägliche Gewohnheiten durch personalisierte Begleitung aufzubauen.",
+      "primaryCta": "MVP Erkunden",
+      "secondaryCta": "Investor:innen-Information",
+      "band": {
+        "todayEyebrow": "Heute",
+        "todayTitle": "Funktionales Web-MVP",
+        "todayBody": "Tägliches Check-in, KI-Koregulation und 30-Tage-Wachstumstrend — live in privater Beta.",
+        "underEyebrow": "In Entwicklung",
+        "underTitle": "Apple Watch + KI-Personalisierung",
+        "underBody": "Ambiente Erfassung am Handgelenk. Personalisierte Regulation, abgestimmt auf deine Biosignale.",
+        "longEyebrow": "Langfristige Vision",
+        "longTitle": "Smart Ring, Unternehmen, Mobilität",
+        "longBody": "Das Ökosystem erweitert sich auf den Ring, die Organisation und das Fahrzeug — eine durchgehende Schicht."
+      },
+      "wearable": {
+        "watch": "Apple Watch",
+        "ring": "Smart Ring",
+        "statusWatch": "In Entwicklung",
+        "statusRing": "Langfristige Vision"
+      }
+    },
+    "timeline": {
+      "eyebrow": "Produkt-Zeitlinie",
+      "headlinePre": "Gebaut für Heute.",
+      "headlineGradient": "Gestaltet für Morgen",
+      "headlinePost": ".",
+      "sub": "Eine geerdet Gegenwart. Ein sichtbarer Horizont. Was heute ausgeliefert wird, was als nächstes gebaut wird, und wohin sich das Ökosystem bewegt.",
+      "today": {
+        "label": "Jetzt Verfügbar",
+        "title": "Funktionales Web-MVP",
+        "items": [
+          "KI-geführte emotionale Wellness-Erfahrung",
+          "Tägliche Stimmungs-Check-ins",
+          "Geführtes Atmen und Achtsamkeit",
+          "Persönliches Wachstums-Dashboard",
+          "Sichere cloud-basierte Anwendung"
+        ],
+        "cta": "Erkunde das MVP"
+      },
+      "next": {
+        "label": "In Entwicklung",
+        "title": "Die Nächste Produktebene",
+        "items": [
+          "Apple Watch Begleiter",
+          "Tiefere Personalisierung",
+          "Adaptive Einsichten",
+          "Geschlossenes Beta-Testing",
+          "Nutzer-Analysen"
+        ],
+        "footnote": "Derzeit nicht verfügbar · Im aktiven Aufbau"
+      },
+      "future": {
+        "label": "Zukünftige Roadmap",
+        "title": "Vernetzte Emotionale Intelligenz",
+        "items": [
+          "KI-Smart-Ring",
+          "Unternehmensplattform",
+          "Gesundheitspartnerschaften",
+          "Vernetzte Mobilität",
+          "Entwickler-APIs"
+        ],
+        "footnote": "Konzeptionell · Mehrjährige Vision, wird heute nicht ausgeliefert"
+      },
+      "livePrefix": "Live",
+      "disclaimer": "Nur das Funktionale Web-MVP ist heute verfügbar. Apple Watch, KI-Smart-Ring, Gesundheits-, Unternehmens-, Mobilitätsintegrationen und Entwickler-APIs sind visionär und werden noch nicht ausgeliefert."
+    },
+    "workingProduct": {
+      "liveBadge": "Live MVP",
+      "headlinePre": "Ein funktionierendes Produkt,",
+      "headlineGradient": "nicht nur ein Konzept",
+      "headlinePost": ".",
+      "sub": "Das Let It Go AI Web-MVP ist bereits funktionsfähig und bildet die Grundlage für Produktvalidierung, Nutzertests und zukünftige Wearable-Integration.",
+      "tabs": {
+        "dashboard": "Dashboard",
+        "checkin": "Check-in",
+        "regulation": "Regulierung",
+        "insights": "Einblicke"
+      },
+      "cta": "Produkt-Demo öffnen",
+      "metricsLabel": {
+        "beta": "Beta-Nutzer",
+        "sessions": "Abgeschlossene Sessions",
+        "returning": "Wiederkehrende Nutzer"
+      }
+    },
+    "signal": {
+      "eyebrow": "wie es funktioniert",
+      "headlinePre": "vom signal zur",
+      "headlineGradient": "unterstützung",
+      "headlinePost": ".",
+      "sub": "eine fünf-schritte-schleife, die das, was du teilst, in sanfte unterstützung im moment verwandelt — entwickelt, um menschliche fürsorge zu ergänzen, nicht zu ersetzen.",
+      "steps": {
+        "s1t": "einchecken",
+        "s1b": "du teilst, wie du dich fühlst, oder verbindest verfügbare gesundheitsdaten.",
+        "s2t": "verstehen",
+        "s2b": "die plattform erkennt muster in den von dir geteilten informationen.",
+        "s3t": "personalisieren",
+        "s3b": "die KI wählt passende impulse basierend auf deinem kontext.",
+        "s4t": "regulieren",
+        "s4b": "du erhältst unterstützung durch atmung, reflexion oder achtsamkeit.",
+        "s5t": "lernen",
+        "s5b": "die erfahrung wird durch fortgesetzte nutzung relevanter."
+      },
+      "activeStagesLabel": "was in jeder phase aktiv ist",
+      "d1e": "heute",
+      "d1b": "check-ins, angeleitete werkzeuge, dashboard-erfahrung.",
+      "d2e": "in entwicklung",
+      "d2b": "tiefere personalisierung und wearable-gestützte einsichten.",
+      "d3e": "langfristige vision",
+      "d3b": "multimodale physiologische zustandserkennung über vernetzte geräte.",
+      "safetyDisclaimer": "Let It Go AI diagnostiziert nicht, behandelt nicht und liest emotionen nicht mit klinischer genauigkeit. es macht muster in dem sichtbar, was du zu teilen wählst, und bietet werkzeuge zur selbstregulation. es ist kein ersatz für professionelle psychische gesundheitsversorgung."
+    },
+    "features": {
+      "eyebrow": "Vier Säulen",
+      "headlinePre": "Eine Betriebsebene für",
+      "headlineGradient": "Gefühle",
+      "headlinePost": ", nicht Funktionen.",
+      "sub": "Jedes Modul arbeitet im Hintergrund — fühlend, loslassend, wachsend, verwandelnd — damit der Moment dich findet, bevor er dich überwältigt.",
+      "p1t": "Wahrnehmen",
+      "p1b": "Vorsprachliche Signale — Tonfall, Rhythmus, Körperempfinden — werden zu sanften Spiegeln. Du fühlst, was du fühlst, früher.",
+      "p2t": "Loslassen",
+      "p2b": "Atem, Klang, Bewegung oder ein einziger gesprochener Satz. Co-Regulation im Moment, personalisiert.",
+      "p3t": "Wachsen",
+      "p3b": "Muster werden zu Einsicht. Wöchentlicher EQ-Verlauf, Auslöser lesbar gemacht, kleine Übungen, die sich summieren.",
+      "p4t": "Verwandeln",
+      "p4b": "Ambiente Präsenz durch deinen Tag — Uhr, Telefon, Raum. Regulation ohne Zeremonie."
+    },
+    "device": {
+      "eyebrow": "Die Erfahrung",
+      "headlinePre": "Eine stille Oberfläche.",
+      "headlineGradient": "Ein intuitiver",
+      "headlinePost": "Begleiter.",
+      "sub": "Sechs Regler, ein ehrlicher Satz, dreißig Sekunden. Das ist das gesamte tägliche Check-in. Was danach geschieht, ist leise, atmosphärisch und ganz deins.",
+      "f1k": "Check-in unter 30 Sekunden",
+      "f1d": "Null Reibung, zweimal am Tag. Auf der Uhr, dem Handy oder im Raum.",
+      "f2k": "KI-Koregulation auf Abruf",
+      "f2d": "Personalisierter Atem, Klang oder gesprochenes Reframing.",
+      "f3k": "30-Tage-Wachstumstrend",
+      "f3d": "Lesbare EQ-Entwicklung — niemals ein Dashboard, immer eine Geschichte."
+    },
+    "audiences": {
+      "eyebrow": "gemacht für menschen, überall",
+      "headlinePre": "dasselbe ökosystem.",
+      "headlineGradient": "verschiedene",
+      "headlinePost": "innere jahreszeiten.",
+      "specialistLabel": "spezialmodi",
+      "kidsLabel": "kinder & familien",
+      "kidsBody": "große gefühle werden zu kleinen übungen. altersgerechte impulse, sichere datenerfassung für erziehende und ein geteilter moment am tag.",
+      "individualLabel": "einzelpersonen",
+      "individualBody": "dein stilles betriebssystem für gefühle. spüre den moment, lass das gewicht los, entwickle das muster.",
+      "teamLabel": "teams",
+      "teamBody": "das emotionale wetter deines teams auf einen blick. aggregiert, niemals identifizierbar — schützt mentale privatsphäre und macht risiken sichtbar.",
+      "professionalLabel": "fachleute",
+      "professionalBody": "zwischen klient*innen, zwischen runden, zwischen streitgesprächen — mikropausen, abgestimmt auf deine spezialisierung.",
+      "doctors": "ärzt*innen",
+      "attorneys": "jurist*innen",
+      "teachers": "lehrer*innen",
+      "managers": "führungskräfte"
+    },
+    "roadmap": {
+      "eyebrow": "Ecosystem Roadmap",
+      "headlinePre": "Das Ecosystem,",
+      "headlineGradient": "phase für phase",
+      "headlinePost": ".",
+      "fullLink": "Zur vollständigen Ecosystem-Seite",
+      "p1e": "Heute",
+      "p1t": "Fundament",
+      "p1s": "LIVE",
+      "p1items": [
+        "Web-Anwendung",
+        "Kern-Werkzeuge mit Anleitung",
+        "Dashboard",
+        "Erste KI-Erfahrung",
+        "Produkt-Validierung"
+      ],
+      "p2e": "In Entwicklung",
+      "p2t": "Erweiterung",
+      "p2s": "IN ENTWICKLUNG",
+      "p2items": [
+        "Apple Watch Begleiter",
+        "KI-Personalisierung",
+        "Beta-Wachstum",
+        "Analytik",
+        "Sicherheits-Verbesserungen"
+      ],
+      "p3e": "Geplant",
+      "p3t": "Wearables",
+      "p3s": "GEPLANT",
+      "p3items": [
+        "Smart Ring Forschung",
+        "Biometrische Integration",
+        "Konzepte für kontinuierliche Erfassung",
+        "Hardware-Partnerschaften"
+      ],
+      "p4e": "Langfristige Vision",
+      "p4t": "Plattform-Expansion",
+      "p4s": "LANGFRISTIGE VISION",
+      "p4items": [
+        "Enterprise Wellness",
+        "Healthcare Pilotprojekte",
+        "Versicherungs-Partnerschaften",
+        "Vernetzte Mobilität",
+        "OEM-Integrationen"
+      ],
+      "phaseLabel": "Phase",
+      "disclaimer": "Phasen 02, 03 und 04 beschreiben die Richtung der Entwicklung, keine Veröffentlichungsdaten. Nichts jenseits von Phase 01 ist derzeit verfügbar. Zeitangaben werden nur öffentlich geteilt, wenn sie vom Gründer freigegeben sind."
+    },
+    "founder": {
+      "eyebrow": "Gründergeschichte",
+      "headlinePre": "Entstanden aus einem Moment, der",
+      "headlineGradient": "Alles Veränderte",
+      "headlinePost": ".",
+      "body1": "2022 erlebte Gründer Torrance Lillie eine Scheidung, den Verlust seines Transportunternehmens, ernsthafte gesundheitliche Herausforderungen und Depression. Diese Zeit offenbarte, wie leicht Menschen sich isoliert fühlen können, selbst wenn andere sie als stark wahrnehmen.",
+      "body2": "Er erschuf Let It Go AI, um Menschen zu helfen, innezuhalten, emotionale Belastung früher zu erkennen und praktische Unterstützung zu finden, bevor schwierige Momente überwältigend werden.",
+      "closing": "Let It Go AI wird entwickelt, um Menschen zu helfen zu verstehen, was sie erleben, durchzuatmen und ihren nächsten Schritt mit größerer Klarheit zu wählen.",
+      "title": "Gründer, Let It Go AI",
+      "portraitCaption": "Gründer",
+      "portraitForthcoming": "Porträt folgt",
+      "readMore": "die ausführlichere Geschichte lesen"
+    },
+    "investor": {
+      "eyebrow": "investoren",
+      "headlinePre": "vom funktionalen MVP",
+      "headlineTo": "zum",
+      "headlineGradient": "skalierbaren system",
+      "headlinePost": ".",
+      "col1Eyebrow": "heute",
+      "col1Items": [
+        "funktionales web-mvp",
+        "marken- und produktfundament",
+        "erste kommerzialisierungsstrategie",
+        "gründer-geführte mission"
+      ],
+      "col2Eyebrow": "nächste meilensteine",
+      "col2Items": [
+        "beta-nutzer:innen wachstum",
+        "produktanalyse",
+        "apple watch prototyp",
+        "ki-personalisierung",
+        "erste enterprise-gespräche"
+      ],
+      "col3Eyebrow": "kapital ermöglicht",
+      "col3Items": [
+        "produktentwicklung",
+        "ki-entwicklung",
+        "sicherheit und datenschutz",
+        "kundengewinnung",
+        "technische und klinische berater:innen",
+        "pilotprogramme"
+      ],
+      "formEyebrow": "melde dich",
+      "formTitle": "investorenanfrage",
+      "formSub": "teile eine kurze notiz und der gründer wird dir direkt mit dem deck antworten.",
+      "contactFounder": "gründer kontaktieren",
+      "labelName": "name",
+      "labelEmail": "e-mail",
+      "labelOrganization": "organisation",
+      "labelInvestorType": "investor:innentyp",
+      "labelMessage": "nachricht",
+      "messagePlaceholder": "eine kurze notiz über dein interesse, deine these oder dein timing…",
+      "types": {
+        "vc": "Venture Capital",
+        "angel": "angel",
+        "family_office": "family office",
+        "strategic": "strategisch / konzern",
+        "advisor": "berater:in",
+        "other": "anderes"
+      },
+      "errorName": "bitte teile deinen namen.",
+      "errorNameLong": "name ist zu lang.",
+      "errorEmailReq": "e-mail ist erforderlich.",
+      "errorEmailInvalid": "das sieht nicht nach einer gültigen e-mail aus.",
+      "errorOrgLong": "organisationsname ist zu lang.",
+      "errorMessageReq": "bitte teile eine kurze nachricht.",
+      "errorMessageShort": "ein wenig mehr kontext, bitte (10+ zeichen).",
+      "errorMessageLong": "nachricht ist zu lang (max. 5.000 zeichen).",
+      "genericError": "etwas ist schiefgelaufen. bitte versuche es gleich noch einmal.",
+      "toastSuccessTitle": "anfrage erhalten.",
+      "toastSuccessBody": "der gründer wird sich bald melden.",
+      "toastErrorTitle": "anfrage konnte nicht gesendet werden.",
+      "successTitle": "anfrage erhalten.",
+      "successBody": "danke, dass du dich gemeldet hast. der gründer wird dir direkt mit dem deck und den nächsten schritten antworten. deine eingabe wird privat gespeichert und niemals öffentlich geteilt.",
+      "sendAnother": "noch eine senden",
+      "consent": "mit dem absenden stimmst du zu, dass der gründer dich unter der angegebenen e-mail kontaktieren darf. eingaben werden privat gespeichert und niemals öffentlich geteilt.",
+      "submitCta": "investor-deck anfordern",
+      "sending": "wird gesendet…",
+      "privacy": "eingaben werden privat vom gründer empfangen und niemals veröffentlicht oder extern geteilt. dies ist kein angebot zum verkauf von wertpapieren und stellt keine aufforderung dar."
+    },
+    "pricing": {
+      "eyebrow": "Gründer·in · 50% Rabatt · Für immer festgeschrieben",
+      "headlinePre": "Preise, die",
+      "headlineGradient": "frühes vertrauen belohnen",
+      "headlinePost": ".",
+      "banner": "Jedes Gründungsmitglied schreibt seinen Preis für immer fest, erhält eine permanente Markierung und formt in aller Stille mit, was das Ökosystem wird.",
+      "mostChosen": "Am häufigsten gewählt",
+      "lifetimeLocked": "Für immer festgeschrieben",
+      "becomeFounder": "Gründer·in werden",
+      "openingCheckout": "Öffne Kasse…",
+      "orApplyBeta": "Oder bewirb dich für die Beta →",
+      "enterpriseNote": "Planst du für eine Schule, ein Krankenhaus, eine Kanzlei oder ein Team von 500 Personen? Gründer schreiben die Preise von Hand.",
+      "talkToFounders": "Mit Gründern sprechen →",
+      "kidsName": "Kinder",
+      "kidsSub": "Für 6–14. Altersgerecht. Sicher für Begleitende.",
+      "kidsCadence": "/Kind · Monat",
+      "kidsFeatures": [
+        "Altersgerechte Impulse",
+        "Dashboard für Begleitende",
+        "Ko-Regulation per Fingertipp",
+        "Schulgerechte Telemetrie"
+      ],
+      "individualName": "Einzelperson",
+      "individualSub": "Dein stilles Betriebssystem für Gefühle.",
+      "individualCadence": "/Monat",
+      "individualFeatures": [
+        "Tägliches Check-in + AI",
+        "30-Tage-Wachstumstrend",
+        "Ambient-Sounds-Studio",
+        "Gründer·in-Abzeichen"
+      ],
+      "teamName": "Team",
+      "teamSub": "Ambientes emotionales Wetter für Menschenteams.",
+      "teamCadence": "/Person · Monat",
+      "teamFeatures": [
+        "Team-Wetterkarte",
+        "Standardmäßig private Aggregate",
+        "Wöchentliche Org-Einsicht",
+        "Zugang zur Gründungskohorte"
+      ],
+      "professionalName": "Professionell",
+      "professionalSub": "Zwischen Klient·innen, zwischen Runden, zwischen Auseinandersetzungen.",
+      "professionalCadence": "/Monat",
+      "professionalFeatures": [
+        "Fachspezifisch abgestimmte Modi",
+        "Sitzungsbewusste Atemarbeit",
+        "Klinische Privatsphäre",
+        "Prioritäre Ko-Regulation"
+      ],
+      "emailModalEyebrow": "Ein Schritt vor der Kasse",
+      "emailModalTitlePre": "Wohin sollen wir deine",
+      "emailModalTitleGradient": "Quittung",
+      "emailModalSub": "Wir verknüpfen deinen Gründungsplatz mit dieser E-Mail, damit du dich später anmelden kannst.",
+      "emailModalContinue": "Weiter zur Kasse",
+      "receiptError": "Gib eine gültige E-Mail an, damit wir deine Quittung senden können.",
+      "checkoutError": "Kasse konnte nicht geöffnet werden. Versuch es gleich noch einmal.",
+      "checkoutFailed": "Kasse fehlgeschlagen."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "headlinePre": "Stille Antworten.",
+      "headlineGradient": "Ehrliche",
+      "headlinePost": ".",
+      "sub": "Noch neugierig? Schreib den Gründer:innen direkt an",
+      "items": [
+        {
+          "q": "Was genau ist ein \"Emotional Intelligence Ecosystem\"?",
+          "a": "Es ist eine private Betriebsebene, die fühlt, loslässt, wächst und sich mit dir verwandelt — durch deinen ganzen Tag. Uhr, Telefon und (bald) Raum — ein durchgehender Faden. Keine Tagebuch-App. Kein Chatbot. Eine stille innere Infrastruktur."
+        },
+        {
+          "q": "Sind meine emotionalen Daten privat?",
+          "a": "Radikal. Sensible Signale bleiben standardmäßig auf dem Gerät. Team- und Organisations-Ansichten sind Aggregate, die mathematisch keine Einzelperson re-identifizieren können. Nichts wird verkauft, nichts wird geteilt, niemals."
+        },
+        {
+          "q": "Was unterscheidet das von Therapie?",
+          "a": "Es ist keine Therapie. Denk daran wie an die Ebene zwischen den Sitzungen — eine Begleitung für die 23 Stunden am Tag, die niemand sonst sieht. Viele Therapeut:innen empfehlen es. Deine Therapeut:in wird die Wachstumsdaten lieben, die du (optional) teilen kannst."
+        },
+        {
+          "q": "Was passiert beim täglichen Check-in?",
+          "a": "Sechs Regler, ein ehrlicher Satz, dreißig Sekunden. Das ist alles. Die KI antwortet mit einem Ko-Regulations-Vorschlag, der auf dich abgestimmt ist. Über 30 Tage wird ein Muster zu einer Geschichte."
+        },
+        {
+          "q": "Was bringt mir \"Founding\"?",
+          "a": "50% Rabatt auf deine Stufe — für immer festgeschrieben. Ein permanentes Founding-Abzeichen. Direkter Zugang zu den Gründer:innen. Und eine echte Stimme dabei, was das Ökosystem über die nächsten drei Horizonte wird."
+        },
+        {
+          "q": "Wann ist das komplette Ökosystem verfügbar?",
+          "a": "Horizon 01 ist live. Horizon 02 (ambient sensing) ist jetzt in privater Beta. Horizon 03 (room-scale presence) kommt 2026. Founding-Mitglieder bekommen jeden Horizon zu ihrem festgeschriebenen Preis."
+        }
+      ]
+    },
+    "closing": {
+      "eyebrow": "Die Einladung",
+      "headlinePre": "Hilf mit, die Zukunft der",
+      "headlineGradient": "Emotionalen Intelligenz",
+      "headlinePost": " zu gestalten.",
+      "copy": "Werde Teil von Let It Go AI — als early user, investor, strategischer partner oder advisor.",
+      "earlyAccess": "Early Access anfragen",
+      "investor": "Informationen für Investoren",
+      "partner": "Partner werden",
+      "closer": "Ein Ökosystem. Jeder Moment. Ein besseres Du."
+    },
+    "footer": {
+      "eyebrow": "Emotionale Intelligenz Ökosystem",
+      "tagline1": "Ein Ökosystem. Jeder Moment.",
+      "tagline2": "Besseres Du.",
+      "exploreLabel": "Entdecken",
+      "product": "Produkt",
+      "technology": "Technologie",
+      "roadmap": "Roadmap",
+      "founder": "Gründer",
+      "privacy": "Datenschutz",
+      "terms": "Nutzungsbedingungen",
+      "contact": "Kontakt",
+      "copyright": "Let It Go AI · Emotionale Intelligenz Ökosystem. Alle Rechte vorbehalten."
+    },
+    "modal": {
+      "earlyAccess": {
+        "kicker": "Early Access",
+        "title": "Early Access anfragen",
+        "subtitle": "Eine E-Mail. Wir laden dich ein, sobald dein Platz frei wird. Kein Spam.",
+        "submit": "Zugang anfragen",
+        "successTitle": "Du stehst auf der Liste.",
+        "successBody": "Das Team meldet sich, sobald dein Platz frei wird. Willkommen in der Gründungskohorte."
+      },
+      "partnership": {
+        "kicker": "Partnership",
+        "title": "Partnerschaftsanfrage",
+        "subtitle": "Erzähl uns ein wenig über deine Organisation und was du aufbaust. Der Gründer antwortet direkt.",
+        "submit": "Anfrage senden",
+        "successTitle": "Anfrage erhalten.",
+        "successBody": "Der Gründer wird direkt antworten. Eingaben werden privat gespeichert und niemals öffentlich geteilt."
+      },
+      "labelName": "Name",
+      "labelEmail": "E-Mail",
+      "labelOrganization": "Organisation",
+      "labelMessage": "Nachricht",
+      "labelJoiningAs": "Ich komme als",
+      "messagePlaceholder": "Eine kurze Notiz über die Partnerschaft, die du im Sinn hast…",
+      "audiences": {
+        "individual": "Einzelperson",
+        "kids": "Kinder & Familien",
+        "team": "Team",
+        "professional": "Professionell",
+        "watch": "Wearable / Watch"
+      },
+      "errorEmailReq": "E-Mail ist erforderlich.",
+      "errorEmailInvalid": "Ungültige E-Mail.",
+      "errorMessageReq": "Bitte teile eine kurze Nachricht.",
+      "sending": "Wird gesendet…",
+      "close": "Schließen",
+      "privacyNote": "Eingaben werden privat gespeichert. Niemals öffentlich geteilt.",
+      "errorTitle": "Konnte nicht senden.",
+      "genericError": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
   }
 }

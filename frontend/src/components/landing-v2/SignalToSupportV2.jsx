@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
     MessageCircle,
     BrainCircuit,
@@ -22,65 +23,29 @@ import {
  * patterns across user-provided information" and "supports self-regulation".
  */
 
-const STEPS = [
-    {
-        n: "01",
-        title: "Check In",
-        body: "The user shares how they feel or connects available wellness data.",
-        Icon: MessageCircle,
-        color: "#21D4FD",
-    },
-    {
-        n: "02",
-        title: "Understand",
-        body: "The platform identifies patterns across user-provided information.",
-        Icon: BrainCircuit,
-        color: "#356BFF",
-    },
-    {
-        n: "03",
-        title: "Personalize",
-        body: "AI selects relevant guidance based on the user's context.",
-        Icon: Sparkles,
-        color: "#8B4DFF",
-    },
-    {
-        n: "04",
-        title: "Regulate",
-        body: "The user receives breathing, reflection, or mindfulness support.",
-        Icon: Wind,
-        color: "#FF3CAC",
-    },
-    {
-        n: "05",
-        title: "Learn",
-        body: "The experience becomes more relevant through continued use.",
-        Icon: TrendingUp,
-        color: "#21D4FD",
-    },
-];
-
-const DISCLAIMERS = [
-    {
-        eyebrow: "Today",
-        tone: "cyan",
-        body: "User check-ins, guided tools, dashboard experience.",
-    },
-    {
-        eyebrow: "Under Development",
-        tone: "violet",
-        body: "Deeper personalization and wearable-supported insights.",
-    },
-    {
-        eyebrow: "Long-Term Vision",
-        tone: "magenta",
-        body:
-            "Multimodal physiological-state inference across connected devices.",
-    },
+const STEP_META = [
+    { Icon: MessageCircle, color: "#21D4FD" },
+    { Icon: BrainCircuit, color: "#356BFF" },
+    { Icon: Sparkles, color: "#8B4DFF" },
+    { Icon: Wind, color: "#FF3CAC" },
+    { Icon: TrendingUp, color: "#21D4FD" },
 ];
 
 export default function SignalToSupportV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
+    const STEPS = [
+        { n: "01", title: t("v2Landing.signal.steps.s1t"), body: t("v2Landing.signal.steps.s1b"), ...STEP_META[0] },
+        { n: "02", title: t("v2Landing.signal.steps.s2t"), body: t("v2Landing.signal.steps.s2b"), ...STEP_META[1] },
+        { n: "03", title: t("v2Landing.signal.steps.s3t"), body: t("v2Landing.signal.steps.s3b"), ...STEP_META[2] },
+        { n: "04", title: t("v2Landing.signal.steps.s4t"), body: t("v2Landing.signal.steps.s4b"), ...STEP_META[3] },
+        { n: "05", title: t("v2Landing.signal.steps.s5t"), body: t("v2Landing.signal.steps.s5b"), ...STEP_META[4] },
+    ];
+    const DISCLAIMERS = [
+        { eyebrow: t("v2Landing.signal.d1e"), tone: "cyan", body: t("v2Landing.signal.d1b") },
+        { eyebrow: t("v2Landing.signal.d2e"), tone: "violet", body: t("v2Landing.signal.d2b") },
+        { eyebrow: t("v2Landing.signal.d3e"), tone: "magenta", body: t("v2Landing.signal.d3b") },
+    ];
     const anim = (delay = 0) =>
         reduce
             ? { initial: false }
@@ -96,14 +61,13 @@ export default function SignalToSupportV2() {
             {/* Header */}
             <div className="mb-14 md:mb-20 max-w-3xl">
                 <StatusBadge tone="violet" className="mb-8">
-                    How it works
+                    {t("v2Landing.signal.eyebrow")}
                 </StatusBadge>
                 <GradientHeadline as="h2" size="lg" data-testid="signal-headline">
-                    From Signal to <span className="lg-gradient-text italic">Support</span>.
+                    {t("v2Landing.signal.headlinePre")} <span className="lg-gradient-text italic">{t("v2Landing.signal.headlineGradient")}</span>{t("v2Landing.signal.headlinePost")}
                 </GradientHeadline>
                 <p className="mt-8 text-lg text-lg-ink-soft max-w-2xl leading-relaxed">
-                    A five-step loop that turns what you share into gentle, in-the-moment
-                    support — designed to complement, not replace, human care.
+                    {t("v2Landing.signal.sub")}
                 </p>
             </div>
 
@@ -197,7 +161,7 @@ export default function SignalToSupportV2() {
             {/* Availability disclaimers */}
             <div className="mt-16 md:mt-24">
                 <p className="lg-eyebrow text-lg-ink-muted mb-5">
-                    What&apos;s active at each stage
+                    {t("v2Landing.signal.activeStagesLabel")}
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
                     {DISCLAIMERS.map((d, i) => (
@@ -246,10 +210,7 @@ export default function SignalToSupportV2() {
                 data-testid="signal-safety-disclaimer"
                 className="mt-10 md:mt-14 text-xs text-lg-ink-muted max-w-3xl leading-relaxed"
             >
-                Let It Go AI does not diagnose, treat, or read emotions with clinical
-                accuracy. It surfaces patterns in what a user chooses to share and
-                offers self-regulation tools. It is not a substitute for professional
-                mental-health care.
+                {t("v2Landing.signal.safetyDisclaimer")}
             </p>
         </Section>
     );

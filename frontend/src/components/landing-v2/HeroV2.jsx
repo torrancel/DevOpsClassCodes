@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Cpu, ArrowUpRight } from "lucide-react";
 import {
     Section,
@@ -12,32 +13,32 @@ import { track, EVENTS } from "@/lib/analytics";
 
 const INVESTOR_MAILTO = "#investors";
 
-const STATUS_BAND = [
-    {
-        eyebrow: "Today",
-        tone: "cyan",
-        title: "Functional Web MVP",
-        body: "Daily check-in, AI co-regulation, and 30-day growth trend — live in private beta.",
-    },
-    {
-        eyebrow: "Under Development",
-        tone: "violet",
-        title: "Apple Watch + AI Personalization",
-        body: "Ambient sensing on the wrist. Personalised regulation tuned to your biosignals.",
-    },
-    {
-        eyebrow: "Long-Term Vision",
-        tone: "magenta",
-        title: "Smart Ring, Enterprise, Mobility",
-        body: "The ecosystem expands to the ring, the org, and the vehicle — one continuous layer.",
-    },
-];
-
 /**
  * HeroV2 — cinematic hero with laptop MVP composition + wearable placeholders.
  */
 export default function HeroV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
+    const STATUS_BAND = [
+        {
+            eyebrow: t("v2Landing.hero.band.todayEyebrow"),
+            tone: "cyan",
+            title: t("v2Landing.hero.band.todayTitle"),
+            body: t("v2Landing.hero.band.todayBody"),
+        },
+        {
+            eyebrow: t("v2Landing.hero.band.underEyebrow"),
+            tone: "violet",
+            title: t("v2Landing.hero.band.underTitle"),
+            body: t("v2Landing.hero.band.underBody"),
+        },
+        {
+            eyebrow: t("v2Landing.hero.band.longEyebrow"),
+            tone: "magenta",
+            title: t("v2Landing.hero.band.longTitle"),
+            body: t("v2Landing.hero.band.longBody"),
+        },
+    ];
     const anim = (delay = 0) =>
         reduce
             ? { initial: false, animate: undefined }
@@ -65,7 +66,7 @@ export default function HeroV2() {
                 {/* Eyebrow */}
                 <motion.div {...anim(0)} className="mb-8 flex justify-center">
                     <StatusBadge tone="cyan" data-testid="hero-eyebrow">
-                        Functional MVP Available Today
+                        {t("v2Landing.hero.eyebrow")}
                     </StatusBadge>
                 </motion.div>
 
@@ -75,8 +76,9 @@ export default function HeroV2() {
                     data-testid="hero-headline"
                     className="lg-h1 text-lg-ink text-center max-w-[18ch] mx-auto"
                 >
-                    The Emotional Intelligence Layer for{" "}
-                    <span className="lg-gradient-text italic">Everyday Life</span>.
+                    {t("v2Landing.hero.headlinePre")}{" "}
+                    <span className="lg-gradient-text italic">{t("v2Landing.hero.headlineGradient")}</span>
+                    {t("v2Landing.hero.headlinePost")}
                 </motion.h1>
 
                 {/* Supporting copy */}
@@ -85,9 +87,7 @@ export default function HeroV2() {
                     data-testid="hero-subline"
                     className="mt-10 text-lg md:text-xl text-lg-ink-soft max-w-3xl mx-auto text-center leading-relaxed"
                 >
-                    Let It Go AI is an AI-powered emotional wellbeing platform designed
-                    to help people understand patterns, regulate stress, and build
-                    healthier daily habits through personalized guidance.
+                    {t("v2Landing.hero.sub")}
                 </motion.p>
 
                 {/* CTAs */}
@@ -102,7 +102,7 @@ export default function HeroV2() {
                         data-testid="hero-primary-cta"
                         size="lg"
                     >
-                        Explore the MVP
+                        {t("v2Landing.hero.primaryCta")}
                     </PrimaryButton>
                     <SecondaryButton
                         as="a"
@@ -111,7 +111,7 @@ export default function HeroV2() {
                         size="lg"
                         icon={<ArrowUpRight size={15} />}
                     >
-                        Investor Information
+                        {t("v2Landing.hero.secondaryCta")}
                     </SecondaryButton>
                 </motion.div>
 
@@ -132,8 +132,8 @@ export default function HeroV2() {
                             <div className="hidden lg:flex col-span-2 justify-center">
                                 <WearablePlaceholder
                                     kind="ring"
-                                    label="Smart Ring"
-                                    status="Long-Term Vision"
+                                    label={t("v2Landing.hero.wearable.ring")}
+                                    status={t("v2Landing.hero.wearable.statusRing")}
                                     tone="magenta"
                                     reduce={reduce}
                                 />
@@ -150,8 +150,8 @@ export default function HeroV2() {
                             <div className="hidden lg:flex col-span-2 justify-center">
                                 <WearablePlaceholder
                                     kind="watch"
-                                    label="Apple Watch"
-                                    status="Under Development"
+                                    label={t("v2Landing.hero.wearable.watch")}
+                                    status={t("v2Landing.hero.wearable.statusWatch")}
                                     tone="violet"
                                     reduce={reduce}
                                 />

@@ -776,5 +776,455 @@
       "investors": "Investors",
       "requestAccess": "Request Early Access"
     }
+  },
+  "v2Landing": {
+    "hero": {
+      "eyebrow": "Functional MVP Available Today",
+      "headlinePre": "The Emotional Intelligence Layer for",
+      "headlineGradient": "Everyday Life",
+      "headlinePost": ".",
+      "sub": "Let It Go AI is an AI-powered emotional wellbeing platform designed to help people understand patterns, regulate stress, and build healthier daily habits through personalized guidance.",
+      "primaryCta": "Explore the MVP",
+      "secondaryCta": "Investor Information",
+      "band": {
+        "todayEyebrow": "Today",
+        "todayTitle": "Functional Web MVP",
+        "todayBody": "Daily check-in, AI co-regulation, and 30-day growth trend — live in private beta.",
+        "underEyebrow": "Under Development",
+        "underTitle": "Apple Watch + AI Personalization",
+        "underBody": "Ambient sensing on the wrist. Personalised regulation tuned to your biosignals.",
+        "longEyebrow": "Long-Term Vision",
+        "longTitle": "Smart Ring, Enterprise, Mobility",
+        "longBody": "The ecosystem expands to the ring, the org, and the vehicle — one continuous layer."
+      },
+      "wearable": {
+        "watch": "Apple Watch",
+        "ring": "Smart Ring",
+        "statusWatch": "Under Development",
+        "statusRing": "Long-Term Vision"
+      }
+    },
+    "timeline": {
+      "eyebrow": "Product Timeline",
+      "headlinePre": "Built for Today.",
+      "headlineGradient": "Designed for Tomorrow",
+      "headlinePost": ".",
+      "sub": "A grounded present. A visible horizon. What ships today, what is being built next, and where the ecosystem is heading.",
+      "today": {
+        "label": "Available Now",
+        "title": "Functional Web MVP",
+        "items": [
+          "AI-guided emotional wellness experience",
+          "Daily mood check-ins",
+          "Guided breathing and mindfulness",
+          "Personal growth dashboard",
+          "Secure cloud-based application"
+        ],
+        "cta": "Explore the MVP"
+      },
+      "next": {
+        "label": "In Development",
+        "title": "The Next Product Layer",
+        "items": [
+          "Apple Watch companion",
+          "Deeper personalization",
+          "Adaptive insights",
+          "Closed beta testing",
+          "User analytics"
+        ],
+        "footnote": "Not currently available · In active build"
+      },
+      "future": {
+        "label": "Future Roadmap",
+        "title": "Connected Emotional Intelligence",
+        "items": [
+          "AI smart ring",
+          "Enterprise platform",
+          "Healthcare partnerships",
+          "Connected mobility",
+          "Developer APIs"
+        ],
+        "footnote": "Conceptual · Multi-year vision, not shipping today"
+      },
+      "livePrefix": "Live",
+      "disclaimer": "Only the Functional Web MVP is available today. Apple Watch, AI smart ring, healthcare, enterprise, mobility integrations, and developer APIs are aspirational and not yet shipping."
+    },
+    "workingProduct": {
+      "liveBadge": "Live MVP",
+      "headlinePre": "A Working Product,",
+      "headlineGradient": "Not Just a Concept",
+      "headlinePost": ".",
+      "sub": "The Let It Go AI web MVP is already functional and provides the foundation for product validation, user testing, and future wearable integration.",
+      "tabs": {
+        "dashboard": "Dashboard",
+        "checkin": "Check-in",
+        "regulation": "Regulation",
+        "insights": "Insights"
+      },
+      "cta": "Open Product Demo",
+      "metricsLabel": {
+        "beta": "Beta users",
+        "sessions": "Sessions completed",
+        "returning": "Returning users"
+      }
+    },
+    "signal": {
+      "eyebrow": "How it works",
+      "headlinePre": "From Signal to",
+      "headlineGradient": "Support",
+      "headlinePost": ".",
+      "sub": "A five-step loop that turns what you share into gentle, in-the-moment support — designed to complement, not replace, human care.",
+      "steps": {
+        "s1t": "Check In",
+        "s1b": "The user shares how they feel or connects available wellness data.",
+        "s2t": "Understand",
+        "s2b": "The platform identifies patterns across user-provided information.",
+        "s3t": "Personalize",
+        "s3b": "AI selects relevant guidance based on the user's context.",
+        "s4t": "Regulate",
+        "s4b": "The user receives breathing, reflection, or mindfulness support.",
+        "s5t": "Learn",
+        "s5b": "The experience becomes more relevant through continued use."
+      },
+      "activeStagesLabel": "What's active at each stage",
+      "d1e": "Today",
+      "d1b": "User check-ins, guided tools, dashboard experience.",
+      "d2e": "Under Development",
+      "d2b": "Deeper personalization and wearable-supported insights.",
+      "d3e": "Long-Term Vision",
+      "d3b": "Multimodal physiological-state inference across connected devices.",
+      "safetyDisclaimer": "Let It Go AI does not diagnose, treat, or read emotions with clinical accuracy. It surfaces patterns in what a user chooses to share and offers self-regulation tools. It is not a substitute for professional mental-health care."
+    },
+    "features": {
+      "eyebrow": "Four Pillars",
+      "headlinePre": "An operating layer for",
+      "headlineGradient": "feelings",
+      "headlinePost": ", not features.",
+      "sub": "Every module works in the background — sensing, releasing, growing, transforming — so the moment finds you before the moment overwhelms you.",
+      "p1t": "Aware",
+      "p1b": "Sub-verbal signals — tone, cadence, physiology — become gentle mirrors. You feel what you feel, sooner.",
+      "p2t": "Release",
+      "p2b": "Breath, sound, movement, or a single spoken sentence. In-the-moment co-regulation, personalised.",
+      "p3t": "Grow",
+      "p3b": "Patterns become insight. Weekly EQ trend, triggers made legible, tiny practices that compound.",
+      "p4t": "Transform",
+      "p4b": "Ambient presence across your day — watch, phone, room. Regulation without ceremony."
+    },
+    "device": {
+      "eyebrow": "The Experience",
+      "headlinePre": "A calm interface.",
+      "headlineGradient": "An intuitive",
+      "headlinePost": "companion.",
+      "sub": "Six sliders, one honest sentence, thirty seconds. That's the entire daily check-in. What happens next is quiet, ambient, and entirely yours.",
+      "f1k": "Sub-30-second check-in",
+      "f1d": "Zero friction, twice a day. On watch, phone, or room.",
+      "f2k": "AI co-regulation on-demand",
+      "f2d": "Personalised breath, sound, or spoken reframe.",
+      "f3k": "30-day growth trend",
+      "f3d": "Legible EQ trajectory — never a dashboard, always a story."
+    },
+    "audiences": {
+      "eyebrow": "Built for humans, everywhere",
+      "headlinePre": "Same ecosystem.",
+      "headlineGradient": "Different",
+      "headlinePost": "interior seasons.",
+      "specialistLabel": "Specialist Modes",
+      "kidsLabel": "Kids & Families",
+      "kidsBody": "Big feelings become tiny practices. Age-tuned prompts, guardian-safe telemetry, and one shared moment a day.",
+      "individualLabel": "Individuals",
+      "individualBody": "Your quiet operating system for feelings. Sense the moment, release the weight, grow the pattern.",
+      "teamLabel": "Teams",
+      "teamBody": "Team emotional weather in one glance. Aggregate never identifies — protects mental privacy while surfacing risk.",
+      "professionalLabel": "Professionals",
+      "professionalBody": "Between clients, between rounds, between arguments — micro-resets tuned to your specialty.",
+      "doctors": "Doctors",
+      "attorneys": "Attorneys",
+      "teachers": "Teachers",
+      "managers": "Managers"
+    },
+    "roadmap": {
+      "eyebrow": "Ecosystem Roadmap",
+      "headlinePre": "The Ecosystem,",
+      "headlineGradient": "phase by phase",
+      "headlinePost": ".",
+      "fullLink": "Full ecosystem page",
+      "p1e": "Today",
+      "p1t": "Foundation",
+      "p1s": "LIVE",
+      "p1items": [
+        "Web application",
+        "Core guided tools",
+        "User dashboard",
+        "Initial AI experience",
+        "Product validation"
+      ],
+      "p2e": "Under Development",
+      "p2t": "Expansion",
+      "p2s": "IN DEVELOPMENT",
+      "p2items": [
+        "Apple Watch companion",
+        "AI personalization",
+        "Beta growth",
+        "Analytics",
+        "Security improvements"
+      ],
+      "p3e": "Planned",
+      "p3t": "Wearables",
+      "p3s": "PLANNED",
+      "p3items": [
+        "Smart ring research",
+        "Biometric integration",
+        "Continuous sensing concepts",
+        "Hardware partnerships"
+      ],
+      "p4e": "Long-Term Vision",
+      "p4t": "Platform Expansion",
+      "p4s": "LONG-TERM VISION",
+      "p4items": [
+        "Enterprise wellness",
+        "Healthcare pilots",
+        "Insurance partnerships",
+        "Connected mobility",
+        "OEM integrations"
+      ],
+      "phaseLabel": "Phase",
+      "disclaimer": "Phases 02, 03, and 04 describe direction of build, not shipping dates. Nothing beyond Phase 01 is currently available. Timing will be shared publicly only when founder-approved."
+    },
+    "founder": {
+      "eyebrow": "Founder Story",
+      "headlinePre": "Built from a Moment That",
+      "headlineGradient": "Changed Everything",
+      "headlinePost": ".",
+      "body1": "In 2022, founder Torrance Lillie experienced a divorce, the loss of his trucking business, serious health challenges, and depression. That period revealed how easily people can feel isolated even when others see them as strong.",
+      "body2": "He created Let It Go AI to help people slow down, recognize emotional strain earlier, and access practical support before difficult moments become overwhelming.",
+      "closing": "Let It Go AI is being built to help people understand what they are experiencing, take a breath, and choose their next step with greater clarity.",
+      "title": "Founder, Let It Go AI",
+      "portraitCaption": "Founder",
+      "portraitForthcoming": "Portrait forthcoming",
+      "readMore": "Read the fuller story"
+    },
+    "investor": {
+      "eyebrow": "Investors",
+      "headlinePre": "From Functional MVP",
+      "headlineTo": "to",
+      "headlineGradient": "Scalable Platform",
+      "headlinePost": ".",
+      "col1Eyebrow": "Today",
+      "col1Items": [
+        "Functional web MVP",
+        "Brand and product foundation",
+        "Initial commercialization strategy",
+        "Founder-led mission"
+      ],
+      "col2Eyebrow": "Next Milestones",
+      "col2Items": [
+        "Beta-user growth",
+        "Product analytics",
+        "Apple Watch prototype",
+        "AI personalization",
+        "Early enterprise conversations"
+      ],
+      "col3Eyebrow": "Capital Enables",
+      "col3Items": [
+        "Product engineering",
+        "AI development",
+        "Security and privacy",
+        "Customer acquisition",
+        "Technical and clinical advisors",
+        "Pilot programs"
+      ],
+      "formEyebrow": "Get in touch",
+      "formTitle": "Investor inquiry",
+      "formSub": "Share a short note and the founder will respond directly with the deck.",
+      "contactFounder": "Contact the Founder",
+      "labelName": "Name",
+      "labelEmail": "Email",
+      "labelOrganization": "Organization",
+      "labelInvestorType": "Investor type",
+      "labelMessage": "Message",
+      "messagePlaceholder": "A short note about your interest, thesis, or timing…",
+      "types": {
+        "vc": "Venture Capital",
+        "angel": "Angel",
+        "family_office": "Family Office",
+        "strategic": "Strategic / Corp",
+        "advisor": "Advisor",
+        "other": "Other"
+      },
+      "errorName": "Please share your name.",
+      "errorNameLong": "Name is too long.",
+      "errorEmailReq": "Email is required.",
+      "errorEmailInvalid": "That doesn't look like a valid email.",
+      "errorOrgLong": "Organization name is too long.",
+      "errorMessageReq": "Please share a short message.",
+      "errorMessageShort": "A little more context, please (10+ characters).",
+      "errorMessageLong": "Message is too long (max 5,000 characters).",
+      "genericError": "Something went wrong. Please try again in a moment.",
+      "toastSuccessTitle": "Inquiry received.",
+      "toastSuccessBody": "The founder will be in touch soon.",
+      "toastErrorTitle": "Couldn't send inquiry.",
+      "successTitle": "Inquiry received.",
+      "successBody": "Thank you for reaching out. The founder will respond directly with the deck and next steps. Your submission is stored privately and never shared publicly.",
+      "sendAnother": "Send another",
+      "consent": "By submitting, you agree that the founder may contact you at the email provided. Submissions are stored privately and never shared publicly.",
+      "submitCta": "Request Investor Deck",
+      "sending": "Sending…",
+      "privacy": "Submissions are received privately by the founder and are never published or shared externally. This is not an offer to sell securities and does not constitute a solicitation."
+    },
+    "pricing": {
+      "eyebrow": "Founding · 50% Off · Locked for Life",
+      "headlinePre": "Pricing that",
+      "headlineGradient": "rewards early belief",
+      "headlinePost": ".",
+      "banner": "Every founding member locks their price for life, receives a permanent badge, and quietly shapes what the ecosystem becomes.",
+      "mostChosen": "Most chosen",
+      "lifetimeLocked": "Lifetime locked",
+      "becomeFounder": "Become a Founder",
+      "openingCheckout": "Opening checkout…",
+      "orApplyBeta": "Or apply for the beta →",
+      "enterpriseNote": "Building for a school, hospital, firm, or 500-person team? Founders write pricing by hand.",
+      "talkToFounders": "Talk to founders →",
+      "kidsName": "Kids",
+      "kidsSub": "For 6–14. Age-tuned. Guardian-safe.",
+      "kidsCadence": "/child · month",
+      "kidsFeatures": [
+        "Age-tuned prompts",
+        "Guardian dashboard",
+        "One-tap co-regulation",
+        "School-safe telemetry"
+      ],
+      "individualName": "Individual",
+      "individualSub": "Your quiet operating system for feelings.",
+      "individualCadence": "/month",
+      "individualFeatures": [
+        "Daily check-in + AI",
+        "30-day growth trend",
+        "Ambient sounds studio",
+        "Founding badge"
+      ],
+      "teamName": "Team",
+      "teamSub": "Ambient emotional weather for people teams.",
+      "teamCadence": "/user · month",
+      "teamFeatures": [
+        "Team weather map",
+        "Private-by-default aggregates",
+        "Weekly org insight",
+        "Founding cohort access"
+      ],
+      "professionalName": "Professional",
+      "professionalSub": "Between clients, between rounds, between arguments.",
+      "professionalCadence": "/month",
+      "professionalFeatures": [
+        "Specialty-tuned modes",
+        "Session-aware breathwork",
+        "Clinical-grade privacy",
+        "Priority co-regulation"
+      ],
+      "emailModalEyebrow": "One step before checkout",
+      "emailModalTitlePre": "Where should we send your",
+      "emailModalTitleGradient": "receipt",
+      "emailModalSub": "We'll lock your founding seat to this email so you can sign in later.",
+      "emailModalContinue": "Continue to checkout",
+      "receiptError": "Drop a valid email so we can send your receipt.",
+      "checkoutError": "Couldn't open checkout. Try again in a moment.",
+      "checkoutFailed": "Checkout failed."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "headlinePre": "Quiet answers.",
+      "headlineGradient": "Honest ones",
+      "headlinePost": ".",
+      "sub": "Still curious? Reach founders directly at",
+      "items": [
+        {
+          "q": "What actually is an \"Emotional Intelligence Ecosystem\"?",
+          "a": "It's a private operating layer that senses, releases, grows, and transforms with you across your day. Watch, phone, and (soon) room — one continuous thread. Not a journaling app. Not a chatbot. A quiet interior infrastructure."
+        },
+        {
+          "q": "Is my emotional data private?",
+          "a": "Radically. Sensitive signals are on-device by default. Team and org views are aggregates that mathematically cannot re-identify an individual. Nothing is sold, nothing is shared, ever."
+        },
+        {
+          "q": "How is this different from therapy?",
+          "a": "It isn't therapy. Think of it as the between-sessions layer — a companion for the 23 hours a day nobody else sees. Many therapists recommend it. Your therapist will love the growth data you can (optionally) share."
+        },
+        {
+          "q": "What happens in the daily check-in?",
+          "a": "Six sliders, one honest sentence, thirty seconds. That's it. The AI responds with a co-regulation suggestion tuned to you. Over 30 days, a pattern becomes a story."
+        },
+        {
+          "q": "What does \"Founding\" get me?",
+          "a": "50% off your tier — locked for life. A permanent Founding badge. Direct access to founders. And a real voice in what the ecosystem becomes over the next three horizons."
+        },
+        {
+          "q": "When does the full ecosystem land?",
+          "a": "Horizon 01 is live. Horizon 02 (ambient sensing) is in private beta now. Horizon 03 (room-scale presence) ships in 2026. Founding members get every horizon at their locked rate."
+        }
+      ]
+    },
+    "closing": {
+      "eyebrow": "The Invitation",
+      "headlinePre": "Help Build the Future of",
+      "headlineGradient": "Emotional Intelligence",
+      "headlinePost": ".",
+      "copy": "Join Let It Go AI as an early user, investor, strategic partner, or advisor.",
+      "earlyAccess": "Request Early Access",
+      "investor": "Investor Information",
+      "partner": "Partner With Us",
+      "closer": "One Ecosystem. Every Moment. Better You."
+    },
+    "footer": {
+      "eyebrow": "Emotional Intelligence Ecosystem",
+      "tagline1": "One Ecosystem. Every Moment.",
+      "tagline2": "Better You.",
+      "exploreLabel": "Explore",
+      "product": "Product",
+      "technology": "Technology",
+      "roadmap": "Roadmap",
+      "founder": "Founder",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "contact": "Contact",
+      "copyright": "Let It Go AI · Emotional Intelligence Ecosystem. All rights reserved."
+    },
+    "modal": {
+      "earlyAccess": {
+        "kicker": "Early Access",
+        "title": "Request Early Access",
+        "subtitle": "One email. We'll invite you when your seat opens up. No spam.",
+        "submit": "Request Access",
+        "successTitle": "You're on the list.",
+        "successBody": "The team will reach out when your seat opens. Welcome to the founding cohort."
+      },
+      "partnership": {
+        "kicker": "Partnership",
+        "title": "Partnership Inquiry",
+        "subtitle": "Tell us a little about your org and what you're building. The founder responds directly.",
+        "submit": "Send Inquiry",
+        "successTitle": "Inquiry received.",
+        "successBody": "The founder will respond directly. Submissions are stored privately and never shared publicly."
+      },
+      "labelName": "Name",
+      "labelEmail": "Email",
+      "labelOrganization": "Organization",
+      "labelMessage": "Message",
+      "labelJoiningAs": "I'm joining as",
+      "messagePlaceholder": "A short note about the partnership you have in mind…",
+      "audiences": {
+        "individual": "Individual",
+        "kids": "Kids & Families",
+        "team": "Team",
+        "professional": "Professional",
+        "watch": "Wearable / Watch"
+      },
+      "errorEmailReq": "Email is required.",
+      "errorEmailInvalid": "Invalid email.",
+      "errorMessageReq": "Please share a short message.",
+      "sending": "Sending…",
+      "close": "Close",
+      "privacyNote": "Submissions are stored privately. Never shared publicly.",
+      "errorTitle": "Couldn't send.",
+      "genericError": "Something went wrong. Please try again."
+    }
   }
 }

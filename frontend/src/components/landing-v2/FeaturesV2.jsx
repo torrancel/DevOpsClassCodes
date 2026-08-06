@@ -1,57 +1,53 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Brain, Heart, Leaf, Sparkles } from "lucide-react";
 import { Section, GradientHeadline, FeatureCard, StatusBadge } from "@/components/ds";
 
-const PILLARS = [
-    {
-        icon: <Brain size={22} strokeWidth={1.5} className="text-lg-cyan" />,
-        eyebrow: "01",
-        title: "Aware",
-        body:
-            "Sub-verbal signals — tone, cadence, physiology — become gentle mirrors. You feel what you feel, sooner.",
-        accent: "cyan",
-    },
-    {
-        icon: <Heart size={22} strokeWidth={1.5} className="text-lg-magenta" />,
-        eyebrow: "02",
-        title: "Release",
-        body:
-            "Breath, sound, movement, or a single spoken sentence. In-the-moment co-regulation, personalised.",
-        accent: "magenta",
-    },
-    {
-        icon: <Leaf size={22} strokeWidth={1.5} className="text-lg-violet" />,
-        eyebrow: "03",
-        title: "Grow",
-        body:
-            "Patterns become insight. Weekly EQ trend, triggers made legible, tiny practices that compound.",
-        accent: "violet",
-    },
-    {
-        icon: <Sparkles size={22} strokeWidth={1.5} className="text-lg-blue" />,
-        eyebrow: "04",
-        title: "Transform",
-        body:
-            "Ambient presence across your day — watch, phone, room. Regulation without ceremony.",
-        accent: "blue",
-    },
-];
-
 export default function FeaturesV2() {
+    const { t } = useTranslation();
+    const PILLARS = [
+        {
+            icon: <Brain size={22} strokeWidth={1.5} className="text-lg-cyan" />,
+            eyebrow: "01",
+            title: t("v2Landing.features.p1t"),
+            body: t("v2Landing.features.p1b"),
+            accent: "cyan",
+        },
+        {
+            icon: <Heart size={22} strokeWidth={1.5} className="text-lg-magenta" />,
+            eyebrow: "02",
+            title: t("v2Landing.features.p2t"),
+            body: t("v2Landing.features.p2b"),
+            accent: "magenta",
+        },
+        {
+            icon: <Leaf size={22} strokeWidth={1.5} className="text-lg-violet" />,
+            eyebrow: "03",
+            title: t("v2Landing.features.p3t"),
+            body: t("v2Landing.features.p3b"),
+            accent: "violet",
+        },
+        {
+            icon: <Sparkles size={22} strokeWidth={1.5} className="text-lg-blue" />,
+            eyebrow: "04",
+            title: t("v2Landing.features.p4t"),
+            body: t("v2Landing.features.p4b"),
+            accent: "blue",
+        },
+    ];
     return (
         <Section id="pillars" size="lg">
             <div className="mb-16 md:mb-20 max-w-3xl">
                 <StatusBadge tone="violet" className="mb-8">
-                    Four Pillars
+                    {t("v2Landing.features.eyebrow")}
                 </StatusBadge>
                 <GradientHeadline as="h2" size="lg">
-                    An operating layer for
+                    {t("v2Landing.features.headlinePre")}
                     <br />
-                    <span className="lg-gradient-text italic">feelings</span>, not features.
+                    <span className="lg-gradient-text italic">{t("v2Landing.features.headlineGradient")}</span>{t("v2Landing.features.headlinePost")}
                 </GradientHeadline>
                 <p className="mt-8 text-lg text-lg-ink-soft max-w-2xl leading-relaxed">
-                    Every module works in the background — sensing, releasing, growing,
-                    transforming — so the moment finds you before the moment overwhelms you.
+                    {t("v2Landing.features.sub")}
                 </p>
             </div>
 

@@ -775,5 +775,455 @@
       "investors": "投资者",
       "requestAccess": "申请早期访问"
     }
+  },
+  "v2Landing": {
+    "hero": {
+      "eyebrow": "功能性 MVP 现已上线",
+      "headlinePre": "为",
+      "headlineGradient": "日常生活",
+      "headlinePost": "而生的情感智能层。",
+      "sub": "Let It Go AI 是一个由人工智能驱动的情感健康平台,旨在通过个性化引导帮助人们理解模式、调节压力,并建立更健康的日常习惯。",
+      "primaryCta": "探索 MVP",
+      "secondaryCta": "投资者信息",
+      "band": {
+        "todayEyebrow": "当下",
+        "todayTitle": "功能性网页 MVP",
+        "todayBody": "每日签到、AI 共同调节与 30 天成长趋势——目前在私密测试版中运行。",
+        "underEyebrow": "开发中",
+        "underTitle": "Apple Watch + AI 个性化",
+        "underBody": "腕上的环境感知。根据你的生物信号调校的个性化调节。",
+        "longEyebrow": "长期愿景",
+        "longTitle": "智能戒指、企业版、移动端",
+        "longBody": "生态系统扩展至戒指、组织与车辆——一个连续不断的层。"
+      },
+      "wearable": {
+        "watch": "Apple Watch",
+        "ring": "智能戒指",
+        "statusWatch": "开发中",
+        "statusRing": "长期愿景"
+      }
+    },
+    "timeline": {
+      "eyebrow": "产品时间线",
+      "headlinePre": "为今日而筑。",
+      "headlineGradient": "为明日而设",
+      "headlinePost": "。",
+      "sub": "脚踏实地的当下。清晰可见的地平线。今日发布的,下一步正在构建的,以及整个生态系统的去向。",
+      "today": {
+        "label": "现已推出",
+        "title": "功能性网页 MVP",
+        "items": [
+          "AI 引导的情绪健康体验",
+          "每日心情记录",
+          "引导式呼吸与正念",
+          "个人成长仪表盘",
+          "安全的云端应用"
+        ],
+        "cta": "探索 MVP"
+      },
+      "next": {
+        "label": "开发中",
+        "title": "下一层产品",
+        "items": [
+          "Apple Watch 伴侣",
+          "更深层的个性化",
+          "自适应洞察",
+          "封闭测试",
+          "用户分析"
+        ],
+        "footnote": "目前尚未推出 · 正在积极构建中"
+      },
+      "future": {
+        "label": "未来路线图",
+        "title": "联结的情商",
+        "items": [
+          "AI 智能戒指",
+          "企业平台",
+          "医疗合作伙伴关系",
+          "联结的移动性",
+          "开发者 APIs"
+        ],
+        "footnote": "概念性 · 多年愿景,今日尚未发布"
+      },
+      "livePrefix": "现行",
+      "disclaimer": "目前仅推出功能性网页 MVP。Apple Watch、AI 智能戒指、医疗、企业、移动性集成以及开发者 APIs 均为愿景,尚未发布。"
+    },
+    "workingProduct": {
+      "liveBadge": "已上线 MVP",
+      "headlinePre": "一个真实运作的产品，",
+      "headlineGradient": "而非仅仅概念",
+      "headlinePost": "。",
+      "sub": "Let It Go AI 网页版 MVP 已经上线运行，为产品验证、用户测试和未来可穿戴设备集成奠定了基础。",
+      "tabs": {
+        "dashboard": "仪表盘",
+        "checkin": "签到",
+        "regulation": "调节",
+        "insights": "洞见"
+      },
+      "cta": "打开产品演示",
+      "metricsLabel": {
+        "beta": "测试版用户",
+        "sessions": "已完成会话",
+        "returning": "回访用户"
+      }
+    },
+    "signal": {
+      "eyebrow": "工作原理",
+      "headlinePre": "从信号到",
+      "headlineGradient": "陪伴",
+      "headlinePost": "。",
+      "sub": "一个五步循环,将你分享的内容转化为温柔的、当下的陪伴——设计理念是补充而非取代人际关怀。",
+      "steps": {
+        "s1t": "签到",
+        "s1b": "用户分享自己的感受,或连接可用的健康数据。",
+        "s2t": "理解",
+        "s2b": "平台在用户提供的信息中识别模式。",
+        "s3t": "个性化",
+        "s3b": "AI 根据用户的情境选择相关指引。",
+        "s4t": "调节",
+        "s4b": "用户收到呼吸、反思或正念的陪伴。",
+        "s5t": "学习",
+        "s5b": "体验随着持续使用变得更加贴合。"
+      },
+      "activeStagesLabel": "每个阶段的激活内容",
+      "d1e": "当下",
+      "d1b": "用户签到、引导工具、仪表盘体验。",
+      "d2e": "开发中",
+      "d2b": "更深层的个性化与可穿戴设备支持的洞察。",
+      "d3e": "长期愿景",
+      "d3b": "跨设备连接的多模态生理状态推断。",
+      "safetyDisclaimer": "Let It Go AI 不做诊断、不做治疗,也不以临床精度读取情绪。它呈现用户选择分享内容中的模式,并提供自我调节工具。它不能替代专业心理健康照护。"
+    },
+    "features": {
+      "eyebrow": "四根支柱",
+      "headlinePre": "一个面向",
+      "headlineGradient": "感受",
+      "headlinePost": "的操作层,而非功能。",
+      "sub": "每个模块都在幕后运作——感知、释放、生长、转化——让那个时刻在它压倒你之前先找到你。",
+      "p1t": "觉察",
+      "p1b": "语言之下的信号——语调、节奏、生理反应——成为温柔的镜子。你更早地感受到你的感受。",
+      "p2t": "释放",
+      "p2b": "呼吸、声音、动作,或一句话。此刻的共同调节,为你量身定制。",
+      "p3t": "成长",
+      "p3b": "模式化为洞见。每周的情商趋势,触发点变得清晰可读,微小的练习日积月累。",
+      "p4t": "转化",
+      "p4b": "氛围般的陪伴贯穿你的一天——手表、手机、房间。无需仪式的调节。"
+    },
+    "device": {
+      "eyebrow": "体验",
+      "headlinePre": "平静的界面。",
+      "headlineGradient": "直觉的",
+      "headlinePost": "陪伴。",
+      "sub": "六个滑块,一句诚实的话,三十秒。这就是每日签到的全部。接下来发生的,是安静的、氛围的、完全属于你的。",
+      "f1k": "30秒内完成签到",
+      "f1d": "零摩擦,一天两次。在手表、手机或房间里。",
+      "f2k": "随需AI共同调节",
+      "f2d": "个性化的呼吸、声音,或口述重构。",
+      "f3k": "30天成长轨迹",
+      "f3d": "清晰的情商走向——从不是仪表盘,始终是故事。"
+    },
+    "audiences": {
+      "eyebrow": "为每一处人间而造",
+      "headlinePre": "同一生态系统。",
+      "headlineGradient": "不同的",
+      "headlinePost": "内在季节。",
+      "specialistLabel": "专业模式",
+      "kidsLabel": "孩子与家庭",
+      "kidsBody": "巨大的情绪,化为微小的练习。适龄提示,监护人安全的遥测,每天一个共享时刻。",
+      "individualLabel": "个体",
+      "individualBody": "你情感的安静操作系统。感知此刻,释放重量,生长模式。",
+      "teamLabel": "团队",
+      "teamBody": "一瞥之间看见团队的情绪气候。聚合永不识别身份——保护心理隐私的同时浮现风险。",
+      "professionalLabel": "专业人士",
+      "professionalBody": "在客户之间,在回合之间,在争执之间——为你的专业调谐的微重启。",
+      "doctors": "医生",
+      "attorneys": "律师",
+      "teachers": "教师",
+      "managers": "管理者"
+    },
+    "roadmap": {
+      "eyebrow": "生态路线图",
+      "headlinePre": "生态系统，",
+      "headlineGradient": "一程程",
+      "headlinePost": "。",
+      "fullLink": "完整生态页面",
+      "p1e": "今天",
+      "p1t": "基础",
+      "p1s": "已上线",
+      "p1items": [
+        "网页应用",
+        "核心引导工具",
+        "用户仪表板",
+        "初始 AI 体验",
+        "产品验证"
+      ],
+      "p2e": "开发中",
+      "p2t": "拓展",
+      "p2s": "开发中",
+      "p2items": [
+        "Apple Watch 伴侣",
+        "AI 个性化",
+        "测试版增长",
+        "分析工具",
+        "安全改进"
+      ],
+      "p3e": "已计划",
+      "p3t": "可穿戴设备",
+      "p3s": "已计划",
+      "p3items": [
+        "智能戒指研究",
+        "生物识别整合",
+        "持续感知概念",
+        "硬件合作伙伴"
+      ],
+      "p4e": "长期愿景",
+      "p4t": "平台拓展",
+      "p4s": "长期愿景",
+      "p4items": [
+        "企业健康",
+        "医疗试点",
+        "保险合作伙伴",
+        "互联出行",
+        "OEM 整合"
+      ],
+      "phaseLabel": "阶段",
+      "disclaimer": "阶段 02、03 和 04 描述构建方向，而非发布日期。除阶段 01 外，目前没有其他阶段可用。时间安排将仅在创始人批准后公开分享。"
+    },
+    "founder": {
+      "eyebrow": "创始人故事",
+      "headlinePre": "诞生于一个",
+      "headlineGradient": "改变一切的时刻",
+      "headlinePost": "。",
+      "body1": "2022年,创始人Torrance Lillie经历了离婚、货运公司倒闭、严重的健康问题,以及抑郁。那段时期揭示了一个真相:即便在他人眼中坚强如常,一个人也可能深陷孤立之中。",
+      "body2": "他创建Let It Go AI,是为了帮助人们放慢脚步,更早地察觉情绪上的紧绷,并在艰难时刻变得难以承受之前,获得切实的支持。",
+      "closing": "Let It Go AI正在被构建,为的是帮助人们理解自己正在经历什么,停下来深呼吸,然后以更清晰的目光选择下一步。",
+      "title": "创始人,Let It Go AI",
+      "portraitCaption": "创始人",
+      "portraitForthcoming": "肖像即将呈现",
+      "readMore": "阅读完整故事"
+    },
+    "investor": {
+      "eyebrow": "投资者",
+      "headlinePre": "从功能性最小产品",
+      "headlineTo": "到",
+      "headlineGradient": "可扩展平台",
+      "headlinePost": "。",
+      "col1Eyebrow": "当下",
+      "col1Items": [
+        "功能性网页最小产品",
+        "品牌与产品基础",
+        "初步商业化策略",
+        "创始人引领的使命"
+      ],
+      "col2Eyebrow": "下一阶段里程碑",
+      "col2Items": [
+        "测试用户增长",
+        "产品分析",
+        "Apple Watch 原型",
+        "AI 个性化",
+        "早期企业对话"
+      ],
+      "col3Eyebrow": "资本赋能",
+      "col3Items": [
+        "产品工程",
+        "AI 开发",
+        "安全与隐私",
+        "客户获取",
+        "技术与临床顾问",
+        "试点项目"
+      ],
+      "formEyebrow": "取得联系",
+      "formTitle": "投资者咨询",
+      "formSub": "留下简短的话,创始人会直接回复并附上投资资料。",
+      "contactFounder": "联系创始人",
+      "labelName": "姓名",
+      "labelEmail": "邮箱",
+      "labelOrganization": "机构",
+      "labelInvestorType": "投资者类型",
+      "labelMessage": "留言",
+      "messagePlaceholder": "简短说说你的兴趣、投资理念,或时机……",
+      "types": {
+        "vc": "风险投资",
+        "angel": "天使投资人",
+        "family_office": "家族办公室",
+        "strategic": "战略/企业投资",
+        "advisor": "顾问",
+        "other": "其他"
+      },
+      "errorName": "请留下你的姓名。",
+      "errorNameLong": "姓名过长。",
+      "errorEmailReq": "请填写邮箱。",
+      "errorEmailInvalid": "这看起来不像有效的邮箱地址。",
+      "errorOrgLong": "机构名称过长。",
+      "errorMessageReq": "请留下简短的信息。",
+      "errorMessageShort": "请多说一点(至少10个字符)。",
+      "errorMessageLong": "留言过长(最多5,000个字符)。",
+      "genericError": "出了点问题。请稍后再试。",
+      "toastSuccessTitle": "已收到咨询。",
+      "toastSuccessBody": "创始人会很快与你联系。",
+      "toastErrorTitle": "无法发送咨询。",
+      "successTitle": "已收到咨询。",
+      "successBody": "感谢你的联系。创始人会直接回复并附上投资资料与后续步骤。你的提交信息将被私密保存,绝不会公开分享。",
+      "sendAnother": "发送另一条",
+      "consent": "提交即表示你同意创始人可通过所提供的邮箱联系你。提交信息将被私密保存,绝不会公开分享。",
+      "submitCta": "索取投资资料",
+      "sending": "发送中……",
+      "privacy": "提交信息由创始人私密接收,绝不会公开或对外分享。这不构成证券销售要约,也不构成任何形式的招揽。"
+    },
+    "pricing": {
+      "eyebrow": "创始 · 五折 · 终身锁定",
+      "headlinePre": "定价,",
+      "headlineGradient": "回馈早期的信任",
+      "headlinePost": "。",
+      "banner": "每一位创始成员都将终身锁定价格,获得永久徽章,并静静参与塑造这个生态系统的样貌。",
+      "mostChosen": "最多人选择",
+      "lifetimeLocked": "终身锁定",
+      "becomeFounder": "成为创始成员",
+      "openingCheckout": "正在打开结账页…",
+      "orApplyBeta": "或申请加入测试版 →",
+      "enterpriseNote": "为学校、医院、机构或五百人团队而来?创始人会手写定价。",
+      "talkToFounders": "与创始人对话 →",
+      "kidsName": "儿童版",
+      "kidsSub": "为 6–14 岁定制。年龄适配。监护人安心。",
+      "kidsCadence": "/每位儿童 · 月",
+      "kidsFeatures": [
+        "年龄适配提示",
+        "监护人仪表板",
+        "一键共同调节",
+        "学校安全遥测"
+      ],
+      "individualName": "个人版",
+      "individualSub": "你的情绪,一个安静的操作系统。",
+      "individualCadence": "/月",
+      "individualFeatures": [
+        "每日签到 + AI",
+        "30 天成长趋势",
+        "环境声音工作室",
+        "创始徽章"
+      ],
+      "teamName": "团队版",
+      "teamSub": "为人际团队提供的情绪气象。",
+      "teamCadence": "/用户 · 月",
+      "teamFeatures": [
+        "团队气象图",
+        "默认私密的聚合数据",
+        "每周组织洞察",
+        "创始群组权限"
+      ],
+      "professionalName": "专业版",
+      "professionalSub": "在来访者之间,在回合之间,在争论之间。",
+      "professionalCadence": "/月",
+      "professionalFeatures": [
+        "专业定制模式",
+        "会话感知呼吸练习",
+        "临床级隐私保护",
+        "优先共同调节"
+      ],
+      "emailModalEyebrow": "结账前一步",
+      "emailModalTitlePre": "我们该把你的",
+      "emailModalTitleGradient": "收据",
+      "emailModalSub": "我们会将你的创始席位锁定到这个邮箱,以便日后登录。",
+      "emailModalContinue": "继续前往结账",
+      "receiptError": "请留下有效邮箱,我们好寄送收据。",
+      "checkoutError": "无法打开结账页。请稍后再试。",
+      "checkoutFailed": "结账失败。"
+    },
+    "faq": {
+      "eyebrow": "常见问题",
+      "headlinePre": "静谧的回答。",
+      "headlineGradient": "诚实的回答",
+      "headlinePost": "。",
+      "sub": "仍有疑问?直接联系创始人:",
+      "items": [
+        {
+          "q": "什么是「情感智能生态系统」?",
+          "a": "这是一层私密的操作层,感知、释放、成长,并在你的日常中与你一同转化。手表、手机,以及(即将推出的)房间——一条连续的线索。不是日记应用。不是聊天机器人。而是一种静谧的内在基础设施。"
+        },
+        {
+          "q": "我的情感数据是私密的吗?",
+          "a": "彻底私密。敏感信号默认存储在设备本地。团队和组织视图是聚合数据,在数学上无法重新识别个人身份。不会出售,不会分享,永远不会。"
+        },
+        {
+          "q": "这与心理治疗有何不同?",
+          "a": "这不是心理治疗。可以把它想象成治疗之间的层次——一个陪伴你每天那23小时无人看见时刻的伙伴。许多治疗师推荐它。你的治疗师会喜欢你(可选择性)分享的成长数据。"
+        },
+        {
+          "q": "每日签到会发生什么?",
+          "a": "六个滑块,一句诚实的话,三十秒。就这样。AI会回应一个为你调校的共同调节建议。超过30天,模式会成为故事。"
+        },
+        {
+          "q": "「创始会员」能获得什么?",
+          "a": "你所选档位的50%折扣——终身锁定。一枚永久的创始徽章。与创始人的直接联系。以及在接下来三个阶段中,对生态系统未来真正的发言权。"
+        },
+        {
+          "q": "完整的生态系统何时到来?",
+          "a": "阶段01已上线。阶段02(环境感知)目前处于内测阶段。阶段03(房间级存在感)将于2026年发布。创始会员以其锁定价格获得每个阶段。"
+        }
+      ]
+    },
+    "closing": {
+      "eyebrow": "邀请",
+      "headlinePre": "帮助构建",
+      "headlineGradient": "情绪智能",
+      "headlinePost": "的未来。",
+      "copy": "作为早期用户、投资者、战略伙伴或顾问，加入 Let It Go AI。",
+      "earlyAccess": "申请抢先体验",
+      "investor": "投资者信息",
+      "partner": "成为我们的伙伴",
+      "closer": "一个生态。每个时刻。更好的你。"
+    },
+    "footer": {
+      "eyebrow": "情感智能生态",
+      "tagline1": "一个生态。每个瞬间。",
+      "tagline2": "更好的你。",
+      "exploreLabel": "探索",
+      "product": "产品",
+      "technology": "技术",
+      "roadmap": "路线图",
+      "founder": "创始人",
+      "privacy": "隐私",
+      "terms": "条款",
+      "contact": "联系",
+      "copyright": "Let It Go AI · 情感智能生态。保留所有权利。"
+    },
+    "modal": {
+      "earlyAccess": {
+        "kicker": "抢先体验",
+        "title": "申请抢先体验",
+        "subtitle": "一封邮件。位置开放时我们会邀请你。不会发垃圾邮件。",
+        "submit": "申请体验",
+        "successTitle": "你已在名单上。",
+        "successBody": "位置开放时团队会联系你。欢迎加入创始群体。"
+      },
+      "partnership": {
+        "kicker": "合作",
+        "title": "合作咨询",
+        "subtitle": "告诉我们一些关于你的机构和你正在构建的事物。创始人会直接回复。",
+        "submit": "发送咨询",
+        "successTitle": "已收到咨询。",
+        "successBody": "创始人会直接回复。提交内容私密存储,永不公开分享。"
+      },
+      "labelName": "姓名",
+      "labelEmail": "邮箱",
+      "labelOrganization": "机构",
+      "labelMessage": "留言",
+      "labelJoiningAs": "我以以下身份加入",
+      "messagePlaceholder": "简短说说你心中的合作…",
+      "audiences": {
+        "individual": "个人",
+        "kids": "儿童与家庭",
+        "team": "团队",
+        "professional": "专业人士",
+        "watch": "可穿戴设备 / 手表"
+      },
+      "errorEmailReq": "邮箱为必填项。",
+      "errorEmailInvalid": "邮箱格式无效。",
+      "errorMessageReq": "请分享一段简短留言。",
+      "sending": "发送中…",
+      "close": "关闭",
+      "privacyNote": "提交内容私密存储。永不公开分享。",
+      "errorTitle": "无法发送。",
+      "genericError": "出了点问题。请重试。"
+    }
   }
 }

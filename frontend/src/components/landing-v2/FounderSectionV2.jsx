@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Quote, ArrowUpRight } from "lucide-react";
 import {
     Section,
@@ -14,16 +15,17 @@ import {
  * Until then, an initials-based placeholder renders (never a stock face —
  * this is a real person and using stock imagery would be dishonest).
  */
-const PORTRAIT_URL = null; // e.g. "https://.../torrance-portrait.jpg"
+const PORTRAIT_URL =
+    "https://customer-assets-m6fa6gv7.emergentagent.net/job_page-launch-106/artifacts/l8ywx5um_IMG_0017.webp";
 
 const FOUNDER = {
     name: "Torrance Lillie",
-    title: "Founder, Let It Go AI",
     initials: "TL",
 };
 
 export default function FounderSectionV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
     const anim = (delay = 0) =>
         reduce
             ? { initial: false }
@@ -48,7 +50,7 @@ export default function FounderSectionV2() {
                     className="lg:col-span-5"
                     data-testid="founder-portrait"
                 >
-                    <Portrait />
+                    <Portrait t={t} />
                 </motion.div>
 
                 {/* Story */}
@@ -57,32 +59,26 @@ export default function FounderSectionV2() {
                     className="lg:col-span-7 lg:pl-4"
                 >
                     <StatusBadge tone="cyan" className="mb-8">
-                        Founder Story
+                        {t("v2Landing.founder.eyebrow")}
                     </StatusBadge>
                     <GradientHeadline
                         as="h2"
                         size="lg"
                         data-testid="founder-headline"
                     >
-                        Built from a Moment That{" "}
+                        {t("v2Landing.founder.headlinePre")}{" "}
                         <span className="lg-gradient-text italic">
-                            Changed Everything
+                            {t("v2Landing.founder.headlineGradient")}
                         </span>
-                        .
+                        {t("v2Landing.founder.headlinePost")}
                     </GradientHeadline>
 
                     <div className="mt-8 space-y-6 text-lg text-lg-ink-soft leading-relaxed max-w-2xl">
                         <p data-testid="founder-body-1">
-                            In 2022, founder Torrance Lillie experienced a divorce,
-                            the loss of his trucking business, serious health
-                            challenges, and depression. That period revealed how
-                            easily people can feel isolated even when others see
-                            them as strong.
+                            {t("v2Landing.founder.body1")}
                         </p>
                         <p data-testid="founder-body-2">
-                            He created Let It Go AI to help people slow down,
-                            recognize emotional strain earlier, and access practical
-                            support before difficult moments become overwhelming.
+                            {t("v2Landing.founder.body2")}
                         </p>
                     </div>
 
@@ -97,9 +93,7 @@ export default function FounderSectionV2() {
                             className="absolute -left-[9px] top-1 text-lg-violet bg-lg-bg px-0.5"
                         />
                         <p className="text-[19px] md:text-xl text-lg-ink leading-relaxed italic font-normal tracking-[-0.005em]">
-                            Let It Go AI is being built to help people understand
-                            what they are experiencing, take a breath, and choose
-                            their next step with greater clarity.
+                            {t("v2Landing.founder.closing")}
                         </p>
                     </blockquote>
 
@@ -114,7 +108,7 @@ export default function FounderSectionV2() {
                                 {FOUNDER.name}
                             </p>
                             <p className="text-sm text-lg-ink-soft mt-0.5">
-                                {FOUNDER.title}
+                                {t("v2Landing.founder.title")}
                             </p>
                         </div>
                     </div>
@@ -128,7 +122,7 @@ export default function FounderSectionV2() {
                             size="md"
                             icon={<ArrowUpRight size={14} />}
                         >
-                            Read the fuller story
+                            {t("v2Landing.founder.readMore")}
                         </SecondaryButton>
                     </div>
                 </motion.div>
@@ -141,7 +135,7 @@ export default function FounderSectionV2() {
    Portrait — real photo if PORTRAIT_URL set, otherwise a
    respectful initials-based placeholder (no stock imagery).
    ───────────────────────────────────────────────────────────── */
-function Portrait() {
+function Portrait({ t }) {
     return (
         <div className="relative mx-auto max-w-[440px]">
             {/* Ambient glow behind portrait */}
@@ -172,15 +166,23 @@ function Portrait() {
                     }}
                 >
                     {PORTRAIT_URL ? (
-                        <img
-                            src={PORTRAIT_URL}
-                            alt={`Portrait of ${FOUNDER.name}, Founder of Let It Go AI`}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        />
+                        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                            <img
+                                src={PORTRAIT_URL}
+                                alt={`Portrait of ${FOUNDER.name}, Founder of Let It Go AI`}
+                                className="object-cover"
+                                style={{
+                                    width: "125%",
+                                    height: "80%",
+                                    transform: "rotate(90deg)",
+                                    transformOrigin: "center",
+                                }}
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </div>
                     ) : (
-                        <PortraitPlaceholder />
+                        <PortraitPlaceholder t={t} />
                     )}
                 </div>
             </div>
@@ -188,7 +190,7 @@ function Portrait() {
             {/* Bottom-right identity chip */}
             <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-3 pointer-events-none">
                 <div className="lg-panel rounded-2xl px-4 py-3 backdrop-blur-2xl">
-                    <p className="lg-eyebrow lg-gradient-text mb-1">Founder</p>
+                    <p className="lg-eyebrow lg-gradient-text mb-1">{t("v2Landing.founder.portraitCaption")}</p>
                     <p className="text-sm font-semibold text-lg-ink tracking-[-0.01em] whitespace-nowrap">
                         {FOUNDER.name}
                     </p>
@@ -198,7 +200,7 @@ function Portrait() {
     );
 }
 
-function PortraitPlaceholder() {
+function PortraitPlaceholder({ t }) {
     return (
         <div className="absolute inset-0 flex items-center justify-center">
             {/* Soft radial */}
@@ -224,7 +226,7 @@ function PortraitPlaceholder() {
                     {FOUNDER.initials}
                 </div>
                 <p className="mt-6 lg-eyebrow text-lg-ink-muted">
-                    Portrait forthcoming
+                    {t("v2Landing.founder.portraitForthcoming")}
                 </p>
             </div>
         </div>

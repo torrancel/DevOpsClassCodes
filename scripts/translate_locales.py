@@ -45,7 +45,7 @@ SYSTEM = (
 )
 
 # Some sections are huge (esp. `profession` ~22KB). For those, chunk by sub-key.
-HEAVY_SECTIONS = {"profession"}
+HEAVY_SECTIONS = {"profession", "v2Landing"}
 
 MAX_RETRIES = 3
 RETRY_BACKOFF = 4  # seconds

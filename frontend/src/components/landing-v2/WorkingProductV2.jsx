@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Sparkles, ChevronLeft, ArrowUpRight, Plus, Wind, LineChart as LineIcon } from "lucide-react";
 import {
     Section,
@@ -33,15 +34,16 @@ const METRICS = {
 };
 
 const VIEWS = [
-    { id: "dashboard", label: "Dashboard", icon: LineIcon },
-    { id: "checkin", label: "Check-in", icon: Sparkles },
-    { id: "regulation", label: "Regulation", icon: Wind },
-    { id: "insights", label: "Insights", icon: ArrowUpRight },
+    { id: "dashboard", icon: LineIcon },
+    { id: "checkin", icon: Sparkles },
+    { id: "regulation", icon: Wind },
+    { id: "insights", icon: ArrowUpRight },
 ];
 
 export default function WorkingProductV2() {
     const [active, setActive] = useState("dashboard");
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
     const showMetrics = Boolean(
         METRICS.betaUsers && METRICS.sessionsCompleted && METRICS.returningUsers,
     );
@@ -85,15 +87,13 @@ export default function WorkingProductV2() {
                     </span>
 
                     <GradientHeadline as="h2" size="lg" data-testid="product-headline">
-                        A Working Product,
+                        {t("v2Landing.workingProduct.headlinePre")}
                         <br />
-                        <span className="lg-gradient-text italic">Not Just a Concept</span>
-                        .
+                        <span className="lg-gradient-text italic">{t("v2Landing.workingProduct.headlineGradient")}</span>
+                        {t("v2Landing.workingProduct.headlinePost")}
                     </GradientHeadline>
                     <p className="mt-8 text-lg text-lg-ink-soft max-w-2xl leading-relaxed">
-                        The Let It Go AI web MVP is already functional and provides the
-                        foundation for product validation, user testing, and future
-                        wearable integration.
+                        {t("v2Landing.workingProduct.sub")}
                     </p>
                 </div>
 
@@ -122,7 +122,7 @@ export default function WorkingProductV2() {
                                 }`}
                             >
                                 <Icon size={13} strokeWidth={1.75} />
-                                {v.label}
+                                {t(`v2Landing.workingProduct.tabs.${v.id}`)}
                             </button>
                         );
                     })}
@@ -155,7 +155,7 @@ export default function WorkingProductV2() {
                         data-testid="product-demo-cta"
                         size="lg"
                     >
-                        Open Product Demo
+                        {t("v2Landing.workingProduct.cta")}
                     </PrimaryButton>
                 </div>
 
@@ -166,17 +166,17 @@ export default function WorkingProductV2() {
                         className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
                     >
                         <MetricCard
-                            label="Beta users"
+                            label={t("v2Landing.workingProduct.metricsLabel.beta")}
                             value={formatMetric(METRICS.betaUsers)}
                             accent="cyan"
                         />
                         <MetricCard
-                            label="Sessions completed"
+                            label={t("v2Landing.workingProduct.metricsLabel.sessions")}
                             value={formatMetric(METRICS.sessionsCompleted)}
                             accent="violet"
                         />
                         <MetricCard
-                            label="Returning users"
+                            label={t("v2Landing.workingProduct.metricsLabel.returning")}
                             value={formatMetric(METRICS.returningUsers)}
                             accent="magenta"
                         />

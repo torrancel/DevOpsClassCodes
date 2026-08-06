@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Check, Circle } from "lucide-react";
 import {
     Section,
@@ -17,63 +18,7 @@ import { ArrowUpRight } from "lucide-react";
  * / PLANNED / LONG-TERM VISION taxonomy.
  */
 
-const PHASES = [
-    {
-        num: "Phase 01",
-        eyebrow: "Today",
-        title: "Foundation",
-        status: "LIVE",
-        tone: "cyan",
-        items: [
-            "Web application",
-            "Core guided tools",
-            "User dashboard",
-            "Initial AI experience",
-            "Product validation",
-        ],
-    },
-    {
-        num: "Phase 02",
-        eyebrow: "Under Development",
-        title: "Expansion",
-        status: "IN DEVELOPMENT",
-        tone: "blue",
-        items: [
-            "Apple Watch companion",
-            "AI personalization",
-            "Beta growth",
-            "Analytics",
-            "Security improvements",
-        ],
-    },
-    {
-        num: "Phase 03",
-        eyebrow: "Planned",
-        title: "Wearables",
-        status: "PLANNED",
-        tone: "violet",
-        items: [
-            "Smart ring research",
-            "Biometric integration",
-            "Continuous sensing concepts",
-            "Hardware partnerships",
-        ],
-    },
-    {
-        num: "Phase 04",
-        eyebrow: "Long-Term Vision",
-        title: "Platform Expansion",
-        status: "LONG-TERM VISION",
-        tone: "magenta",
-        items: [
-            "Enterprise wellness",
-            "Healthcare pilots",
-            "Insurance partnerships",
-            "Connected mobility",
-            "OEM integrations",
-        ],
-    },
-];
+const PHASE_TONES = ["cyan", "blue", "violet", "magenta"];
 
 const TONE = {
     cyan: {
@@ -104,6 +49,16 @@ const TONE = {
 
 export default function EcosystemRoadmapV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
+    const PHASES = [1, 2, 3, 4].map((n, i) => ({
+        num: `${t("v2Landing.roadmap.phaseLabel")} 0${n}`,
+        eyebrow: t(`v2Landing.roadmap.p${n}e`),
+        title: t(`v2Landing.roadmap.p${n}t`),
+        status: t(`v2Landing.roadmap.p${n}s`),
+        statusKey: ["LIVE", "IN DEVELOPMENT", "PLANNED", "LONG-TERM VISION"][i],
+        tone: PHASE_TONES[i],
+        items: t(`v2Landing.roadmap.p${n}items`, { returnObjects: true }),
+    }));
     const anim = (delay = 0) =>
         reduce
             ? { initial: false }
@@ -128,19 +83,19 @@ export default function EcosystemRoadmapV2() {
                 <div className="mb-14 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
                     <div className="max-w-2xl">
                         <StatusBadge tone="violet" className="mb-8">
-                            Ecosystem Roadmap
+                            {t("v2Landing.roadmap.eyebrow")}
                         </StatusBadge>
                         <GradientHeadline
                             as="h2"
                             size="lg"
                             data-testid="ecosystem-roadmap-headline"
                         >
-                            The Ecosystem,
+                            {t("v2Landing.roadmap.headlinePre")}
                             <br />
                             <span className="lg-gradient-text italic">
-                                phase by phase
+                                {t("v2Landing.roadmap.headlineGradient")}
                             </span>
-                            .
+                            {t("v2Landing.roadmap.headlinePost")}
                         </GradientHeadline>
                     </div>
                     <SecondaryButton
@@ -150,7 +105,7 @@ export default function EcosystemRoadmapV2() {
                         size="md"
                         icon={<ArrowUpRight size={14} />}
                     >
-                        Full ecosystem page
+                        {t("v2Landing.roadmap.fullLink")}
                     </SecondaryButton>
                 </div>
 
@@ -184,7 +139,7 @@ export default function EcosystemRoadmapV2() {
                                     <PhaseNode
                                         index={i + 1}
                                         tone={p.tone}
-                                        live={p.status === "LIVE"}
+                                        live={p.statusKey === "LIVE"}
                                         reduce={reduce}
                                     />
                                 </div>
@@ -198,6 +153,7 @@ export default function EcosystemRoadmapV2() {
                                     {/* Status pill on its own row (avoids wrapping on narrow 4-col desktop layout) */}
                                     <StatusPill
                                         status={p.status}
+                                        statusKey={p.statusKey}
                                         tone={p.tone}
                                         reduce={reduce}
                                     />
@@ -219,16 +175,16 @@ export default function EcosystemRoadmapV2() {
                                             <li
                                                 key={item}
                                                 className={`flex items-start gap-3 text-[14px] ${
-                                                    p.status === "LIVE"
+                                                    p.statusKey === "LIVE"
                                                         ? "text-lg-ink"
                                                         : "text-lg-ink-soft"
                                                 }`}
                                             >
                                                 <ItemIndicator
-                                                    live={p.status === "LIVE"}
+                                                    live={p.statusKey === "LIVE"}
                                                     tone={p.tone}
                                                     dashed={
-                                                        p.status ===
+                                                        p.statusKey ===
                                                             "LONG-TERM VISION"
                                                     }
                                                 />
@@ -249,9 +205,7 @@ export default function EcosystemRoadmapV2() {
                     data-testid="roadmap-disclaimer"
                     className="mt-10 md:mt-14 text-xs text-lg-ink-muted max-w-3xl leading-relaxed"
                 >
-                    Phases 02, 03, and 04 describe direction of build, not shipping
-                    dates. Nothing beyond Phase 01 is currently available. Timing will
-                    be shared publicly only when founder-approved.
+                    {t("v2Landing.roadmap.disclaimer")}
                 </p>
             </div>
         </Section>
@@ -289,16 +243,16 @@ function PhaseNode({ index, tone, live, reduce }) {
     );
 }
 
-function StatusPill({ status, tone, reduce }) {
+function StatusPill({ status, statusKey, tone, reduce }) {
     const t = TONE[tone];
     return (
         <span
             className="self-start inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[9.5px] uppercase tracking-[0.24em] font-semibold text-lg-ink border whitespace-nowrap max-w-full"
             style={{ background: t.bg, borderColor: t.border }}
-            data-testid={`roadmap-status-${status.toLowerCase().replace(/\s+/g, "-")}`}
+            data-testid={`roadmap-status-${statusKey.toLowerCase().replace(/\s+/g, "-")}`}
         >
             <span className="relative inline-flex h-1.5 w-1.5">
-                {status === "LIVE" && !reduce && (
+                {statusKey === "LIVE" && !reduce && (
                     <span
                         className="absolute inline-flex h-full w-full rounded-full opacity-70"
                         style={{

@@ -775,5 +775,455 @@
       "investors": "투자자",
       "requestAccess": "얼리 액세스 요청"
     }
+  },
+  "v2Landing": {
+    "hero": {
+      "eyebrow": "오늘부터 사용 가능한 MVP",
+      "headlinePre": "일상을 위한",
+      "headlineGradient": "감성 지능 레이어",
+      "headlinePost": ".",
+      "sub": "Let It Go AI는 개인 맞춤형 가이드를 통해 패턴을 이해하고, 스트레스를 조절하며, 더 건강한 일상 습관을 만들도록 돕는 AI 기반 정서적 웰빙 플랫폼입니다.",
+      "primaryCta": "MVP 둘러보기",
+      "secondaryCta": "투자자 정보",
+      "band": {
+        "todayEyebrow": "지금",
+        "todayTitle": "실사용 가능한 웹 MVP",
+        "todayBody": "일일 체크인, AI 동반 조절, 30일 성장 추이 — 비공개 베타로 운영 중.",
+        "underEyebrow": "개발 중",
+        "underTitle": "Apple Watch + AI 개인화",
+        "underBody": "손목 위의 주변 감지. 당신의 생체 신호에 맞춰진 개인화된 조절.",
+        "longEyebrow": "장기 비전",
+        "longTitle": "스마트 링, 기업, 모빌리티",
+        "longBody": "생태계는 링으로, 조직으로, 차량으로 확장됩니다 — 하나의 연속된 레이어."
+      },
+      "wearable": {
+        "watch": "Apple Watch",
+        "ring": "스마트 링",
+        "statusWatch": "개발 중",
+        "statusRing": "장기 비전"
+      }
+    },
+    "timeline": {
+      "eyebrow": "제품 타임라인",
+      "headlinePre": "오늘을 위해 만들어지고,",
+      "headlineGradient": "내일을 위해 설계되다",
+      "headlinePost": ".",
+      "sub": "확고한 현재. 보이는 지평선. 오늘 출시되는 것, 다음에 만들어지는 것, 그리고 생태계가 향하는 곳.",
+      "today": {
+        "label": "현재 이용 가능",
+        "title": "기능적 웹 MVP",
+        "items": [
+          "AI 기반 감정 웰니스 경험",
+          "매일의 기분 체크인",
+          "가이드된 호흡과 마음챙김",
+          "개인 성장 대시보드",
+          "안전한 클라우드 기반 애플리케이션"
+        ],
+        "cta": "MVP 살펴보기"
+      },
+      "next": {
+        "label": "개발 중",
+        "title": "다음 제품 레이어",
+        "items": [
+          "Apple Watch 컴패니언",
+          "더 깊은 개인화",
+          "적응형 인사이트",
+          "비공개 베타 테스트",
+          "사용자 분석"
+        ],
+        "footnote": "현재 이용 불가 · 활발히 개발 중"
+      },
+      "future": {
+        "label": "미래 로드맵",
+        "title": "연결된 감정 지능",
+        "items": [
+          "AI 스마트 링",
+          "기업용 플랫폼",
+          "헬스케어 파트너십",
+          "연결된 모빌리티",
+          "개발자 API"
+        ],
+        "footnote": "개념적 · 다년간의 비전, 현재 출시되지 않음"
+      },
+      "livePrefix": "라이브",
+      "disclaimer": "기능적 웹 MVP만 현재 이용 가능합니다. Apple Watch, AI 스마트 링, 헬스케어, 기업용, 모빌리티 통합, 그리고 개발자 API는 구상 단계이며 아직 출시되지 않았습니다."
+    },
+    "workingProduct": {
+      "liveBadge": "Live MVP",
+      "headlinePre": "작동하는 제품,",
+      "headlineGradient": "단순한 컨셉이 아닌",
+      "headlinePost": ".",
+      "sub": "Let It Go AI 웹 MVP는 이미 작동 중이며, 제품 검증, 사용자 테스트, 그리고 향후 웨어러블 통합을 위한 토대를 제공합니다.",
+      "tabs": {
+        "dashboard": "대시보드",
+        "checkin": "체크인",
+        "regulation": "조절",
+        "insights": "인사이트"
+      },
+      "cta": "제품 데모 열기",
+      "metricsLabel": {
+        "beta": "베타 사용자",
+        "sessions": "완료된 세션",
+        "returning": "재방문 사용자"
+      }
+    },
+    "signal": {
+      "eyebrow": "작동 원리",
+      "headlinePre": "신호에서",
+      "headlineGradient": "지지",
+      "headlinePost": "로.",
+      "sub": "당신이 나누는 것을 부드러운, 지금-이 순간의 지지로 바꾸는 다섯 단계의 순환 — 인간의 돌봄을 대체하지 않고, 보완하도록 설계되었습니다.",
+      "steps": {
+        "s1t": "체크인",
+        "s1b": "사용자가 자신의 느낌을 나누거나 사용 가능한 웰니스 데이터를 연결합니다.",
+        "s2t": "이해",
+        "s2b": "플랫폼이 사용자가 제공한 정보에서 패턴을 식별합니다.",
+        "s3t": "개인화",
+        "s3b": "AI가 사용자의 맥락에 기반하여 관련된 안내를 선택합니다.",
+        "s4t": "조율",
+        "s4b": "사용자가 호흡, 성찰, 또는 마음챙김 지지를 받습니다.",
+        "s5t": "학습",
+        "s5b": "지속적인 사용을 통해 경험이 더욱 관련성 있게 됩니다."
+      },
+      "activeStagesLabel": "각 단계에서 활성화된 것",
+      "d1e": "오늘",
+      "d1b": "사용자 체크인, 가이드 도구, 대시보드 경험.",
+      "d2e": "개발 중",
+      "d2b": "더 깊은 개인화와 웨어러블 기반 통찰.",
+      "d3e": "장기적 비전",
+      "d3b": "연결된 기기들을 통한 다중 양식 생리적 상태 추론.",
+      "safetyDisclaimer": "Let It Go AI는 임상적 정확도로 진단하거나, 치료하거나, 감정을 읽지 않습니다. 사용자가 나누기로 선택한 것에서 패턴을 드러내고 자기 조절 도구를 제공합니다. 전문적인 정신 건강 돌봄을 대체하지 않습니다."
+    },
+    "features": {
+      "eyebrow": "네 개의 기둥",
+      "headlinePre": "기능이 아닌",
+      "headlineGradient": "감정",
+      "headlinePost": "을 위한 운영 체계.",
+      "sub": "모든 모듈은 배경에서 작동합니다 — 감지하고, 놓아주고, 성장하고, 변화하며 — 순간이 당신을 압도하기 전에 당신에게 찾아옵니다.",
+      "p1t": "자각",
+      "p1b": "언어 이전의 신호들 — 목소리 톤, 리듬, 생리 반응 — 이 부드러운 거울이 됩니다. 당신은 더 빨리 당신이 느끼는 것을 느낍니다.",
+      "p2t": "놓아주기",
+      "p2b": "호흡, 소리, 움직임, 혹은 단 한 문장. 그 순간의 공동 조율, 당신만을 위한.",
+      "p3t": "성장",
+      "p3b": "패턴은 통찰이 됩니다. 주간 감성 지능 추이, 읽을 수 있게 된 촉발 요인들, 쌓여가는 작은 실천들.",
+      "p4t": "변화",
+      "p4b": "하루 전체에 걸친 은은한 존재 — 시계, 휴대폰, 방. 의식 없이도 조율."
+    },
+    "device": {
+      "eyebrow": "경험",
+      "headlinePre": "고요한 인터페이스.",
+      "headlineGradient": "직관적인",
+      "headlinePost": "동반자.",
+      "sub": "여섯 개의 슬라이더, 하나의 솔직한 문장, 30초. 이것이 전부입니다, 매일의 체크인은. 그 다음에 일어나는 일은 조용하고, 주변적이며, 온전히 당신의 것입니다.",
+      "f1k": "30초 이하의 체크인",
+      "f1d": "마찰 없이, 하루 두 번. 워치에서, 폰에서, 혹은 방에서.",
+      "f2k": "언제든 AI 공동조절",
+      "f2d": "개인화된 호흡, 소리, 혹은 말로 전하는 재구성.",
+      "f3k": "30일 성장 추이",
+      "f3d": "읽을 수 있는 감성지능의 궤적 — 절대 대시보드가 아닌, 언제나 하나의 이야기."
+    },
+    "audiences": {
+      "eyebrow": "어디서든, 사람을 위해 만들어졌습니다",
+      "headlinePre": "같은 생태계.",
+      "headlineGradient": "다른",
+      "headlinePost": "내면의 계절들.",
+      "specialistLabel": "전문가 모드",
+      "kidsLabel": "아이들과 가족",
+      "kidsBody": "큰 감정이 작은 실천이 됩니다. 연령에 맞춘 안내, 보호자 안전 원격 측정, 그리고 하루 한 번의 공유된 순간.",
+      "individualLabel": "개인",
+      "individualBody": "감정을 위한 조용한 운영 체제. 순간을 감지하고, 무게를 내려놓고, 패턴을 키워갑니다.",
+      "teamLabel": "팀",
+      "teamBody": "팀의 감정 날씨를 한눈에. 집계는 절대 특정하지 않습니다 — 정신적 프라이버시를 보호하면서 위험을 드러냅니다.",
+      "professionalLabel": "전문직 종사자",
+      "professionalBody": "내담자 사이, 라운드 사이, 논쟁 사이 — 당신의 전문 분야에 맞춰진 미세한 리셋.",
+      "doctors": "의사",
+      "attorneys": "변호사",
+      "teachers": "교사",
+      "managers": "관리자"
+    },
+    "roadmap": {
+      "eyebrow": "생태계 로드맵",
+      "headlinePre": "생태계,",
+      "headlineGradient": "단계별로",
+      "headlinePost": ".",
+      "fullLink": "전체 생태계 페이지",
+      "p1e": "오늘",
+      "p1t": "기반",
+      "p1s": "운영 중",
+      "p1items": [
+        "웹 애플리케이션",
+        "핵심 가이드 도구",
+        "사용자 대시보드",
+        "초기 AI 경험",
+        "제품 검증"
+      ],
+      "p2e": "개발 중",
+      "p2t": "확장",
+      "p2s": "개발 중",
+      "p2items": [
+        "Apple Watch 컴패니언",
+        "AI 개인화",
+        "베타 성장",
+        "분석 기능",
+        "보안 개선"
+      ],
+      "p3e": "계획됨",
+      "p3t": "웨어러블",
+      "p3s": "계획됨",
+      "p3items": [
+        "스마트 링 연구",
+        "생체인식 통합",
+        "지속적 감지 개념",
+        "하드웨어 파트너십"
+      ],
+      "p4e": "장기 비전",
+      "p4t": "플랫폼 확장",
+      "p4s": "장기 비전",
+      "p4items": [
+        "기업 웰니스",
+        "헬스케어 파일럿",
+        "보험 파트너십",
+        "커넥티드 모빌리티",
+        "OEM 통합"
+      ],
+      "phaseLabel": "단계",
+      "disclaimer": "02, 03, 04 단계는 개발 방향을 설명하는 것이지 출시 일정이 아닙니다. 01 단계 이후의 것들은 현재 이용 가능하지 않습니다. 일정은 창립자 승인 시에만 공개적으로 공유됩니다."
+    },
+    "founder": {
+      "eyebrow": "창립자 이야기",
+      "headlinePre": "모든 것을",
+      "headlineGradient": "바꾼 순간",
+      "headlinePost": "에서 시작되었습니다.",
+      "body1": "2022년, 창립자 토렌스 릴리는 이혼, 트럭 사업의 실패, 심각한 건강 문제, 그리고 우울증을 경험했습니다. 그 시기는 다른 사람들이 강하다고 여기는 사람조차 얼마나 쉽게 고립감을 느낄 수 있는지 보여주었습니다.",
+      "body2": "그는 사람들이 속도를 늦추고, 감정적 긴장을 더 일찍 인식하며, 어려운 순간이 감당하기 어려워지기 전에 실질적인 도움을 받을 수 있도록 돕기 위해 Let It Go AI를 만들었습니다.",
+      "closing": "Let It Go AI는 사람들이 자신이 경험하고 있는 것을 이해하고, 숨을 고르며, 더 명료한 시선으로 다음 발걸음을 선택할 수 있도록 돕기 위해 만들어지고 있습니다.",
+      "title": "창립자, Let It Go AI",
+      "portraitCaption": "창립자",
+      "portraitForthcoming": "사진 준비 중",
+      "readMore": "자세한 이야기 읽기"
+    },
+    "investor": {
+      "eyebrow": "투자자",
+      "headlinePre": "기능적 MVP에서",
+      "headlineTo": "",
+      "headlineGradient": "확장 가능한 플랫폼으로",
+      "headlinePost": ".",
+      "col1Eyebrow": "오늘",
+      "col1Items": [
+        "기능하는 웹 MVP",
+        "브랜드와 제품의 기초",
+        "초기 상용화 전략",
+        "창립자가 이끄는 미션"
+      ],
+      "col2Eyebrow": "다음 이정표",
+      "col2Items": [
+        "베타 사용자 성장",
+        "제품 분석",
+        "Apple Watch 프로토타입",
+        "AI 개인화",
+        "초기 기업 대화"
+      ],
+      "col3Eyebrow": "자본이 가능하게 하는 것",
+      "col3Items": [
+        "제품 엔지니어링",
+        "AI 개발",
+        "보안과 프라이버시",
+        "고객 확보",
+        "기술 및 임상 자문",
+        "파일럿 프로그램"
+      ],
+      "formEyebrow": "연락하기",
+      "formTitle": "투자자 문의",
+      "formSub": "짧은 메모를 남겨주시면 창립자가 직접 덱을 보내드립니다.",
+      "contactFounder": "창립자에게 연락하기",
+      "labelName": "이름",
+      "labelEmail": "이메일",
+      "labelOrganization": "조직",
+      "labelInvestorType": "투자자 유형",
+      "labelMessage": "메시지",
+      "messagePlaceholder": "관심사, 투자 철학, 또는 타이밍에 대한 짧은 메모…",
+      "types": {
+        "vc": "벤처 캐피탈",
+        "angel": "엔젤",
+        "family_office": "패밀리 오피스",
+        "strategic": "전략적 / 기업",
+        "advisor": "자문",
+        "other": "기타"
+      },
+      "errorName": "이름을 알려주세요.",
+      "errorNameLong": "이름이 너무 깁니다.",
+      "errorEmailReq": "이메일이 필요합니다.",
+      "errorEmailInvalid": "유효한 이메일 주소가 아닌 것 같습니다.",
+      "errorOrgLong": "조직 이름이 너무 깁니다.",
+      "errorMessageReq": "짧은 메시지를 남겨주세요.",
+      "errorMessageShort": "조금 더 자세히 알려주세요 (10자 이상).",
+      "errorMessageLong": "메시지가 너무 깁니다 (최대 5,000자).",
+      "genericError": "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      "toastSuccessTitle": "문의가 접수되었습니다.",
+      "toastSuccessBody": "창립자가 곧 연락드릴 것입니다.",
+      "toastErrorTitle": "문의를 전송할 수 없습니다.",
+      "successTitle": "문의가 접수되었습니다.",
+      "successBody": "연락 주셔서 감사합니다. 창립자가 덱과 다음 단계를 직접 전달드릴 것입니다. 제출하신 내용은 비공개로 보관되며 절대 공개적으로 공유되지 않습니다.",
+      "sendAnother": "다시 보내기",
+      "consent": "제출함으로써, 창립자가 제공된 이메일로 연락할 수 있음에 동의합니다. 제출된 내용은 비공개로 보관되며 절대 공개적으로 공유되지 않습니다.",
+      "submitCta": "투자자 덱 요청하기",
+      "sending": "전송 중…",
+      "privacy": "제출된 내용은 창립자가 비공개로 수신하며 절대 게시되거나 외부에 공유되지 않습니다. 이것은 증권 판매 제안이 아니며 권유를 구성하지 않습니다."
+    },
+    "pricing": {
+      "eyebrow": "창립 멤버 · 50% 할인 · 평생 가격 고정",
+      "headlinePre": "초기 믿음에",
+      "headlineGradient": "보답하는 가격",
+      "headlinePost": ".",
+      "banner": "모든 창립 멤버는 평생 가격을 고정받고, 영구 배지를 받으며, 이 생태계가 무엇이 될지 조용히 함께 만들어갑니다.",
+      "mostChosen": "가장 많이 선택",
+      "lifetimeLocked": "평생 가격 고정",
+      "becomeFounder": "창립 멤버 되기",
+      "openingCheckout": "결제 페이지 여는 중…",
+      "orApplyBeta": "또는 베타 신청하기 →",
+      "enterpriseNote": "학교, 병원, 회사, 혹은 500명 규모의 팀을 위한 것이라면? 창립자가 직접 가격을 씁니다.",
+      "talkToFounders": "창립자와 대화하기 →",
+      "kidsName": "어린이",
+      "kidsSub": "6–14세를 위한. 연령 맞춤. 보호자 안심.",
+      "kidsCadence": "/어린이 · 월",
+      "kidsFeatures": [
+        "연령 맞춤 프롬프트",
+        "보호자 대시보드",
+        "원탭 공동 조절",
+        "학교 안전 원격 측정"
+      ],
+      "individualName": "개인",
+      "individualSub": "감정을 위한 당신의 조용한 운영체제.",
+      "individualCadence": "/월",
+      "individualFeatures": [
+        "매일 체크인 + AI",
+        "30일 성장 추세",
+        "앰비언트 사운드 스튜디오",
+        "창립 배지"
+      ],
+      "teamName": "팀",
+      "teamSub": "사람 팀을 위한 앰비언트 감정 날씨.",
+      "teamCadence": "/사용자 · 월",
+      "teamFeatures": [
+        "팀 날씨 지도",
+        "기본 비공개 집계",
+        "주간 조직 인사이트",
+        "창립 코호트 접근"
+      ],
+      "professionalName": "전문가",
+      "professionalSub": "내담자 사이, 라운드 사이, 논쟁 사이.",
+      "professionalCadence": "/월",
+      "professionalFeatures": [
+        "전문 분야 맞춤 모드",
+        "세션 인지 호흡법",
+        "임상 등급 프라이버시",
+        "우선 공동 조절"
+      ],
+      "emailModalEyebrow": "결제 전 한 단계",
+      "emailModalTitlePre": "어디로",
+      "emailModalTitleGradient": "영수증",
+      "emailModalSub": "나중에 로그인할 수 있도록 이 이메일에 창립 좌석을 고정합니다.",
+      "emailModalContinue": "결제로 계속하기",
+      "receiptError": "영수증을 보낼 수 있도록 유효한 이메일을 입력해주세요.",
+      "checkoutError": "결제 페이지를 열 수 없습니다. 잠시 후 다시 시도해주세요.",
+      "checkoutFailed": "결제에 실패했습니다."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "headlinePre": "조용한 답변.",
+      "headlineGradient": "정직한 답변",
+      "headlinePost": ".",
+      "sub": "여전히 궁금하신가요? 창립자에게 직접 연락하세요",
+      "items": [
+        {
+          "q": "\"감성 지능 생태계\"란 실제로 무엇인가요?",
+          "a": "당신의 하루 전체를 함께 감지하고, 놓아주고, 성장하고, 변화하는 사적인 운영 계층입니다. 워치, 스마트폰, 그리고 (곧) 방 — 하나의 연속된 흐름. 저널링 앱이 아닙니다. 챗봇도 아닙니다. 조용한 내면의 인프라입니다."
+        },
+        {
+          "q": "제 감정 데이터는 비공개인가요?",
+          "a": "철저하게. 민감한 신호는 기본적으로 기기 내에 있습니다. 팀과 조직 뷰는 수학적으로 개인을 재식별할 수 없는 집계 데이터입니다. 판매되지 않으며, 공유되지 않습니다, 절대로."
+        },
+        {
+          "q": "이것은 치료와 어떻게 다른가요?",
+          "a": "치료가 아닙니다. 세션 사이의 계층으로 생각해 보세요 — 아무도 보지 않는 하루 23시간을 위한 동반자. 많은 치료사들이 이것을 추천합니다. 당신의 치료사는 당신이 (선택적으로) 공유할 수 있는 성장 데이터를 좋아하실 겁니다."
+        },
+        {
+          "q": "일일 체크인에서는 무엇이 일어나나요?",
+          "a": "여섯 개의 슬라이더, 하나의 솔직한 문장, 30초. 그게 전부입니다. AI가 당신에게 맞춰진 공동 조절 제안으로 응답합니다. 30일이 지나면, 패턴이 이야기가 됩니다."
+        },
+        {
+          "q": "\"창립\"은 무엇을 제공하나요?",
+          "a": "티어 50% 할인 — 평생 고정. 영구적인 창립 배지. 창립자에게 직접 접근. 그리고 앞으로의 세 단계에 걸쳐 생태계가 무엇이 될지에 대한 진정한 목소리."
+        },
+        {
+          "q": "전체 생태계는 언제 출시되나요?",
+          "a": "Horizon 01은 현재 운영 중입니다. Horizon 02 (주변 감지)는 현재 비공개 베타입니다. Horizon 03 (방 규모 현존)은 2026년에 출시됩니다. 창립 멤버는 고정된 요금으로 모든 horizon을 받습니다."
+        }
+      ]
+    },
+    "closing": {
+      "eyebrow": "초대",
+      "headlinePre": "함께 만들어가요",
+      "headlineGradient": "감정 지능의 미래",
+      "headlinePost": "를.",
+      "copy": "초기 사용자, 투자자, 전략적 파트너, 또는 조언자로 Let It Go AI에 함께하세요.",
+      "earlyAccess": "얼리 액세스 신청하기",
+      "investor": "투자 안내",
+      "partner": "파트너십 문의",
+      "closer": "하나의 생태계. 모든 순간. 더 나은 당신."
+    },
+    "footer": {
+      "eyebrow": "감정 지능 생태계",
+      "tagline1": "하나의 생태계. 모든 순간.",
+      "tagline2": "더 나은 당신.",
+      "exploreLabel": "탐색하기",
+      "product": "제품",
+      "technology": "기술",
+      "roadmap": "로드맵",
+      "founder": "창립자",
+      "privacy": "개인정보 보호",
+      "terms": "약관",
+      "contact": "문의",
+      "copyright": "Let It Go AI · 감정 지능 생태계. All rights reserved."
+    },
+    "modal": {
+      "earlyAccess": {
+        "kicker": "Early Access",
+        "title": "얼리 액세스 신청",
+        "subtitle": "이메일 하나면 됩니다. 자리가 열리면 초대해드릴게요. 스팸은 없습니다.",
+        "submit": "액세스 신청하기",
+        "successTitle": "리스트에 등록되었습니다.",
+        "successBody": "자리가 열리면 팀에서 연락드릴게요. 창립 코호트에 오신 걸 환영합니다."
+      },
+      "partnership": {
+        "kicker": "Partnership",
+        "title": "파트너십 문의",
+        "subtitle": "당신의 조직과 만들고 계신 것에 대해 조금 들려주세요. 창립자가 직접 답변합니다.",
+        "submit": "문의 보내기",
+        "successTitle": "문의가 접수되었습니다.",
+        "successBody": "창립자가 직접 답변할 거예요. 제출하신 내용은 비공개로 보관되며 외부에 공유되지 않습니다."
+      },
+      "labelName": "이름",
+      "labelEmail": "이메일",
+      "labelOrganization": "조직",
+      "labelMessage": "메시지",
+      "labelJoiningAs": "가입 유형",
+      "messagePlaceholder": "생각하고 계신 파트너십에 대해 짧게 남겨주세요…",
+      "audiences": {
+        "individual": "개인",
+        "kids": "어린이 & 가족",
+        "team": "팀",
+        "professional": "전문가",
+        "watch": "웨어러블 / 워치"
+      },
+      "errorEmailReq": "이메일을 입력해주세요.",
+      "errorEmailInvalid": "유효하지 않은 이메일입니다.",
+      "errorMessageReq": "짧은 메시지를 남겨주세요.",
+      "sending": "전송 중…",
+      "close": "닫기",
+      "privacyNote": "제출하신 내용은 비공개로 보관됩니다. 외부에 공유되지 않습니다.",
+      "errorTitle": "전송할 수 없습니다.",
+      "genericError": "문제가 발생했습니다. 다시 시도해주세요."
+    }
   }
 }
