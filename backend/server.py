@@ -834,7 +834,8 @@ class BetaCodeCreatePayload(BaseModel):
 
 async def _send_beta_invite_email(to_email: str, name: str, code: str) -> bool:
     """Send the beta-access invite email via the unified transport (Gmail SMTP → Resend)."""
-    redeem_url = "https://page-launch-106.preview.emergentagent.com/beta/redeem"
+    frontend_url = os.environ.get("FRONTEND_URL", "").rstrip("/")
+    redeem_url = f"{frontend_url}/beta/redeem"
     first_name = (name.split(" ")[0] if name else "friend") or "friend"
     html = f"""
     <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
