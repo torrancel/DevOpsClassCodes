@@ -765,5 +765,15 @@
       "Etica dei dati",
       "Carta del consenso"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "Prodotto",
+      "technology": "Tecnologia",
+      "roadmap": "Roadmap",
+      "founder": "Fondatore",
+      "investors": "Investitori",
+      "requestAccess": "Accesso Anticipato"
+    }
   }
 }

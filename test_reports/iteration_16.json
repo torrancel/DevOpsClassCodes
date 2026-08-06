@@ -1,0 +1,32 @@
+{
+  "summary": "Focused i18n retest for NavigationV2 language wiring. All 6 translation keys (v2.nav.product/technology/roadmap/founder/investors/requestAccess) render correctly across tested locales (en, es, fr, ja, ar). Language switcher lists 12 languages. Regressions verified: modal opens post-switch, smooth-scroll works, localStorage persistence, html.lang updates, and ar sets dir=rtl. Mobile menu CTA translates correctly. Known scope: remaining landing-v2 sections still English — expected, not flagged.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "NavigationV2 has two elements matching [data-testid=language-switcher-toggle] (desktop + mobile drawer). Not a bug, but tests must scope by visibility. Consider distinct testids (e.g., language-switcher-toggle-desktop / -mobile) for stricter automation."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "NavigationV2 i18n verified for en/es/fr/ja/ar. Other landing-v2 sections (HeroV2, ClosingCTAV2, FooterV2, etc.) intentionally still English — follow-up i18n pass planned. Mobile CTA testid nav-mobile-cta lives inside nav-mobile-menu drawer (open hamburger first).",
+  "verified_evidence": {
+    "language_options_count": 12,
+    "es_labels": "Producto / Tecnología / Roadmap / Fundador / Inversores / CTA: Acceso Anticipado",
+    "fr_labels": "Produit / Technologie / Feuille de route / Fondateur / Investisseurs / CTA: Accès Anticipé",
+    "ja_labels": "プロダクト / テクノロジー / ロードマップ / 創業者 / 投資家 / CTA: 早期アクセスをリクエスト",
+    "ar_labels": "المنتج / التكنولوجيا / خارطة الطريق / المؤسس / المستثمرون / CTA: طلب وصول مبكر (dir=rtl confirmed)",
+    "localStorage_key": "letitgo_lang persists correctly (verified es, fr, ja, ar)",
+    "html_lang_updates": true,
+    "modal_opens_after_switch": "landing-modal-early-access dialog opened after nav-cta-button click in fr",
+    "smooth_scroll_works": "nav-link-founder click scrolled to scrollY=10699 in fr",
+    "mobile_cta_translated": "nav-mobile-cta showed '早期アクセスをリクエスト' in ja"
+  }
+}

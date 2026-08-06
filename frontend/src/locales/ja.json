@@ -765,5 +765,15 @@
       "データ倫理",
       "同意憲章"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "プロダクト",
+      "technology": "テクノロジー",
+      "roadmap": "ロードマップ",
+      "founder": "創業者",
+      "investors": "投資家",
+      "requestAccess": "早期アクセスをリクエスト"
+    }
   }
 }

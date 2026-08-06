@@ -765,5 +765,15 @@
       "数据伦理",
       "同意书"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "产品",
+      "technology": "技术",
+      "roadmap": "路线图",
+      "founder": "创始人",
+      "investors": "投资者",
+      "requestAccess": "申请早期访问"
+    }
   }
 }

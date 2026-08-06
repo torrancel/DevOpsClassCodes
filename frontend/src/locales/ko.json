@@ -765,5 +765,15 @@
       "데이터 윤리",
       "동의 헌장"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "제품",
+      "technology": "기술",
+      "roadmap": "로드맵",
+      "founder": "창립자",
+      "investors": "투자자",
+      "requestAccess": "얼리 액세스 요청"
+    }
   }
 }

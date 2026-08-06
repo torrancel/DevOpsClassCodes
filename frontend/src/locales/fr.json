@@ -765,5 +765,15 @@
       "Éthique des données",
       "Charte de consentement"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "Produit",
+      "technology": "Technologie",
+      "roadmap": "Feuille de route",
+      "founder": "Fondateur",
+      "investors": "Investisseurs",
+      "requestAccess": "Accès Anticipé"
+    }
   }
 }

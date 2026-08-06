@@ -765,5 +765,15 @@
       "Datenethik",
       "Einwilligung"
     ]
+  },
+  "v2": {
+    "nav": {
+      "product": "Produkt",
+      "technology": "Technologie",
+      "roadmap": "Roadmap",
+      "founder": "Gründer",
+      "investors": "Investoren",
+      "requestAccess": "Frühzeitigen Zugang anfordern"
+    }
   }
 }

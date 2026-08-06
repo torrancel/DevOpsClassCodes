@@ -1,21 +1,25 @@
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Menu, X } from "lucide-react";
 import LanguageSwitcher from "@/components/landing/LanguageSwitcher";
 import { BrandLogo, PrimaryButton } from "@/components/ds";
 import { useLandingModal } from "@/components/landing-v2/LandingModalContext";
 
-const LINKS = [
-    { key: "product", label: "Product", href: "#pillars" },
-    { key: "technology", label: "Technology", href: "#experience" },
-    { key: "roadmap", label: "Roadmap", href: "#roadmap" },
-    { key: "founder", label: "Founder", href: "#founder" },
-    { key: "investors", label: "Investors", href: "#investors" },
+const LINK_KEYS = [
+    { key: "product", href: "#pillars" },
+    { key: "technology", href: "#experience" },
+    { key: "roadmap", href: "#roadmap" },
+    { key: "founder", href: "#founder" },
+    { key: "investors", href: "#investors" },
 ];
 
 export default function NavigationV2() {
+    const { t } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
     const modal = useLandingModal();
+    const LINKS = LINK_KEYS.map((l) => ({ ...l, label: t(`v2.nav.${l.key}`) }));
+    const requestLabel = t("v2.nav.requestAccess");
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 16);
@@ -81,7 +85,7 @@ export default function NavigationV2() {
                         size="sm"
                         icon={null}
                     >
-                        Request Early Access
+                        {requestLabel}
                     </PrimaryButton>
                 </div>
 
@@ -134,7 +138,7 @@ export default function NavigationV2() {
                                 data-testid="nav-mobile-cta"
                                 icon={null}
                             >
-                                Request Early Access
+                                {requestLabel}
                             </PrimaryButton>
                         </li>
                     </ul>
