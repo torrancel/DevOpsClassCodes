@@ -1245,7 +1245,8 @@ def _stripe(http_request: Request) -> StripeCheckout:
 
 
 async def _send_receipt_email(to_email: str, package_label: str, amount: float, currency: str, session_id: str) -> bool:
-    redeem_url = "https://page-launch-106.preview.emergentagent.com/beta/redeem"
+    frontend_url = os.environ.get("FRONTEND_URL", "").rstrip("/")
+    redeem_url = f"{frontend_url}/beta/redeem"
     amount_fmt = f"${amount:,.2f}"
     html = f"""
     <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
