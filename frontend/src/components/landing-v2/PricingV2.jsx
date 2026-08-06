@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { setAudience } from "@/components/landing/audienceStore";
 import FoundingBadge, { foundingPrice } from "@/components/landing/FoundingBadge";
@@ -17,78 +18,59 @@ import {
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const TIERS = [
+const TIER_META = [
     {
         slug: "kids",
-        name: "Kids",
-        sub: "For 6–14. Age-tuned. Guardian-safe.",
+        i18n: "kids",
         price: "$6",
-        cadence: "/child · month",
         package: "kids_founding",
         accent: false,
-        features: [
-            "Age-tuned prompts",
-            "Guardian dashboard",
-            "One-tap co-regulation",
-            "School-safe telemetry",
-        ],
         color: "cyan",
+        featuresCount: 4,
     },
     {
         slug: "individual",
-        name: "Individual",
-        sub: "Your quiet operating system for feelings.",
+        i18n: "individual",
         price: "$14",
-        cadence: "/month",
         package: "individual_founding",
         accent: false,
-        features: [
-            "Daily check-in + AI",
-            "30-day growth trend",
-            "Ambient sounds studio",
-            "Founding badge",
-        ],
         color: "blue",
+        featuresCount: 4,
     },
     {
         slug: "team",
-        name: "Team",
-        sub: "Ambient emotional weather for people teams.",
+        i18n: "team",
         price: "$9",
-        cadence: "/user · month",
         package: "team_founding",
         accent: true,
-        features: [
-            "Team weather map",
-            "Private-by-default aggregates",
-            "Weekly org insight",
-            "Founding cohort access",
-        ],
         color: "violet",
+        featuresCount: 4,
     },
     {
         slug: "professional",
-        name: "Professional",
-        sub: "Between clients, between rounds, between arguments.",
+        i18n: "professional",
         price: "$39",
-        cadence: "/month",
         package: "professional_founding",
         accent: false,
-        features: [
-            "Specialty-tuned modes",
-            "Session-aware breathwork",
-            "Clinical-grade privacy",
-            "Priority co-regulation",
-        ],
         color: "magenta",
+        featuresCount: 4,
     },
 ];
 
 export default function PricingV2() {
     const { user } = useAuth();
+    const { t } = useTranslation();
     const [loadingTier, setLoadingTier] = useState(null);
     const [emailPrompt, setEmailPrompt] = useState(null);
     const [email, setEmail] = useState("");
+
+    const TIERS = TIER_META.map((m) => ({
+        ...m,
+        name: t(`v2Landing.pricing.${m.i18n}Name`),
+        sub: t(`v2Landing.pricing.${m.i18n}Sub`),
+        cadence: t(`v2Landing.pricing.${m.i18n}Cadence`),
+        features: t(`v2Landing.pricing.${m.i18n}Features`, { returnObjects: true }),
+    }));
 
     const launchCheckout = async (tier, emailOverride) => {
         setLoadingTier(tier.slug);
@@ -105,11 +87,11 @@ export default function PricingV2() {
             if (data?.url) {
                 window.location.href = data.url;
             } else {
-                toast.error("Couldn't open checkout. Try again in a moment.");
+                toast.error(t("v2Landing.pricing.checkoutError"));
                 setLoadingTier(null);
             }
         } catch (err) {
-            const msg = err?.response?.data?.detail || "Checkout failed.";
+            const msg = err?.response?.data?.detail || t("v2Landing.pricing.checkoutFailed");
             toast.error(msg);
             setLoadingTier(null);
         }
@@ -127,7 +109,7 @@ export default function PricingV2() {
     const submitEmailPrompt = (e) => {
         e.preventDefault();
         if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            toast.error("Drop a valid email so we can send your receipt.");
+            toast.error(t("v2Landing.pricing.receiptError"));
             return;
         }
         const tier = emailPrompt.tier;
@@ -141,19 +123,18 @@ export default function PricingV2() {
             <div className="relative">
                 <div className="mb-16 md:mb-20 max-w-3xl">
                     <StatusBadge tone="cyan" className="mb-8">
-                        Founding · 50% Off · Locked for Life
+                        {t("v2Landing.pricing.eyebrow")}
                     </StatusBadge>
                     <GradientHeadline as="h2" size="lg">
-                        Pricing that
+                        {t("v2Landing.pricing.headlinePre")}
                         <br />
-                        <span className="lg-gradient-text italic">rewards early belief</span>.
+                        <span className="lg-gradient-text italic">{t("v2Landing.pricing.headlineGradient")}</span>{t("v2Landing.pricing.headlinePost")}
                     </GradientHeadline>
                     <p
                         data-testid="pricing-founding-banner"
                         className="mt-8 text-lg text-lg-ink-soft max-w-2xl leading-relaxed"
                     >
-                        Every founding member locks their price for life, receives a
-                        permanent badge, and quietly shapes what the ecosystem becomes.
+                        {t("v2Landing.pricing.banner")}
                     </p>
                 </div>
 
@@ -182,7 +163,7 @@ export default function PricingV2() {
                                     <div className="mb-5 flex">
                                         <span className="lg-btn-primary text-[10px] uppercase tracking-[0.3em] px-3 py-1.5 rounded-full font-semibold inline-flex items-center gap-1.5">
                                             <Sparkles size={10} />
-                                            Most chosen
+                                            {t("v2Landing.pricing.mostChosen")}
                                         </span>
                                     </div>
                                 )}
@@ -214,7 +195,7 @@ export default function PricingV2() {
                                 </div>
                                 {foundingPrice(tier.price) && (
                                     <p className="mt-1 text-[10px] uppercase tracking-[0.25em] lg-gradient-text font-medium">
-                                        Lifetime locked
+                                        {t("v2Landing.pricing.lifetimeLocked")}
                                     </p>
                                 )}
 
@@ -243,12 +224,12 @@ export default function PricingV2() {
                                         <PrimaryButton
                                             onClick={() => startCheckout(tier)}
                                             loading={loadingTier === tier.slug}
-                                            loadingText="Opening checkout…"
+                                            loadingText={t("v2Landing.pricing.openingCheckout")}
                                             data-testid={`pricing-cta-${tier.slug}`}
                                             className="w-full"
                                             icon={null}
                                         >
-                                            Become a Founder
+                                            {t("v2Landing.pricing.becomeFounder")}
                                         </PrimaryButton>
                                     ) : (
                                         <SecondaryButton
@@ -257,8 +238,8 @@ export default function PricingV2() {
                                             className="w-full"
                                         >
                                             {loadingTier === tier.slug
-                                                ? "Opening checkout…"
-                                                : "Become a Founder"}
+                                                ? t("v2Landing.pricing.openingCheckout")
+                                                : t("v2Landing.pricing.becomeFounder")}
                                         </SecondaryButton>
                                     )}
                                     <a
@@ -267,7 +248,7 @@ export default function PricingV2() {
                                         data-testid={`pricing-waitlist-${tier.slug}`}
                                         className="block text-center text-[10.5px] uppercase tracking-[0.25em] text-lg-ink-muted hover:text-lg-ink transition-colors"
                                     >
-                                        Or apply for the beta →
+                                        {t("v2Landing.pricing.orApplyBeta")}
                                     </a>
                                 </div>
 
@@ -285,13 +266,12 @@ export default function PricingV2() {
                     data-testid="pricing-enterprise-note"
                     className="mt-12 text-sm text-lg-ink-soft text-center max-w-2xl mx-auto"
                 >
-                    Building for a school, hospital, firm, or 500-person team? Founders
-                    write pricing by hand.{" "}
+                    {t("v2Landing.pricing.enterpriseNote")}{" "}
                     <a
                         href="#cta"
                         className="text-lg-ink underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors"
                     >
-                        Talk to founders →
+                        {t("v2Landing.pricing.talkToFounders")}
                     </a>
                 </p>
             </div>
@@ -318,15 +298,14 @@ export default function PricingV2() {
                         </button>
                         <div>
                             <p className="lg-eyebrow lg-gradient-text mb-2">
-                                One step before checkout
+                                {t("v2Landing.pricing.emailModalEyebrow")}
                             </p>
                             <h3 className="text-2xl md:text-[28px] font-semibold text-lg-ink tracking-[-0.02em]">
-                                Where should we send your{" "}
-                                <span className="lg-gradient-text italic">receipt</span>?
+                                {t("v2Landing.pricing.emailModalTitlePre")}{" "}
+                                <span className="lg-gradient-text italic">{t("v2Landing.pricing.emailModalTitleGradient")}</span>?
                             </h3>
                             <p className="mt-2 text-sm text-lg-ink-soft">
-                                We&apos;ll lock your founding seat to this email
-                                so you can sign in later.
+                                {t("v2Landing.pricing.emailModalSub")}
                             </p>
                         </div>
                         <div className="relative">
@@ -350,7 +329,7 @@ export default function PricingV2() {
                             className="w-full"
                             icon={null}
                         >
-                            Continue to checkout
+                            {t("v2Landing.pricing.emailModalContinue")}
                         </PrimaryButton>
                     </form>
                 </div>

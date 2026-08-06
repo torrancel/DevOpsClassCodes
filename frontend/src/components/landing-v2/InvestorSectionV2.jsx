@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Check, Circle, CheckCircle2, AlertTriangle } from "lucide-react";
 import {
@@ -15,51 +16,13 @@ import { track, EVENTS } from "@/lib/analytics";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const COLUMNS = [
-    {
-        eyebrow: "Today",
-        tone: "cyan",
-        live: true,
-        items: [
-            "Functional web MVP",
-            "Brand and product foundation",
-            "Initial commercialization strategy",
-            "Founder-led mission",
-        ],
-    },
-    {
-        eyebrow: "Next Milestones",
-        tone: "violet",
-        items: [
-            "Beta-user growth",
-            "Product analytics",
-            "Apple Watch prototype",
-            "AI personalization",
-            "Early enterprise conversations",
-        ],
-    },
-    {
-        eyebrow: "Capital Enables",
-        tone: "magenta",
-        items: [
-            "Product engineering",
-            "AI development",
-            "Security and privacy",
-            "Customer acquisition",
-            "Technical and clinical advisors",
-            "Pilot programs",
-        ],
-    },
+const COLUMN_META = [
+    { tone: "cyan", live: true, i18nEyebrow: "col1Eyebrow", i18nItems: "col1Items" },
+    { tone: "violet", i18nEyebrow: "col2Eyebrow", i18nItems: "col2Items" },
+    { tone: "magenta", i18nEyebrow: "col3Eyebrow", i18nItems: "col3Items" },
 ];
 
-const INVESTOR_TYPES = [
-    { v: "vc", l: "Venture Capital" },
-    { v: "angel", l: "Angel" },
-    { v: "family_office", l: "Family Office" },
-    { v: "strategic", l: "Strategic / Corp" },
-    { v: "advisor", l: "Advisor" },
-    { v: "other", l: "Other" },
-];
+const INVESTOR_TYPE_KEYS = ["vc", "angel", "family_office", "strategic", "advisor", "other"];
 
 const TONE_DOT = {
     cyan: { c: "#21D4FD", ring: "rgba(33,212,253,0.55)" },
@@ -76,6 +39,13 @@ const TONE_DOT = {
  */
 export default function InvestorSectionV2() {
     const reduce = useReducedMotion();
+    const { t } = useTranslation();
+    const COLUMNS = COLUMN_META.map((m) => ({
+        eyebrow: t(`v2Landing.investor.${m.i18nEyebrow}`),
+        tone: m.tone,
+        live: m.live,
+        items: t(`v2Landing.investor.${m.i18nItems}`, { returnObjects: true }),
+    }));
 
     return (
         <Section
@@ -90,20 +60,20 @@ export default function InvestorSectionV2() {
                 {/* Header */}
                 <div className="mb-14 md:mb-20 max-w-3xl">
                     <StatusBadge tone="magenta" className="mb-8">
-                        Investors
+                        {t("v2Landing.investor.eyebrow")}
                     </StatusBadge>
                     <GradientHeadline
                         as="h2"
                         size="lg"
                         data-testid="investor-headline"
                     >
-                        From Functional MVP
+                        {t("v2Landing.investor.headlinePre")}
                         <br />
-                        to{" "}
+                        {t("v2Landing.investor.headlineTo")}{" "}
                         <span className="lg-gradient-text italic">
-                            Scalable Platform
+                            {t("v2Landing.investor.headlineGradient")}
                         </span>
-                        .
+                        {t("v2Landing.investor.headlinePost")}
                     </GradientHeadline>
                 </div>
 
@@ -194,9 +164,7 @@ export default function InvestorSectionV2() {
                     data-testid="investor-privacy"
                     className="mt-8 text-xs text-lg-ink-muted max-w-3xl leading-relaxed"
                 >
-                    Submissions are received privately by the founder and are never
-                    published or shared externally. This is not an offer to sell
-                    securities and does not constitute a solicitation.
+                    {t("v2Landing.investor.privacy")}
                 </p>
             </div>
         </Section>
@@ -206,6 +174,7 @@ export default function InvestorSectionV2() {
 /* ────────────────────────────────────────────────────────────── */
 
 function InvestorForm({ reduce }) {
+    const { t } = useTranslation();
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -231,14 +200,14 @@ function InvestorForm({ reduce }) {
 
     const validate = () => {
         const e = {};
-        if (!form.name.trim()) e.name = "Please share your name.";
-        else if (form.name.length > 200) e.name = "Name is too long.";
-        if (!form.email.trim()) e.email = "Email is required.";
-        else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "That doesn't look like a valid email.";
-        if (form.organization.length > 200) e.organization = "Organization name is too long.";
-        if (!form.message.trim()) e.message = "Please share a short message.";
-        else if (form.message.trim().length < 10) e.message = "A little more context, please (10+ characters).";
-        else if (form.message.length > 5000) e.message = "Message is too long (max 5,000 characters).";
+        if (!form.name.trim()) e.name = t("v2Landing.investor.errorName");
+        else if (form.name.length > 200) e.name = t("v2Landing.investor.errorNameLong");
+        if (!form.email.trim()) e.email = t("v2Landing.investor.errorEmailReq");
+        else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = t("v2Landing.investor.errorEmailInvalid");
+        if (form.organization.length > 200) e.organization = t("v2Landing.investor.errorOrgLong");
+        if (!form.message.trim()) e.message = t("v2Landing.investor.errorMessageReq");
+        else if (form.message.trim().length < 10) e.message = t("v2Landing.investor.errorMessageShort");
+        else if (form.message.length > 5000) e.message = t("v2Landing.investor.errorMessageLong");
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -274,8 +243,8 @@ function InvestorForm({ reduce }) {
                     message: "",
                     website: "",
                 });
-                toast.success("Inquiry received.", {
-                    description: "The founder will be in touch soon.",
+                toast.success(t("v2Landing.investor.toastSuccessTitle"), {
+                    description: t("v2Landing.investor.toastSuccessBody"),
                 });
             } else {
                 throw new Error("Unexpected response");
@@ -285,10 +254,10 @@ function InvestorForm({ reduce }) {
             const msg =
                 typeof detail === "string"
                     ? detail
-                    : "Something went wrong. Please try again in a moment.";
+                    : t("v2Landing.investor.genericError");
             setErrorMsg(msg);
             setState("error");
-            toast.error("Couldn't send inquiry.", { description: msg });
+            toast.error(t("v2Landing.investor.toastErrorTitle"), { description: msg });
         } finally {
             setSubmitting(false);
         }
@@ -303,14 +272,13 @@ function InvestorForm({ reduce }) {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
                 <div>
                     <p className="lg-eyebrow lg-gradient-text mb-3">
-                        Get in touch
+                        {t("v2Landing.investor.formEyebrow")}
                     </p>
                     <h3 className="text-3xl md:text-4xl font-semibold tracking-[-0.03em] text-lg-ink">
-                        Investor inquiry
+                        {t("v2Landing.investor.formTitle")}
                     </h3>
                     <p className="mt-3 text-lg-ink-soft max-w-xl">
-                        Share a short note and the founder will respond directly with
-                        the deck.
+                        {t("v2Landing.investor.formSub")}
                     </p>
                 </div>
                 <SecondaryButton
@@ -319,7 +287,7 @@ function InvestorForm({ reduce }) {
                     data-testid="investor-secondary-cta"
                     size="md"
                 >
-                    Contact the Founder
+                    {t("v2Landing.investor.contactFounder")}
                 </SecondaryButton>
             </div>
 
@@ -340,12 +308,10 @@ function InvestorForm({ reduce }) {
                             <CheckCircle2 size={26} className="text-white" strokeWidth={2} />
                         </div>
                         <h4 className="text-2xl font-semibold text-lg-ink tracking-[-0.02em]">
-                            Inquiry received.
+                            {t("v2Landing.investor.successTitle")}
                         </h4>
                         <p className="mt-3 text-lg-ink-soft max-w-lg leading-relaxed">
-                            Thank you for reaching out. The founder will respond directly
-                            with the deck and next steps. Your submission is stored
-                            privately and never shared publicly.
+                            {t("v2Landing.investor.successBody")}
                         </p>
                         <button
                             type="button"
@@ -353,7 +319,7 @@ function InvestorForm({ reduce }) {
                             data-testid="investor-form-reset"
                             className="mt-8 text-sm text-lg-ink-soft hover:text-lg-ink underline underline-offset-4 decoration-white/20 hover:decoration-white transition-colors"
                         >
-                            Send another
+                            {t("v2Landing.investor.sendAnother")}
                         </button>
                     </div>
                 ) : (
@@ -363,7 +329,7 @@ function InvestorForm({ reduce }) {
                         data-testid="investor-form"
                         className="grid grid-cols-1 md:grid-cols-2 gap-5"
                     >
-                        <FieldWrap label="Name" required error={errors.name}>
+                        <FieldWrap label={t("v2Landing.investor.labelName")} required error={errors.name}>
                             <input
                                 type="text"
                                 value={form.name}
@@ -377,7 +343,7 @@ function InvestorForm({ reduce }) {
                             />
                         </FieldWrap>
 
-                        <FieldWrap label="Email" required error={errors.email}>
+                        <FieldWrap label={t("v2Landing.investor.labelEmail")} required error={errors.email}>
                             <input
                                 type="email"
                                 value={form.email}
@@ -390,7 +356,7 @@ function InvestorForm({ reduce }) {
                             />
                         </FieldWrap>
 
-                        <FieldWrap label="Organization" error={errors.organization}>
+                        <FieldWrap label={t("v2Landing.investor.labelOrganization")} error={errors.organization}>
                             <input
                                 type="text"
                                 value={form.organization}
@@ -402,7 +368,7 @@ function InvestorForm({ reduce }) {
                             />
                         </FieldWrap>
 
-                        <FieldWrap label="Investor type" required>
+                        <FieldWrap label={t("v2Landing.investor.labelInvestorType")} required>
                             <div className="relative">
                                 <select
                                     value={form.investor_type}
@@ -410,9 +376,9 @@ function InvestorForm({ reduce }) {
                                     data-testid="investor-type"
                                     className="lg-input appearance-none pr-10 cursor-pointer"
                                 >
-                                    {INVESTOR_TYPES.map((t) => (
-                                        <option key={t.v} value={t.v}>
-                                            {t.l}
+                                    {INVESTOR_TYPE_KEYS.map((k) => (
+                                        <option key={k} value={k}>
+                                            {t(`v2Landing.investor.types.${k}`)}
                                         </option>
                                     ))}
                                 </select>
@@ -426,7 +392,7 @@ function InvestorForm({ reduce }) {
                         </FieldWrap>
 
                         <FieldWrap
-                            label="Message"
+                            label={t("v2Landing.investor.labelMessage")}
                             required
                             error={errors.message}
                             className="md:col-span-2"
@@ -440,7 +406,7 @@ function InvestorForm({ reduce }) {
                                 maxLength={5000}
                                 aria-invalid={Boolean(errors.message)}
                                 className="lg-input resize-none"
-                                placeholder="A short note about your interest, thesis, or timing…"
+                                placeholder={t("v2Landing.investor.messagePlaceholder")}
                             />
                             <p className="mt-1.5 text-[11px] text-lg-ink-muted text-right">
                                 {form.message.length} / 5000
@@ -489,19 +455,17 @@ function InvestorForm({ reduce }) {
 
                         <div className="md:col-span-2 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
                             <p className="text-[11px] text-lg-ink-muted max-w-md">
-                                By submitting, you agree that the founder may contact
-                                you at the email provided. Submissions are stored
-                                privately and never shared publicly.
+                                {t("v2Landing.investor.consent")}
                             </p>
                             <PrimaryButton
                                 type="submit"
                                 loading={submitting}
-                                loadingText="Sending…"
+                                loadingText={t("v2Landing.investor.sending")}
                                 data-testid="investor-submit"
                                 size="lg"
                                 icon={null}
                             >
-                                Request Investor Deck
+                                {t("v2Landing.investor.submitCta")}
                             </PrimaryButton>
                         </div>
                     </form>

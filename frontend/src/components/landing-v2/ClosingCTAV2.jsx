@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { ArrowUpRight, Handshake, Sparkles } from "lucide-react";
 import {
     Section,
@@ -16,6 +17,7 @@ import { useLandingModal } from "@/components/landing-v2/LandingModalContext";
 export default function ClosingCTAV2() {
     const reduce = useReducedMotion();
     const modal = useLandingModal();
+    const { t } = useTranslation();
     const anim = (delay = 0) =>
         reduce
             ? { initial: false }
@@ -62,7 +64,7 @@ export default function ClosingCTAV2() {
                         className="inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5 text-[10.5px] uppercase tracking-[0.32em] font-medium text-lg-ink-soft bg-white/[0.04] border border-white/10 backdrop-blur"
                     >
                         <Sparkles size={11} className="text-lg-cyan" strokeWidth={1.5} />
-                        The Invitation
+                        {t("v2Landing.closing.eyebrow")}
                     </span>
                 </motion.div>
 
@@ -71,11 +73,11 @@ export default function ClosingCTAV2() {
                     data-testid="closing-headline"
                     className="lg-h1 text-lg-ink mt-10 max-w-[18ch] mx-auto"
                 >
-                    Help Build the Future of{" "}
+                    {t("v2Landing.closing.headlinePre")}{" "}
                     <span className="lg-gradient-text italic">
-                        Emotional Intelligence
+                        {t("v2Landing.closing.headlineGradient")}
                     </span>
-                    .
+                    {t("v2Landing.closing.headlinePost")}
                 </motion.h2>
 
                 <motion.p
@@ -83,8 +85,7 @@ export default function ClosingCTAV2() {
                     data-testid="closing-copy"
                     className="mt-10 text-lg md:text-xl text-lg-ink-soft max-w-2xl mx-auto leading-relaxed"
                 >
-                    Join Let It Go AI as an early user, investor, strategic partner,
-                    or advisor.
+                    {t("v2Landing.closing.copy")}
                 </motion.p>
 
                 {/* CTA cluster */}
@@ -97,7 +98,7 @@ export default function ClosingCTAV2() {
                         data-testid="closing-early-access"
                         size="lg"
                     >
-                        Request Early Access
+                        {t("v2Landing.closing.earlyAccess")}
                     </PrimaryButton>
 
                     <SecondaryButton
@@ -107,7 +108,7 @@ export default function ClosingCTAV2() {
                         size="lg"
                         icon={<ArrowUpRight size={15} />}
                     >
-                        Investor Information
+                        {t("v2Landing.closing.investor")}
                     </SecondaryButton>
 
                     <SecondaryButton
@@ -116,7 +117,7 @@ export default function ClosingCTAV2() {
                         size="lg"
                         icon={<Handshake size={15} />}
                     >
-                        Partner With Us
+                        {t("v2Landing.closing.partner")}
                     </SecondaryButton>
                 </motion.div>
 
@@ -125,7 +126,7 @@ export default function ClosingCTAV2() {
                     {...anim(0.6)}
                     className="mt-14 text-sm text-lg-ink-muted italic"
                 >
-                    One Ecosystem. Every Moment. Better You.
+                    {t("v2Landing.closing.closer")}
                 </motion.p>
             </div>
         </Section>

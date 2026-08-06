@@ -2,49 +2,32 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { X, Mail, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { PrimaryButton } from "@/components/ds";
 import { track, EVENTS } from "@/lib/analytics";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const MODES = {
+const MODE_META = {
     "early-access": {
-        title: "Request Early Access",
-        subtitle:
-            "One email. We'll invite you when your seat opens up. No spam.",
-        submitLabel: "Request Access",
         source: "early_access",
         analyticsEvent: EVENTS.EARLY_ACCESS_SUBMIT,
-        successTitle: "You're on the list.",
-        successBody:
-            "The team will reach out when your seat opens. Welcome to the founding cohort.",
         showOrg: false,
         showMessage: false,
         defaultAudience: "individual",
+        i18nKey: "earlyAccess",
     },
     partnership: {
-        title: "Partnership Inquiry",
-        subtitle:
-            "Tell us a little about your org and what you're building. The founder responds directly.",
-        submitLabel: "Send Inquiry",
         source: "partnership",
         analyticsEvent: EVENTS.PARTNERSHIP_INQUIRY,
-        successTitle: "Inquiry received.",
-        successBody:
-            "The founder will respond directly. Submissions are stored privately and never shared publicly.",
         showOrg: true,
         showMessage: true,
         defaultAudience: null,
+        i18nKey: "partnership",
     },
 };
 
-const AUDIENCES = [
-    { v: "individual", l: "Individual" },
-    { v: "kids", l: "Kids & Families" },
-    { v: "team", l: "Team" },
-    { v: "professional", l: "Professional" },
-    { v: "watch", l: "Wearable / Watch" },
-];
+const AUDIENCE_KEYS = ["individual", "kids", "team", "professional", "watch"];
 
 /**
  * LandingModal — dual-mode modal for landing CTAs.
@@ -57,7 +40,9 @@ const AUDIENCES = [
  * Fires analytics on successful submission via lib/analytics.
  */
 export default function LandingModal({ open, mode = "early-access", onClose }) {
-    const cfg = MODES[mode] || MODES["early-access"];
+    const { t } = useTranslation();
+    const cfg = MODE_META[mode] || MODE_META["early-access"];
+    const modeKey = cfg.i18nKey;
     const mountedAtRef = useRef(Date.now());
     const [form, setForm] = useState({
         name: "",
@@ -105,10 +90,10 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
 
     const validate = () => {
         const e = {};
-        if (!form.email.trim()) e.email = "Email is required.";
-        else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Invalid email.";
+        if (!form.email.trim()) e.email = t("v2Landing.modal.errorEmailReq");
+        else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = t("v2Landing.modal.errorEmailInvalid");
         if (cfg.showMessage && !form.message.trim())
-            e.message = "Please share a short message.";
+            e.message = t("v2Landing.modal.errorMessageReq");
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -144,12 +129,12 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
             });
 
             setState("success");
-            toast.success(cfg.successTitle);
+            toast.success(t(`v2Landing.modal.${modeKey}.successTitle`));
         } catch (err) {
             const msg =
                 err?.response?.data?.detail ||
-                "Something went wrong. Please try again.";
-            toast.error("Couldn't send.", { description: msg });
+                t("v2Landing.modal.genericError");
+            toast.error(t("v2Landing.modal.errorTitle"), { description: msg });
         } finally {
             setSubmitting(false);
         }
@@ -187,40 +172,40 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                             <CheckCircle2 size={26} className="text-white" strokeWidth={2} />
                         </div>
                         <h3 className="text-2xl font-semibold text-lg-ink tracking-[-0.02em]">
-                            {cfg.successTitle}
+                            {t(`v2Landing.modal.${modeKey}.successTitle`)}
                         </h3>
                         <p className="mt-3 text-lg-ink-soft max-w-sm leading-relaxed">
-                            {cfg.successBody}
+                            {t(`v2Landing.modal.${modeKey}.successBody`)}
                         </p>
                         <button
                             type="button"
                             onClick={onClose}
                             className="mt-8 text-sm text-lg-ink-soft hover:text-lg-ink underline underline-offset-4"
                         >
-                            Close
+                            {t("v2Landing.modal.close")}
                         </button>
                     </div>
                 ) : (
                     <form onSubmit={submit} noValidate className="space-y-4">
                         <div>
                             <p className="lg-eyebrow lg-gradient-text mb-2">
-                                {mode === "partnership" ? "Partnership" : "Early Access"}
+                                {t(`v2Landing.modal.${modeKey}.kicker`)}
                             </p>
                             <h3
                                 id="landing-modal-title"
                                 className="text-2xl sm:text-[26px] font-semibold text-lg-ink tracking-[-0.02em]"
                             >
-                                {cfg.title}
+                                {t(`v2Landing.modal.${modeKey}.title`)}
                             </h3>
                             <p className="mt-2 text-sm text-lg-ink-soft">
-                                {cfg.subtitle}
+                                {t(`v2Landing.modal.${modeKey}.subtitle`)}
                             </p>
                         </div>
 
                         {cfg.showMessage && (
                             <label className="flex flex-col gap-1.5">
                                 <span className="text-[10px] uppercase tracking-[0.28em] text-lg-ink-soft font-medium">
-                                    Name
+                                    {t("v2Landing.modal.labelName")}
                                 </span>
                                 <input
                                     type="text"
@@ -236,7 +221,7 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
 
                         <label className="flex flex-col gap-1.5">
                             <span className="text-[10px] uppercase tracking-[0.28em] text-lg-ink-soft font-medium">
-                                Email <span className="text-lg-magenta">*</span>
+                                {t("v2Landing.modal.labelEmail")} <span className="text-lg-magenta">*</span>
                             </span>
                             <div className="relative">
                                 <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-lg-violet" />
@@ -261,7 +246,7 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                         {mode === "early-access" && (
                             <label className="flex flex-col gap-1.5">
                                 <span className="text-[10px] uppercase tracking-[0.28em] text-lg-ink-soft font-medium">
-                                    I&apos;m joining as
+                                    {t("v2Landing.modal.labelJoiningAs")}
                                 </span>
                                 <select
                                     value={form.audience}
@@ -269,9 +254,9 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                                     className="lg-input appearance-none cursor-pointer"
                                     data-testid="landing-modal-audience"
                                 >
-                                    {AUDIENCES.map((a) => (
-                                        <option key={a.v} value={a.v}>
-                                            {a.l}
+                                    {AUDIENCE_KEYS.map((k) => (
+                                        <option key={k} value={k}>
+                                            {t(`v2Landing.modal.audiences.${k}`)}
                                         </option>
                                     ))}
                                 </select>
@@ -281,7 +266,7 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                         {cfg.showOrg && (
                             <label className="flex flex-col gap-1.5">
                                 <span className="text-[10px] uppercase tracking-[0.28em] text-lg-ink-soft font-medium">
-                                    Organization
+                                    {t("v2Landing.modal.labelOrganization")}
                                 </span>
                                 <input
                                     type="text"
@@ -298,7 +283,7 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                         {cfg.showMessage && (
                             <label className="flex flex-col gap-1.5">
                                 <span className="text-[10px] uppercase tracking-[0.28em] text-lg-ink-soft font-medium">
-                                    Message <span className="text-lg-magenta">*</span>
+                                    {t("v2Landing.modal.labelMessage")} <span className="text-lg-magenta">*</span>
                                 </span>
                                 <textarea
                                     value={form.message}
@@ -308,7 +293,7 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                                     aria-invalid={Boolean(errors.message)}
                                     className="lg-input resize-none"
                                     data-testid="landing-modal-message"
-                                    placeholder="A short note about the partnership you have in mind…"
+                                    placeholder={t("v2Landing.modal.messagePlaceholder")}
                                 />
                                 {errors.message && (
                                     <span className="text-[12px] text-[#FF6B6B]">{errors.message}</span>
@@ -319,16 +304,16 @@ export default function LandingModal({ open, mode = "early-access", onClose }) {
                         <PrimaryButton
                             type="submit"
                             loading={submitting}
-                            loadingText="Sending…"
+                            loadingText={t("v2Landing.modal.sending")}
                             data-testid="landing-modal-submit"
                             size="md"
                             icon={null}
                             className="w-full mt-2"
                         >
-                            {cfg.submitLabel}
+                            {t(`v2Landing.modal.${modeKey}.submit`)}
                         </PrimaryButton>
                         <p className="text-[11px] text-lg-ink-muted">
-                            Submissions are stored privately. Never shared publicly.
+                            {t("v2Landing.modal.privacyNote")}
                         </p>
                     </form>
                 )}

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { BrandLogo } from "@/components/ds";
 
 /**
@@ -6,18 +7,19 @@ import { BrandLogo } from "@/components/ds";
  * Compact grid on desktop, stacked on mobile.
  */
 
-const LINKS = [
-    { label: "Product", href: "#pillars" },
-    { label: "Technology", href: "#experience" },
-    { label: "Roadmap", href: "#roadmap" },
-    { label: "Founder", href: "#founder" },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
-    { label: "Contact", href: "mailto:hello@letitgo.ai" },
+const LINK_META = [
+    { i18n: "product", href: "#pillars" },
+    { i18n: "technology", href: "#experience" },
+    { i18n: "roadmap", href: "#roadmap" },
+    { i18n: "founder", href: "#founder" },
+    { i18n: "privacy", href: "/privacy" },
+    { i18n: "terms", href: "/terms" },
+    { i18n: "contact", href: "mailto:hello@letitgo.ai" },
 ];
 
 export default function FooterV2() {
     const year = new Date().getFullYear();
+    const { t } = useTranslation();
 
     return (
         <footer
@@ -32,51 +34,50 @@ export default function FooterV2() {
                     <div className="md:col-span-5">
                         <BrandLogo size={34} showWordmark />
                         <p className="mt-6 text-[13px] uppercase tracking-[0.32em] lg-gradient-text font-medium">
-                            Emotional Intelligence Ecosystem
+                            {t("v2Landing.footer.eyebrow")}
                         </p>
                         <p
                             data-testid="footer-tagline"
                             className="mt-6 text-lg-ink text-xl md:text-2xl italic tracking-[-0.015em] font-normal max-w-md leading-snug"
                         >
-                            One Ecosystem. Every Moment.{" "}
-                            <span className="lg-gradient-text">Better You.</span>
+                            {t("v2Landing.footer.tagline1")}{" "}
+                            <span className="lg-gradient-text">{t("v2Landing.footer.tagline2")}</span>
                         </p>
                     </div>
 
                     <div className="md:col-span-7">
                         <p className="lg-eyebrow text-lg-ink-muted mb-6">
-                            Explore
+                            {t("v2Landing.footer.exploreLabel")}
                         </p>
                         <ul
                             data-testid="footer-links"
                             className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-4"
                         >
-                            {LINKS.map((l) => {
-                                const testId = `footer-link-${l.label
-                                    .toLowerCase()
-                                    .replace(/\s+/g, "-")}`;
+                            {LINK_META.map((l) => {
+                                const label = t(`v2Landing.footer.${l.i18n}`);
+                                const testId = `footer-link-${l.i18n}`;
                                 const isRoute = l.href.startsWith("/");
                                 if (isRoute) {
                                     return (
-                                        <li key={l.label}>
+                                        <li key={l.i18n}>
                                             <Link
                                                 to={l.href}
                                                 data-testid={testId}
                                                 className="text-[15px] text-lg-ink-soft hover:text-lg-ink transition-colors inline-block"
                                             >
-                                                {l.label}
+                                                {label}
                                             </Link>
                                         </li>
                                     );
                                 }
                                 return (
-                                    <li key={l.label}>
+                                    <li key={l.i18n}>
                                         <a
                                             href={l.href}
                                             data-testid={testId}
                                             className="text-[15px] text-lg-ink-soft hover:text-lg-ink transition-colors inline-block"
                                         >
-                                            {l.label}
+                                            {label}
                                         </a>
                                     </li>
                                 );
@@ -103,8 +104,7 @@ export default function FooterV2() {
                 {/* Copyright + socials */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-6 text-xs text-lg-ink-muted">
                     <p data-testid="footer-copyright">
-                        © {year} Let It Go AI · Emotional Intelligence Ecosystem.
-                        All rights reserved.
+                        © {year} {t("v2Landing.footer.copyright")}
                     </p>
                     <div className="flex items-center gap-6">
                         <a
