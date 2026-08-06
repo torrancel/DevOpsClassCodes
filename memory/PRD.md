@@ -102,3 +102,17 @@ Premium design system introduced. Tokens: `#050507` bg · `#F7F7FA` ink · cyan 
 - /app/frontend/src/pages/FounderStory.jsx + components/share/ShareButtons.jsx
 - /app/frontend/src/pages/{BetaLanding,BetaRedeem,AdminBeta}.jsx
 - /app/backend/tests/test_payments.py + test_beta.py — regression suites
+
+
+## Session update — Feb 2026 (deploy prep)
+- Founder portrait fix: rotated 90° CW via CSS transform in `FounderSectionV2.jsx` (webp had wrong EXIF orientation)
+- i18n across all 12 languages for the V2 landing components (previously only NavigationV2 was translated):
+  - Added `v2Landing` namespace to `/app/frontend/src/locales/en.json` (15 sections: hero, timeline, workingProduct, signal, features, device, audiences, roadmap, founder, investor, pricing, faq, closing, footer, modal)
+  - Refactored these V2 components to use `useTranslation()` + `t()`: HeroV2, TimelineV2, WorkingProductV2, SignalToSupportV2, FeaturesV2, DeviceShowcase, AudiencesV2, EcosystemRoadmapV2, FounderSectionV2
+  - Auto-translated `v2Landing` into ar/de/es/fr/hi/it/ja/ko/pt-BR/ru/zh-CN via `/app/scripts/translate_locales.py`
+  - **STILL HARDCODED (English only)**: InvestorSectionV2, PricingV2, FAQV2, ClosingCTAV2, FooterV2, LandingModal — keys exist in en.json + all locales but components not yet wired
+- Deployment readiness fixes:
+  - Replaced hardcoded preview URLs in `_send_beta_invite_email` (server.py:837) and `_send_receipt_email` (server.py:1248) with `FRONTEND_URL` env var
+  - Added `FRONTEND_URL` to `/app/backend/.env`
+  - Fixed `.gitignore` to explicitly track `backend/.env` and `frontend/.env` (were being blocked by `.env` glob)
+  - deployment_agent → PASS ✅
