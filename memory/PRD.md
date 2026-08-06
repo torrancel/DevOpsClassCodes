@@ -116,3 +116,16 @@ Premium design system introduced. Tokens: `#050507` bg · `#F7F7FA` ink · cyan 
   - Added `FRONTEND_URL` to `/app/backend/.env`
   - Fixed `.gitignore` to explicitly track `backend/.env` and `frontend/.env` (were being blocked by `.env` glob)
   - deployment_agent → PASS ✅
+
+
+## Session update — Feb 2026 (i18n completion)
+- Wired the final six V2 landing components to `react-i18next`:
+  - `InvestorSectionV2` (form labels, dropdown options, toasts, errors, buttons)
+  - `PricingV2` (tier names/subs/cadence/features, banner, CTAs, pre-checkout modal, enterprise note)
+  - `FAQV2` (accordion questions + answers via `returnObjects`)
+  - `ClosingCTAV2` (eyebrow, headline, three CTAs, closer)
+  - `FooterV2` (tagline, explore label, 7 nav links, copyright)
+  - `LandingModal` (both modes: early-access + partnership; audience dropdown; validation errors; buttons)
+- Validated by /app/scripts key-coverage check: **212 unique t() keys**, 100% resolved, all 12 locales complete (317 keys each)
+- **Testing agent iteration_17.json**: 100% PASS across es/fr/de/ja for pricing tiers, FAQ, footer copyright, closing closer, Early Access modal, Investor form, pre-checkout modal, language persistence, and zero i18next console warnings
+- Honeypot `Website (leave blank)` remains English — screen-reader-hidden, low priority (noted by test agent)
