@@ -29,10 +29,10 @@ export default function FAQV2() {
                         <p className="mt-8 text-base text-lg-ink-soft max-w-md leading-relaxed">
                             {t("v2Landing.faq.sub")}{" "}
                             <a
-                                href="mailto:founders@letitgo.ai"
+                                href="mailto:founders@letitgoai.com"
                                 className="text-lg-ink underline underline-offset-4 decoration-white/30 hover:decoration-white transition-colors"
                             >
-                                founders@letitgo.ai
+                                founders@letitgoai.com
                             </a>
                             .
                         </p>

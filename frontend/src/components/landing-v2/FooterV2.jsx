@@ -14,7 +14,7 @@ const LINK_META = [
     { i18n: "founder", href: "#founder" },
     { i18n: "privacy", href: "/privacy" },
     { i18n: "terms", href: "/terms" },
-    { i18n: "contact", href: "mailto:hello@letitgo.ai" },
+    { i18n: "contact", href: "mailto:hello@letitgoai.com" },
 ];
 
 export default function FooterV2() {

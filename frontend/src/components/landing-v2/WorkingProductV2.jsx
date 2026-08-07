@@ -130,7 +130,7 @@ export default function WorkingProductV2() {
 
                 {/* Laptop mockup */}
                 <div className="relative mx-auto max-w-[1180px]">
-                    <LaptopFrame url={`letitgo.ai${routeFor(active)}`} float={!reduce}>
+                    <LaptopFrame url={`letitgoai.com${routeFor(active)}`} float={!reduce}>
                         <motion.div
                             key={active}
                             initial={reduce ? false : { opacity: 0 }}

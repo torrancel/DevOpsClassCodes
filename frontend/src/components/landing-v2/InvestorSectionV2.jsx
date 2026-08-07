@@ -283,7 +283,7 @@ function InvestorForm({ reduce }) {
                 </div>
                 <SecondaryButton
                     as="a"
-                    href="mailto:founders@letitgo.ai?subject=Investor%20Follow-up"
+                    href="mailto:founders@letitgoai.com?subject=Investor%20Follow-up"
                     data-testid="investor-secondary-cta"
                     size="md"
                 >

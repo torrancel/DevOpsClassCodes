@@ -3,13 +3,13 @@
  * Displays child content inside a premium browser chrome with soft depth.
  *
  * Props:
- *  - url          → address bar text (default "letitgo.ai/app")
+ *  - url          → address bar text (default "letitgoai.com/app")
  *  - glow         → soft ambient glow under the frame (default true)
  *  - float        → subtle float animation (respects prefers-reduced-motion)
  *  - className    → extra classes on outer wrapper
  */
 export default function LaptopFrame({
-    url = "letitgo.ai/app",
+    url = "letitgoai.com/app",
     glow = true,
     float = true,
     className = "",

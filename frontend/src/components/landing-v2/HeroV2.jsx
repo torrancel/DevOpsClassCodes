@@ -141,7 +141,7 @@ export default function HeroV2() {
 
                             {/* Laptop — full width on <lg, 8 cols on lg+ */}
                             <div className="col-span-12 lg:col-span-8">
-                                <LaptopFrame url="letitgo.ai/app" float={!reduce}>
+                                <LaptopFrame url="letitgoai.com/app" float={!reduce}>
                                     <MvpDashboardMock />
                                 </LaptopFrame>
                             </div>
