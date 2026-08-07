@@ -5,4 +5,4 @@ Disallow: /admin/
 Disallow: /app
 Disallow: /app/
 
-Sitemap: https://letitgo.ai/sitemap.xml
+Sitemap: https://letitgoai.com/sitemap.xml

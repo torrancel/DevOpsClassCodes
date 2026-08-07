@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://letitgo.ai/</loc>
+        <loc>https://letitgoai.com/</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/founder</loc>
+        <loc>https://letitgoai.com/founder</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/ecosystem</loc>
+        <loc>https://letitgoai.com/ecosystem</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/beta</loc>
+        <loc>https://letitgoai.com/beta</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/doctors</loc>
+        <loc>https://letitgoai.com/doctors</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/attorneys</loc>
+        <loc>https://letitgoai.com/attorneys</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/teachers</loc>
+        <loc>https://letitgoai.com/teachers</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://letitgo.ai/managers</loc>
+        <loc>https://letitgoai.com/managers</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
