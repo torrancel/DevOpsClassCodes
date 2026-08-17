@@ -20,6 +20,10 @@ import BetaRedeem from "@/pages/BetaRedeem";
 import FounderStory from "@/pages/FounderStory";
 import PricingSuccess from "@/pages/PricingSuccess";
 import Ecosystem from "@/pages/Ecosystem";
+import Login from "@/pages/auth/Login";
+import Signup from "@/pages/auth/Signup";
+import ForgotPassword from "@/pages/auth/ForgotPassword";
+import ResetPassword from "@/pages/auth/ResetPassword";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BetaGate from "@/components/beta/BetaGate";
 
@@ -41,6 +45,10 @@ function AppRouter() {
             <Route path="/founder" element={<FounderStory />} />
             <Route path="/pricing/success" element={<PricingSuccess />} />
             <Route path="/ecosystem" element={<Ecosystem />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/beta" element={<AdminBeta />} />
             <Route

@@ -7,6 +7,10 @@ import asyncio
 import logging
 import smtplib
 import ssl
+import secrets
+import re
+import bcrypt
+import jwt as pyjwt
 from email.message import EmailMessage
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
@@ -530,6 +534,19 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+@app.on_event("startup")
+async def _create_auth_indexes():
+    try:
+        await db.users.create_index("email", unique=True, sparse=True)
+        await db.password_reset_tokens.create_index("expires_at", expireAfterSeconds=0)
+        await db.password_reset_tokens.create_index("token", unique=True)
+        await db.login_attempts.create_index("identifier", unique=True)
+        # Auto-clear stale attempts after 24h
+        await db.login_attempts.create_index("last_failed_at", expireAfterSeconds=24 * 3600)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Auth index creation warning: %s", e)
+
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
@@ -573,17 +590,55 @@ async def _resolve_user_from_token(token: str) -> Optional[AuthUser]:
     return AuthUser(**user_doc)
 
 
+async def _resolve_user_from_jwt(token: str) -> Optional[AuthUser]:
+    """Decode a JWT access_token cookie and load the matching user."""
+    if not token:
+        return None
+    try:
+        payload = pyjwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except pyjwt.PyJWTError:
+        return None
+    if payload.get("type") != "access":
+        return None
+    user_id = payload.get("sub")
+    if not user_id:
+        return None
+    user_doc = await db.users.find_one({"user_id": user_id}, {"_id": 0})
+    if not user_doc:
+        return None
+    if isinstance(user_doc.get("created_at"), str):
+        user_doc["created_at"] = datetime.fromisoformat(user_doc["created_at"])
+    if isinstance(user_doc.get("beta_joined_at"), str):
+        user_doc["beta_joined_at"] = datetime.fromisoformat(user_doc["beta_joined_at"])
+    user_doc.pop("password_hash", None)
+    return AuthUser(**user_doc)
+
+
 async def require_user(
     session_token: Optional[str] = Cookie(default=None),
+    access_token: Optional[str] = Cookie(default=None),
     authorization: Optional[str] = Header(default=None),
 ) -> AuthUser:
-    token = session_token
-    if not token and authorization and authorization.startswith("Bearer "):
-        token = authorization.split(" ", 1)[1].strip()
-    user = await _resolve_user_from_token(token or "")
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated.")
-    return user
+    # 1. Existing Google session cookie
+    if session_token:
+        u = await _resolve_user_from_token(session_token)
+        if u:
+            return u
+    # 2. New JWT access_token cookie
+    if access_token:
+        u = await _resolve_user_from_jwt(access_token)
+        if u:
+            return u
+    # 3. Bearer header (either format — try session lookup first, then JWT)
+    if authorization and authorization.startswith("Bearer "):
+        bearer = authorization.split(" ", 1)[1].strip()
+        u = await _resolve_user_from_token(bearer)
+        if u:
+            return u
+        u = await _resolve_user_from_jwt(bearer)
+        if u:
+            return u
+    raise HTTPException(status_code=401, detail="Not authenticated.")
 
 
 class SessionExchange(BaseModel):
@@ -658,7 +713,284 @@ async def auth_logout(response: Response,
     if token:
         await db.user_sessions.delete_one({"session_token": token})
     response.delete_cookie("session_token", path="/")
+    response.delete_cookie("access_token", path="/")
+    response.delete_cookie("refresh_token", path="/")
     return {"ok": True}
+
+
+# ---------- Auth (Email + Password with JWT) ----------
+JWT_SECRET = os.environ.get("JWT_SECRET", "")
+JWT_ALGORITHM = "HS256"
+ACCESS_TOKEN_EXP_MINUTES = 15
+REFRESH_TOKEN_EXP_DAYS = 7
+PASSWORD_RESET_EXP_HOURS = 1
+MAX_FAILED_LOGIN_ATTEMPTS = 5
+LOGIN_LOCKOUT_MINUTES = 15
+EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
+
+def _hash_password(password: str) -> str:
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
+
+
+def _verify_password(plain: str, hashed: str) -> bool:
+    try:
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+    except (ValueError, TypeError):
+        return False
+
+
+def _create_access_token(user_id: str, email: str) -> str:
+    payload = {
+        "sub": user_id,
+        "email": email,
+        "type": "access",
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXP_MINUTES),
+        "iat": datetime.now(timezone.utc),
+    }
+    return pyjwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def _create_refresh_token(user_id: str) -> str:
+    payload = {
+        "sub": user_id,
+        "type": "refresh",
+        "exp": datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXP_DAYS),
+        "iat": datetime.now(timezone.utc),
+    }
+    return pyjwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def _set_auth_cookies(response: Response, access: str, refresh: str) -> None:
+    response.set_cookie(
+        key="access_token", value=access, max_age=ACCESS_TOKEN_EXP_MINUTES * 60,
+        path="/", httponly=True, secure=True, samesite="none",
+    )
+    response.set_cookie(
+        key="refresh_token", value=refresh, max_age=REFRESH_TOKEN_EXP_DAYS * 24 * 3600,
+        path="/", httponly=True, secure=True, samesite="none",
+    )
+
+
+async def _record_failed_login(identifier: str) -> int:
+    """Increment failed-login counter; return new count."""
+    now = datetime.now(timezone.utc)
+    doc = await db.login_attempts.find_one_and_update(
+        {"identifier": identifier},
+        {"$inc": {"count": 1}, "$set": {"last_failed_at": now},
+         "$setOnInsert": {"first_failed_at": now}},
+        upsert=True, return_document=True,
+    )
+    return int((doc or {}).get("count", 1))
+
+
+async def _clear_failed_logins(identifier: str) -> None:
+    await db.login_attempts.delete_one({"identifier": identifier})
+
+
+async def _is_locked_out(identifier: str) -> bool:
+    doc = await db.login_attempts.find_one({"identifier": identifier})
+    if not doc or doc.get("count", 0) < MAX_FAILED_LOGIN_ATTEMPTS:
+        return False
+    last = doc.get("last_failed_at")
+    if isinstance(last, str):
+        last = datetime.fromisoformat(last)
+    if last.tzinfo is None:
+        last = last.replace(tzinfo=timezone.utc)
+    return last + timedelta(minutes=LOGIN_LOCKOUT_MINUTES) > datetime.now(timezone.utc)
+
+
+class RegisterPayload(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+    name: Optional[str] = Field(default=None, max_length=120)
+
+
+class LoginPayload(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=128)
+
+
+class ForgotPasswordPayload(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordPayload(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+class SetPasswordPayload(BaseModel):
+    password: str = Field(min_length=8, max_length=128)
+
+
+def _client_ip(request: Request) -> str:
+    xff = request.headers.get("x-forwarded-for", "")
+    if xff:
+        return xff.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+async def _issue_session_response(user_id: str, email: str, response: Response) -> Dict[str, Any]:
+    access = _create_access_token(user_id, email)
+    refresh = _create_refresh_token(user_id)
+    _set_auth_cookies(response, access, refresh)
+    user_doc = await db.users.find_one({"user_id": user_id}, {"_id": 0, "password_hash": 0})
+    return user_doc or {"user_id": user_id, "email": email}
+
+
+@api_router.post("/auth/register")
+async def auth_register(payload: RegisterPayload, request: Request, response: Response):
+    if not JWT_SECRET:
+        raise HTTPException(status_code=503, detail="Auth is not configured.")
+    email = payload.email.lower().strip()
+    if not EMAIL_RE.match(email):
+        raise HTTPException(status_code=400, detail="Invalid email.")
+    existing = await db.users.find_one({"email": email})
+    if existing and existing.get("password_hash"):
+        raise HTTPException(status_code=409, detail="An account with this email already exists.")
+    hashed = _hash_password(payload.password)
+    now_iso = datetime.now(timezone.utc).isoformat()
+    if existing:
+        # Google-created user completing signup with a password — attach hash.
+        user_id = existing["user_id"]
+        await db.users.update_one({"user_id": user_id}, {"$set": {"password_hash": hashed}})
+    else:
+        user_id = f"user_{uuid.uuid4().hex[:12]}"
+        await db.users.insert_one({
+            "user_id": user_id,
+            "email": email,
+            "name": (payload.name or email.split("@")[0]).strip(),
+            "picture": None,
+            "password_hash": hashed,
+            "created_at": now_iso,
+        })
+    return await _issue_session_response(user_id, email, response)
+
+
+@api_router.post("/auth/login")
+async def auth_login(payload: LoginPayload, request: Request, response: Response):
+    if not JWT_SECRET:
+        raise HTTPException(status_code=503, detail="Auth is not configured.")
+    email = payload.email.lower().strip()
+    identifier = f"{_client_ip(request)}:{email}"
+    if await _is_locked_out(identifier):
+        raise HTTPException(status_code=429, detail=f"Too many failed attempts. Try again in {LOGIN_LOCKOUT_MINUTES} minutes.")
+    user = await db.users.find_one({"email": email})
+    if not user or not user.get("password_hash"):
+        await _record_failed_login(identifier)
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+    if not _verify_password(payload.password, user["password_hash"]):
+        count = await _record_failed_login(identifier)
+        remaining = MAX_FAILED_LOGIN_ATTEMPTS - count
+        if remaining <= 0:
+            raise HTTPException(status_code=429, detail=f"Too many failed attempts. Try again in {LOGIN_LOCKOUT_MINUTES} minutes.")
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+    await _clear_failed_logins(identifier)
+    return await _issue_session_response(user["user_id"], email, response)
+
+
+@api_router.post("/auth/refresh")
+async def auth_refresh(response: Response, refresh_token: Optional[str] = Cookie(default=None)):
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="No refresh token.")
+    try:
+        payload = pyjwt.decode(refresh_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except pyjwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid refresh token.")
+    if payload.get("type") != "refresh":
+        raise HTTPException(status_code=401, detail="Invalid token type.")
+    user_id = payload.get("sub")
+    user = await db.users.find_one({"user_id": user_id}, {"password_hash": 0})
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found.")
+    access = _create_access_token(user_id, user["email"])
+    response.set_cookie(
+        key="access_token", value=access, max_age=ACCESS_TOKEN_EXP_MINUTES * 60,
+        path="/", httponly=True, secure=True, samesite="none",
+    )
+    return {"ok": True}
+
+
+async def _send_password_reset_email(to_email: str, name: str, reset_url: str) -> bool:
+    return await _send_email(to_email, "Reset your Let It Go AI password", _password_reset_email_html(name, reset_url))
+
+
+def _password_reset_email_html(name: str, reset_url: str) -> str:
+    first_name = (name.split(" ")[0] if name else "friend") or "friend"
+    return f"""
+    <html><body style="margin:0;padding:0;background:#0a0712;color:#e7e3f2;font-family:Inter,system-ui,sans-serif;">
+      <div style="max-width:560px;margin:0 auto;padding:48px 32px;">
+        <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#a48fd6;margin:0 0 24px 0;">Password reset</p>
+        <h1 style="font-family:Georgia,serif;font-size:36px;line-height:1.1;color:#fff;margin:0 0 24px 0;">
+          hi <em style="background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;">{first_name}</em>.
+        </h1>
+        <p style="font-size:16px;line-height:1.6;color:#c9c1de;">
+          Someone (hopefully you) asked to reset your Let It Go AI password. Tap the button below to set a new one — the link expires in one hour.
+        </p>
+        <div style="margin:36px 0;text-align:center;">
+          <a href="{reset_url}" style="display:inline-block;background:linear-gradient(90deg,#5E8BFF,#8A4DFF,#FF6FD3);color:#fff;text-decoration:none;padding:14px 32px;border-radius:100px;font-weight:600;">Reset password</a>
+        </div>
+        <p style="font-size:13px;line-height:1.5;color:#8b7fa8;">If you didn't request this, you can ignore this email — your password will stay the same.</p>
+      </div>
+    </body></html>
+    """
+
+
+@api_router.post("/auth/forgot-password")
+async def auth_forgot_password(payload: ForgotPasswordPayload, request: Request):
+    email = payload.email.lower().strip()
+    # Always respond success (don't leak whether email exists).
+    user = await db.users.find_one({"email": email})
+    if user:
+        token = secrets.token_urlsafe(32)
+        expires_at = datetime.now(timezone.utc) + timedelta(hours=PASSWORD_RESET_EXP_HOURS)
+        await db.password_reset_tokens.insert_one({
+            "token": token,
+            "user_id": user["user_id"],
+            "email": email,
+            "expires_at": expires_at,
+            "used": False,
+            "created_at": datetime.now(timezone.utc),
+            "ip": _client_ip(request),
+        })
+        frontend_url = os.environ.get("FRONTEND_URL", "").rstrip("/")
+        reset_url = f"{frontend_url}/reset-password?token={token}"
+        try:
+            await _send_email(email, "Reset your Let It Go AI password", _password_reset_email_html(user.get("name") or "", reset_url))
+        except Exception as e:
+            logger.exception("Password reset email failed: %s", e)
+    return {"ok": True}
+
+
+@api_router.post("/auth/reset-password")
+async def auth_reset_password(payload: ResetPasswordPayload, response: Response):
+    doc = await db.password_reset_tokens.find_one({"token": payload.token})
+    if not doc or doc.get("used"):
+        raise HTTPException(status_code=400, detail="This reset link is invalid or has already been used.")
+    expires_at = doc.get("expires_at")
+    if isinstance(expires_at, str):
+        expires_at = datetime.fromisoformat(expires_at)
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if expires_at < datetime.now(timezone.utc):
+        raise HTTPException(status_code=400, detail="This reset link has expired. Please request a new one.")
+    user = await db.users.find_one({"user_id": doc["user_id"]})
+    if not user:
+        raise HTTPException(status_code=400, detail="Account no longer exists.")
+    await db.users.update_one({"user_id": user["user_id"]}, {"$set": {"password_hash": _hash_password(payload.new_password)}})
+    await db.password_reset_tokens.update_one({"token": payload.token}, {"$set": {"used": True, "used_at": datetime.now(timezone.utc)}})
+    # Auto-log-in after reset.
+    return await _issue_session_response(user["user_id"], user["email"], response)
+
+
+@api_router.post("/auth/set-password")
+async def auth_set_password(payload: SetPasswordPayload, current: AuthUser = Depends(require_user)):
+    """Authenticated endpoint — lets a Google-signed-in user set a password so they can also log in with email/password."""
+    await db.users.update_one({"user_id": current.user_id}, {"$set": {"password_hash": _hash_password(payload.password)}})
+    return {"ok": True}
+
 
 
 # ---------- Check-ins ----------
@@ -774,7 +1106,6 @@ async def latest_checkin(user: AuthUser = Depends(require_user)):
 
 
 # ---------- Beta program ----------
-import secrets
 
 
 def _new_beta_code() -> str:
